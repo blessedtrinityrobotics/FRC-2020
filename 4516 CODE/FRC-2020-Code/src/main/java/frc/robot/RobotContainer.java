@@ -171,7 +171,7 @@ public class RobotContainer {
    * 
    */  
   public Command driveOff(){
-    return (generateRamseteCommand(Trajectories.driveOff).andThen(() -> drivetrain.setDriveVolts(0, 0)) );
+    return (generateRamseteCommand(Trajectories.driveOff).andThen(() -> drivetrain.tankDrive(0, 0)));
   }
 
   /**
