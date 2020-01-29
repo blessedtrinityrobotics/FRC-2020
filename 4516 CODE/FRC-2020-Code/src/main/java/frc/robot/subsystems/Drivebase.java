@@ -242,7 +242,7 @@ public class Drivebase extends SubsystemBase {
     leftMasterMotor.enableVoltageCompensation(true);
     rightMasterMotor.enableVoltageCompensation(true);
     rDrive.tankDrive(leftVolts/Constants.operatingVoltage, rightVolts/Constants.operatingVoltage);
-    rDrive.feed();
+    //rDrive.feed();
   }
 
 
