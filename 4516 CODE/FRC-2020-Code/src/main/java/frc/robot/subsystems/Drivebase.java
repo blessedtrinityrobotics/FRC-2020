@@ -92,7 +92,6 @@ public class Drivebase extends SubsystemBase {
 
     gyro = new PigeonIMU(pigeonTalon);
 
-    gyro = new PigeonIMU(Constants.pigeonIMUPort);
 
     driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getYaw()));
 
@@ -125,6 +124,24 @@ public class Drivebase extends SubsystemBase {
   }
 
   /**
+   * @return Distance traveled on left side
+   */
+  public void leftDistanceTraveled(){
+    double leftDistance = Math.abs(getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition()));
+    
+    SmartDashboard.putNumber("Left Distance Traveled", leftDistance );
+  }
+
+  /**
+   * @return Distance traveled on right side
+   */
+  public void rightDistanceTraveled(){
+    double rightDistance = Math.abs(getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
+    SmartDashboard.putNumber("Right Distance Traveled", rightDistance );
+
+  }
+
+  /**
    * 
    * @param currentSpeed Speed measured by robot encoder
    * @return Wheel speed in sensor units per seconds 
@@ -133,6 +150,7 @@ public class Drivebase extends SubsystemBase {
   public double getWheelSpeed(double currentSpeed){
     return ((currentSpeed / 600 ) * (Constants.CPR / Constants.gearRatio)) / (0.1);
   }
+
 
   /**
    *
@@ -145,25 +163,7 @@ public class Drivebase extends SubsystemBase {
   }
 
 
-  /**
-   * 
-   * @param speed Set Left Motors Speed (%) 0-1
-   * 
-   */ 
-  public void setLeftMotors(double speed) {
-    leftMasterMotor.set(ControlMode.PercentOutput, speed);
-    leftSlaveMotor.follow(leftMasterMotor);
-  }
-
-  /**
-   * 
-   * @param speed Set Right Motors Speed (%) 0-1
-   * 
-   */
-  public void setRightMotors(double speed) {
-    rightMasterMotor.set(ControlMode.PercentOutput, speed);
-    rightSlaveMotor.follow(rightMasterMotor);
-  }
+  
 
   public void tankDrive(double leftPower, double rightPower){
     rDrive.tankDrive(leftPower, rightPower);
@@ -241,10 +241,8 @@ public class Drivebase extends SubsystemBase {
   public void setDriveVolts(double leftVolts, double rightVolts){
     leftMasterMotor.enableVoltageCompensation(true);
     rightMasterMotor.enableVoltageCompensation(true);
-    leftMasterMotor.set(leftVolts/Constants.operatingVoltage);
-    rightMasterMotor.set(rightVolts/Constants.operatingVoltage);
-    leftSlaveMotor.follow(leftMasterMotor);
-    rightSlaveMotor.follow(rightMasterMotor);
+    rDrive.tankDrive(leftVolts/Constants.operatingVoltage, rightVolts/Constants.operatingVoltage);
+    rDrive.feed();
   }
 
 

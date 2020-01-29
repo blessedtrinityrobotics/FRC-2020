@@ -35,16 +35,7 @@ public class Trajectories {
         Constants.defaultConfig
     );
 
-    public static final Trajectory cargoOnCargoSideRight = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)), 
-        List.of(
-            new Translation2d(0.5, 0),
-            new Translation2d(1, -4),
-            new Translation2d(4, -4)
-        ), 
-        new Pose2d(4, -3.5, Rotation2d.fromDegrees(-90) ), 
-        Constants.defaultConfig
-    );
+    
 
 
 }

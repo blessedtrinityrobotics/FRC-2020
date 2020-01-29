@@ -174,6 +174,8 @@ public class RobotContainer {
     return (generateRamseteCommand(Trajectories.driveOff).andThen(() -> drivetrain.tankDrive(0, 0)));
   }
 
+  
+
   /**
    * 
    * @return Shooter and Drive off line auto command
