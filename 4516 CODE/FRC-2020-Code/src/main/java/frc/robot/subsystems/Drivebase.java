@@ -86,7 +86,6 @@ public class Drivebase extends SubsystemBase {
     rightMasterMotor.configVoltageCompSaturation(Constants.operatingVoltage, Constants.kTimeoutMs);
     rightMasterMotor.setSelectedSensorPosition(0);
 
-   
 
     rDrive = new DifferentialDrive(leftMotors, rightMotors);
 
@@ -164,10 +163,28 @@ public class Drivebase extends SubsystemBase {
 
 
   
-
+  /**
+   * 
+   * @param leftPower Left side power
+   * @param rightPower Right side power
+   * 
+   */
   public void tankDrive(double leftPower, double rightPower){
-    rDrive.tankDrive(leftPower, rightPower);
-    
+    rDrive.tankDrive(leftPower, rightPower); 
+  }
+
+  /**
+   * Enables motor safety
+   */
+  public void enableSafety(){
+    rDrive.setSafetyEnabled(true);
+  }
+
+  /**
+   * Disables motor safety 
+   */
+  public void disableSafety(){
+    rDrive.setSafetyEnabled(false);
   }
 
   /**
@@ -226,9 +243,9 @@ public class Drivebase extends SubsystemBase {
    */
   public double getYaw(){
     gyro.getYawPitchRoll(ypr);
-    SmartDashboard.putNumber("yaw", ypr[0]);
     return ypr[0];
   }
+
 
 
   /**
@@ -239,10 +256,7 @@ public class Drivebase extends SubsystemBase {
    * 
    */
   public void setDriveVolts(double leftVolts, double rightVolts){
-    leftMasterMotor.enableVoltageCompensation(true);
-    rightMasterMotor.enableVoltageCompensation(true);
     rDrive.tankDrive(leftVolts/Constants.operatingVoltage, rightVolts/Constants.operatingVoltage);
-    //rDrive.feed();
   }
 
 
@@ -257,6 +271,13 @@ public class Drivebase extends SubsystemBase {
 
   }
 
+  /**
+   * Enable Voltage Compensation
+   */
+  public void enableVoltageComp(){
+    leftMasterMotor.enableVoltageCompensation(true);
+    rightMasterMotor.enableVoltageCompensation(true);
+  }
 
 
   /**
@@ -265,35 +286,35 @@ public class Drivebase extends SubsystemBase {
    * @param direction Direction to drive straight; 1.0 is Forward, -1.0 is backwards
    *  
    */
-  /*
-  public void driveToAngle(double angle, double direction){
+  
+  public void driveToAngle(double angle, double power){
+    for( int i = 0; i < 1; i++){
+      resetYaw(0);
+    }
     gyro.getYawPitchRoll(ypr);
     // Yaw = ypr[0]
     // Pitch = ypr[1]
     // Roll = ypr[2]
     double currentAngle = ypr[0];
     double targetAngle = angle;
-    double maxSpeed = direction * 0.75;
+    double speed = power;
     double kP = 0.0;
-    double kI = 0.0;
     double kD = 0.0;
-    double integral = 0;
     double derivative = 0;
     double previousError = 0;
     double error = targetAngle - currentAngle;
-    integral = integral + (error*0.02);
     derivative = ((error - previousError)/0.02);
-    double turnCommand = (error * kP) + (integral * kI) + (derivative * kD);
+    double turnCommand = (error * kP) +  (derivative * kD);
     previousError = error;
-    leftMasterMotor.set(ControlMode.PercentOutput, (maxSpeed - turnCommand));
+    leftMasterMotor.set(ControlMode.PercentOutput, (speed - turnCommand));
     leftSlaveMotor.follow(leftMasterMotor);
-    rightMasterMotor.set(ControlMode.PercentOutput, (maxSpeed + turnCommand));
+    rightMasterMotor.set(ControlMode.PercentOutput, (speed + turnCommand));
     rightSlaveMotor.follow(rightMasterMotor);
 
   
 
   }
-*/
+
 
   /**
    * 

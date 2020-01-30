@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     m_robotContainer.drivetrain.leftDistanceTraveled();
     m_robotContainer.drivetrain.rightDistanceTraveled();
+    SmartDashboard.putNumber("Yaw", m_robotContainer.drivetrain.getYaw());
   }
 
   /**

@@ -65,7 +65,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    drivetrain.setDefaultCommand( new Drive(drivetrain));                           
+    drivetrain.setDefaultCommand( new Drive(drivetrain));     
+    configureButtonBindings();                      
   }
 
   /**
@@ -75,9 +76,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
-    
-
+        
     // ADD COMMANDS HERE
 
   }
@@ -134,58 +133,7 @@ public class RobotContainer {
   }
   
 
-  //public Command one(){
-    // RamseteCommand ramseteCommand = new RamseteCommand(
-    //   // get balls under trench trajectory,
-    //   drivetrain::getPose, 
-    //   new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
-    //   new SimpleMotorFeedforward(Constants.ksVolts, 
-    //                              Constants.kvVoltSecondsPerMeter, 
-    //                              Constants.kaVoltSecondsSquaredPerMeter),
-    //   Constants.kDriveKinematics, 
-    //   drivetrain::getWheelSpeeds, 
-    //   new PIDController(Constants.kPDriveVel, 0, 0), 
-    //   new PIDController(Constants.kPDriveVel, 0, 0), 
-    //   drivetrain::setDriveVolts,
-    //   drivetrain
-    // );
-
-    // Drive drive1 = new Drive(drivetrain);
-
-    // return drive1.andThen(ramseteCommand);
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-
-  // public Command getAutonomousCommand() {
-    
-  // };
-    
-
-  /**
-   * 
-   * @return Auto drive off line command
-   * 
-   */  
-  public Command driveOff(){
-    return (generateRamseteCommand(Trajectories.driveOff).andThen(() -> drivetrain.tankDrive(0, 0)));
-  }
 
   
-
-  /**
-   * 
-   * @return Shooter and Drive off line auto command
-   * 
-   */
-  //public Command shootDrive(){
-
-    // need to make shootProcedure command
-
-    //return    shootProcedure.andThen(() -> (generateRamseteCommand(Trajectories.driveOff).andThen(() -> drivetrain.setDriveVolts(0, 0))));
-  //}
   
 }
