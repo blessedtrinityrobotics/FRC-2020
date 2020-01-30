@@ -12,11 +12,11 @@ import frc.robot.Robot;
 import frc.robot.Trajectories;
 import frc.robot.subsystems.Drivebase;
 
-public class autoDrive extends CommandBase {
+public class autoDriveOff extends CommandBase {
   private final Drivebase drivetrain;
 
 
-  public autoDrive(Drivebase subsystem) {
+  public autoDriveOff(Drivebase subsystem) {
     drivetrain = subsystem;
     addRequirements(drivetrain);
     
