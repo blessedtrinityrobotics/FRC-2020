@@ -7,12 +7,16 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -37,7 +41,7 @@ public class Drivebase extends SubsystemBase {
   SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
 
 
-  private final DifferentialDrive rDrive; 
+  public DifferentialDrive rDrive; 
   public DifferentialDriveOdometry driveOdometry;
   public Pose2d pose = new Pose2d();
 
@@ -229,10 +233,12 @@ public class Drivebase extends SubsystemBase {
    * 
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-    return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(rightMasterMotor.getSelectedSensorVelocity()));
+
+    return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(-leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(rightMasterMotor.getSelectedSensorVelocity()));
   }
 
 
+ 
  
 
 
@@ -256,6 +262,7 @@ public class Drivebase extends SubsystemBase {
    * 
    */
   public void setDriveVolts(double leftVolts, double rightVolts){
+
     rDrive.tankDrive(leftVolts/Constants.operatingVoltage, rightVolts/Constants.operatingVoltage);
   }
 

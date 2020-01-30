@@ -8,11 +8,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.autoDriveOff;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,7 +23,6 @@ public class Robot extends TimedRobot {
 
   public static RobotContainer m_robotContainer;
 
-  SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,10 +34,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    // autoChooser.setDefaultOption("Default Auto - Drive Straight Auto", m_robotContainer.one());
-    // autoChooser.addOption("Example Auto" );
-    // autoChooser.addOption("Right Side Cargo Auto");
-    // SmartDashboard.putData("Auto mode", autoChooser);
+    
   }
 
   /**
@@ -78,12 +72,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = new autoDriveOff(m_robotContainer.drivetrain);
+    m_autonomousCommand = m_robotContainer.getAutomousCommand();
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
+    if(m_autonomousCommand != null){
       m_autonomousCommand.schedule();
     }
+
   }
 
   /**
@@ -91,7 +85,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    //CommandScheduler.getInstance().run();
+
   }
 
   @Override

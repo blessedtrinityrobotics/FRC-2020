@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.Trajectories;
@@ -25,14 +26,18 @@ public class autoDriveOff extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.disableSafety();
-    drivetrain.enableVoltageComp();
+    //System.out.println("test 3");
+    drivetrain.disableSafety(); 
+    drivetrain.resetYaw(0);
+    //Robot.m_robotContainer.generateRamseteCommand(Trajectories.driveOff);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   Robot.m_robotContainer.generateRamseteCommand(Trajectories.driveOff);
+    //System.out.println("test 4");
+   
+  
   }
 
   // Called once the command ends or is interrupted.
