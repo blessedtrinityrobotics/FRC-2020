@@ -148,7 +148,7 @@ public class Drivebase extends SubsystemBase {
    * Left speed in m/s
    */
   public void leftSpeed(){
-    double leftSpeed = getWheelSpeed(leftMasterMotor.getSelectedSensorVelocity());
+    double leftSpeed = getSpeedMetersPerSec(leftMasterMotor.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Left Speed m/s", leftSpeed); 
   }
 
@@ -156,7 +156,7 @@ public class Drivebase extends SubsystemBase {
    * Right speed in m/s
    */
   public void rightSpeed(){
-    double rightSpeed = getWheelSpeed(rightMasterMotor.getSelectedSensorVelocity());
+    double rightSpeed = getSpeedMetersPerSec(rightMasterMotor.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Right Speed m/s", rightSpeed);
   }
 
