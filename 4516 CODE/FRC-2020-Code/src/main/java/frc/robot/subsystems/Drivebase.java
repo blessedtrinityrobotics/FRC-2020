@@ -102,7 +102,8 @@ public class Drivebase extends SubsystemBase {
 
   @Override
   public void periodic() {
-    driveOdometry.update(Rotation2d.fromDegrees(getYaw()), getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition()), getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
+    driveOdometry.update(Rotation2d.fromDegrees(getYaw()), getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition()), getWheelDistanceMeters(-rightMasterMotor.getSelectedSensorPosition()));
+    System.out.println(driveOdometry.getPoseMeters().toString());
   }
 
 
@@ -127,7 +128,7 @@ public class Drivebase extends SubsystemBase {
   }
 
   /**
-   * @return Distance traveled on left side
+   * Distance traveled on left side
    */
   public void leftDistanceTraveled(){
     double leftDistance = Math.abs(getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition()));
@@ -136,12 +137,27 @@ public class Drivebase extends SubsystemBase {
   }
 
   /**
-   * @return Distance traveled on right side
+   * Distance traveled on right side
    */
   public void rightDistanceTraveled(){
     double rightDistance = Math.abs(getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
     SmartDashboard.putNumber("Right Distance Traveled", rightDistance );
+  }
 
+  /**
+   * Left speed in m/s
+   */
+  public void leftSpeed(){
+    double leftSpeed = getWheelSpeed(leftMasterMotor.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Left Speed m/s", leftSpeed); 
+  }
+
+  /**
+   * Right speed in m/s
+   */
+  public void rightSpeed(){
+    double rightSpeed = getWheelSpeed(rightMasterMotor.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Right Speed m/s", rightSpeed);
   }
 
   /**
@@ -162,7 +178,7 @@ public class Drivebase extends SubsystemBase {
    *
    */
   public double getSpeedMetersPerSec(double currentSpeed) {
-    return (getWheelSpeed(currentSpeed) * Math.PI * Constants.wheelDiameterMeters);
+    return (getWheelSpeed(currentSpeed) * Constants.wheelDiameterMeters/2);
   }
 
 
@@ -191,28 +207,9 @@ public class Drivebase extends SubsystemBase {
     rDrive.setSafetyEnabled(false);
   }
 
-  /**
-   * 
-   * @param distance Inches to move forward or backwards
-   * 
-   */
-  public void moveToPos(double distance){
-    double encoderTarget;
-    encoderTarget = distance * Constants.CPR;
-    leftMasterMotor.set(ControlMode.MotionMagic, -encoderTarget);
-    leftSlaveMotor.follow(leftMasterMotor);
-    rightMasterMotor.set(ControlMode.MotionMagic, encoderTarget);
-    rightSlaveMotor.follow(rightMasterMotor);
-  }
 
-  /**
-   * 
-   * @return Averaged Current Position of Drive Train
-   * 
-   */
-  public double getCurrentPosition(){
-    return ((leftMasterMotor.getSelectedSensorPosition() + rightMasterMotor.getSelectedSensorPosition())/2);
-  }
+
+ 
 
   /**
    * 
@@ -234,7 +231,7 @@ public class Drivebase extends SubsystemBase {
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
 
-    return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(-leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(rightMasterMotor.getSelectedSensorVelocity()));
+    return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(-leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(-rightMasterMotor.getSelectedSensorVelocity()));
   }
 
 
@@ -263,7 +260,7 @@ public class Drivebase extends SubsystemBase {
    */
   public void setDriveVolts(double leftVolts, double rightVolts){
 
-    rDrive.tankDrive(leftVolts/Constants.operatingVoltage, rightVolts/Constants.operatingVoltage);
+    rDrive.tankDrive(leftVolts/Constants.operatingVoltage, -rightVolts/Constants.operatingVoltage);
   }
 
 

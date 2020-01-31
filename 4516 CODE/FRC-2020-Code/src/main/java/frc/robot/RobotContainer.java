@@ -109,7 +109,7 @@ public class RobotContainer {
     );
 
 
-    return ramseteCommand.andThen(() -> drivetrain.tankDrive(0, 0));
+    return ramseteCommand.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
   }
 
   /**

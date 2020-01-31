@@ -92,8 +92,9 @@ public final class Constants {
   public static final double kaVoltSecondsSquaredPerMeter           = 0.269;
   public static final double kPDriveVel                             = 17.5;
   public static final double kTrackwidthMeters                      = 0.83;
-  public static final double kMaxSpeedMetersPerSecond               = 4.8;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 4;
+  public static final double kMaxSpeedMetersPerSecond               = 4.5
+  ;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
   public static final double kRamseteB                              = 2.0;
   public static final double kRamseteZeta                           = 0.7;
 
@@ -118,25 +119,7 @@ public final class Constants {
                             .setKinematics(kDriveKinematics)
                             .addConstraint(autoVoltageConstraint);
   
-  /**
-   * 
-   * @param currentSpeed Speed measured by robot encoder
-   * @return Wheel speed in sensor units per seconds 
-   * 
-   */
-  public double getWheelSpeed(double maxRPM){
-    return ((maxRPM / 600 ) * (CPR / gearRatio)) / (0.1);
-  }
 
-  /**
-   *
-   * @param currentSpeed Speed measured by robot encoder 
-   * @return Wheel speed in meters per seconds
-   *
-   */
-  public double getSpeedMetersPerSec(double maxRPM) {
-    return (getWheelSpeed(maxRPM) * Math.PI * wheelDiameterMeters);
-  }
 
 
 
