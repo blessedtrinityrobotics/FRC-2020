@@ -33,7 +33,7 @@ public class RobotContainer {
   Drivebase drivetrain = new Drivebase();
 
 
-  SendableChooser<Command> autoChooser = new SendableChooser<>();
+  SendableChooser<String> autoChooser = new SendableChooser<>();
 
 
 
@@ -65,6 +65,7 @@ public class RobotContainer {
   Button leftStickButtonOperator   = new JoystickButton(operatorController, Constants.leftStickButton);
   Button rightStickButtonOperator  = new JoystickButton(operatorController, Constants.rightStickButton);
 
+ 
   
 
   /**
@@ -75,6 +76,10 @@ public class RobotContainer {
     drivetrain.setDefaultCommand( new Drive(drivetrain));     
     configureButtonBindings();   
     
+    autoChooser.addOption("Shoot and Drive Off", "shootDrive");
+    autoChooser.addOption("Shoot and Go to Trench", "shootTrench");
+    autoChooser.setDefaultOption("Drive Off", "driveOff");
+    Shuffleboard.getTab("Autonomous").add(autoChooser);
 
   }
 
@@ -90,22 +95,66 @@ public class RobotContainer {
 
   }
 
+
   public Command getAutomousCommand(){
-    RamseteCommand ramseteCommand = new RamseteCommand(
-      Trajectories.driveOff,
-      drivetrain::getPose, 
-      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
-      Constants.kDriveFF,
-      Constants.kDriveKinematics, 
-      drivetrain::getWheelSpeeds, 
-      new PIDController(Constants.kPDriveVel, 0, 0), 
-      new PIDController(Constants.kPDriveVel, 0, 0), 
-      drivetrain::setDriveVolts,  
-      drivetrain
-    );
+    
 
+    if(autoChooser.getSelected().equals("shootDrive")){
 
-    return ramseteCommand.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+      // shoot balls and drive off
+      RamseteCommand driveOff = new RamseteCommand(
+        Trajectories.driveOff,
+        drivetrain::getPose, 
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
+        Constants.kDriveFF,
+        Constants.kDriveKinematics, 
+        drivetrain::getWheelSpeeds, 
+        new PIDController(Constants.kPDriveVel, 0, 0), 
+        new PIDController(Constants.kPDriveVel, 0, 0), 
+        drivetrain::setDriveVolts,  
+        drivetrain
+      );
+        
+      return driveOff.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+
+    } else if(autoChooser.getSelected().equals("shootTrench")){
+
+      // shoot balls and drive off
+      // go to trench
+      RamseteCommand cm = new RamseteCommand(
+        Trajectories.driveOff,
+        drivetrain::getPose, 
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
+        Constants.kDriveFF,
+        Constants.kDriveKinematics, 
+        drivetrain::getWheelSpeeds, 
+        new PIDController(Constants.kPDriveVel, 0, 0), 
+        new PIDController(Constants.kPDriveVel, 0, 0), 
+        drivetrain::setDriveVolts,  
+        drivetrain
+      );
+      
+      return cm.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+
+    } else {
+
+      // drive off the line
+      RamseteCommand driveOff = new RamseteCommand(
+        Trajectories.driveOff,
+        drivetrain::getPose, 
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
+        Constants.kDriveFF,
+        Constants.kDriveKinematics, 
+        drivetrain::getWheelSpeeds, 
+        new PIDController(Constants.kPDriveVel, 0, 0), 
+        new PIDController(Constants.kPDriveVel, 0, 0), 
+        drivetrain::setDriveVolts,  
+        drivetrain
+      );
+        
+      return driveOff.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+
+    }  
   }
 
   /**
