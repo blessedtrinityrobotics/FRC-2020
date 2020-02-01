@@ -20,6 +20,8 @@ public class Drive extends CommandBase {
   private double rightTrigger;
   private double leftTrigger;
   private double leftStickX;
+  private double leftStickY;
+  private double rightStickY;
   private final Drivebase drivetrain;
 
 
@@ -42,6 +44,8 @@ public class Drive extends CommandBase {
     rightTrigger = Robot.m_robotContainer.getDriverRawAxis(Constants.rightTriggerAxis);
     leftTrigger  = Robot.m_robotContainer.getDriverRawAxis(Constants.leftTriggerAxis);
     leftStickX   = Robot.m_robotContainer.getDriverRawAxis(Constants.leftStickX);
+    rightStickY = Robot.m_robotContainer.getDriverRawAxis(Constants.rightStickY);
+    leftStickY = Robot.m_robotContainer.getDriverRawAxis(Constants.leftStickY);
   /*
     // Tank Drive Options
       // Regular Tank Drive
@@ -67,12 +71,14 @@ public class Drive extends CommandBase {
   
     // GTA Drive Options
       // Regular GTA Drive
+    
       double triggerValue1 = rightTrigger - leftTrigger;
       double turnValue1 = -leftStickX * Constants.turningPower;
-      double leftOutput = triggerValue1 - turnValue1;
-      double rightOutput = triggerValue1 + turnValue1;
+      double leftOutput = -triggerValue1 + turnValue1;
+      double rightOutput = -triggerValue1 - turnValue1;
       drivetrain.tankDrive(leftOutput, rightOutput );
 
+      //drivetrain.tankDrive(leftStickY, rightStickY);
       /*
       // Exponential Drive GTA Drive
       double triggerValue2 = (rightTrigger - leftTrigger) * Math.abs((rightTrigger - leftTrigger));

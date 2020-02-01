@@ -76,9 +76,9 @@ public class RobotContainer {
     drivetrain.setDefaultCommand( new Drive(drivetrain));     
     configureButtonBindings();   
     
-    autoChooser.addOption("Shoot and Drive Off", "shootDrive");
-    autoChooser.addOption("Shoot and Go to Trench", "shootTrench");
-    autoChooser.setDefaultOption("Drive Off", "driveOff");
+    autoChooser.addOption("Drive Left", "leftDrive");
+    autoChooser.setDefaultOption("Drive Forward", "driveOff");
+    autoChooser.addOption("Drive Right", "rightDrive");
     Shuffleboard.getTab("Autonomous").add(autoChooser);
 
   }
@@ -99,10 +99,10 @@ public class RobotContainer {
   public Command getAutomousCommand(){
     
 
-    if(autoChooser.getSelected().equals("shootDrive")){
+    if(autoChooser.getSelected().equals("rightDrive")){
 
       // shoot balls and drive off
-      Command ramsete = generateRamseteCommand(Trajectories.driveOff);
+      Command ramsete = generateRamseteCommand(Trajectories.driveRight);
     /*
       RamseteCommand driveOff = new RamseteCommand(
         Trajectories.driveOff,
@@ -119,11 +119,11 @@ public class RobotContainer {
       */
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
 
-    } else if(autoChooser.getSelected().equals("shootTrench")){
+    } else if(autoChooser.getSelected().equals("leftDrive")){
 
       // shoot balls and drive off
       // go to trench
-      Command ramsete = generateRamseteCommand(Trajectories.driveOff);
+      Command ramsete = generateRamseteCommand(Trajectories.driveLeft);
       /*
       RamseteCommand cm = new RamseteCommand(
         Trajectories.driveOff,

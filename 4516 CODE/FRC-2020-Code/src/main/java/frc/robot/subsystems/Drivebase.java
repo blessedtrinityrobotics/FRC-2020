@@ -60,12 +60,13 @@ public class Drivebase extends SubsystemBase {
     //leftMasterMotor.configMotionAcceleration(Constants.kDriveTrainAccel, Constants.kTimeoutMs); // Motion Magic Acceleration Value
     //leftMasterMotor.configMotionCruiseVelocity(Constants.kDriveTrainVelocity, Constants.kTimeoutMs); // Motion Magic Velocity Value
     leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, Constants.PID_PRIMARY, Constants.kTimeoutMs); // Select Sensor (Encoder)
-    leftMasterMotor.setSensorPhase(false); // Reverse Direction of encoder
+    leftMasterMotor.setSensorPhase(true); // Reverse Direction of encoder
+    leftSlaveMotor.setSensorPhase(true);
     leftMasterMotor.configOpenloopRamp(1, Constants.kTimeoutMs); // % Ramp - 1 sec to full throtle
     leftMasterMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
     leftSlaveMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
-    leftMasterMotor.setInverted(false);
-    leftSlaveMotor.setInverted(false);
+    leftMasterMotor.setInverted(true);
+    leftSlaveMotor.setInverted(true);
     leftMasterMotor.configVoltageCompSaturation(Constants.operatingVoltage, Constants.kTimeoutMs);
     leftMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, Constants.PID_PRIMARY, Constants.kTimeoutMs);
     leftMasterMotor.setSelectedSensorPosition(0);
@@ -81,12 +82,13 @@ public class Drivebase extends SubsystemBase {
     //rightMasterMotor.configMotionAcceleration(Constants.kDriveTrainAccel, Constants.kTimeoutMs); // Motion Magic Acceleration Value
     //rightMasterMotor.configMotionCruiseVelocity(Constants.kDriveTrainVelocity, Constants.kTimeoutMs); // Motion Magic Velocity Value
     rightMasterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, Constants.PID_PRIMARY, Constants.kTimeoutMs); // Select Sensor (Encoder)
-    rightMasterMotor.setSensorPhase(false); // Do not Reverse Direction of encoder
+    rightMasterMotor.setSensorPhase(true); // Do not Reverse Direction of encoder
+    rightSlaveMotor.setSensorPhase(true);
     rightMasterMotor.configOpenloopRamp(1, Constants.kTimeoutMs); // % Ramp - 1 sec to full throtle
     rightMasterMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
     rightSlaveMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
-    rightMasterMotor.setInverted(false);
-    rightSlaveMotor.setInverted(false);
+    rightMasterMotor.setInverted(true);
+    rightSlaveMotor.setInverted(true);
     rightMasterMotor.configVoltageCompSaturation(Constants.operatingVoltage, Constants.kTimeoutMs);
     rightMasterMotor.setSelectedSensorPosition(0);
 
@@ -95,14 +97,13 @@ public class Drivebase extends SubsystemBase {
     rDrive = new DifferentialDrive(leftMotors, rightMotors);
 
     gyro = new PigeonIMU(pigeonTalon);
-
+    resetYaw(0);
     driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getYaw()));
-
   }
 
   @Override
   public void periodic() {
-    driveOdometry.update(Rotation2d.fromDegrees(getYaw()), getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition()), getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
+    driveOdometry.update(Rotation2d.fromDegrees(getYaw()), getWheelDistanceMeters(-leftMasterMotor.getSelectedSensorPosition()), getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
     System.out.println(driveOdometry.getPoseMeters().toString());
   }
 
@@ -236,7 +237,7 @@ public class Drivebase extends SubsystemBase {
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
 
-    return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(rightMasterMotor.getSelectedSensorVelocity()));
+    return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(-leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(rightMasterMotor.getSelectedSensorVelocity()));
   }
 
 
@@ -265,7 +266,7 @@ public class Drivebase extends SubsystemBase {
    */
   public void setDriveVolts(double leftVolts, double rightVolts){
 
-    rDrive.tankDrive(leftVolts/Constants.operatingVoltage, rightVolts/Constants.operatingVoltage);
+    rDrive.tankDrive(-leftVolts/Constants.operatingVoltage, -rightVolts/Constants.operatingVoltage);
   }
 
 
