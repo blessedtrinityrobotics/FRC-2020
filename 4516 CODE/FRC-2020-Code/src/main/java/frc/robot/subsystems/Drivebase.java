@@ -43,7 +43,7 @@ public class Drivebase extends SubsystemBase {
 
   public DifferentialDrive rDrive; 
   public DifferentialDriveOdometry driveOdometry;
-  public Pose2d pose = new Pose2d();
+  public Pose2d pose;
 
   public PigeonIMU gyro;
 
@@ -90,11 +90,11 @@ public class Drivebase extends SubsystemBase {
     rightMasterMotor.configVoltageCompSaturation(Constants.operatingVoltage, Constants.kTimeoutMs);
     rightMasterMotor.setSelectedSensorPosition(0);
 
+    pose = new Pose2d();
 
     rDrive = new DifferentialDrive(leftMotors, rightMotors);
 
     gyro = new PigeonIMU(pigeonTalon);
-
 
     driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getYaw()));
 
@@ -102,7 +102,7 @@ public class Drivebase extends SubsystemBase {
 
   @Override
   public void periodic() {
-    driveOdometry.update(Rotation2d.fromDegrees(getYaw()), getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition()), getWheelDistanceMeters(-rightMasterMotor.getSelectedSensorPosition()));
+    driveOdometry.update(Rotation2d.fromDegrees(getYaw()), getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition()), getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
     System.out.println(driveOdometry.getPoseMeters().toString());
   }
 
@@ -117,21 +117,13 @@ public class Drivebase extends SubsystemBase {
   }
 
 
-  /**
-   * 
-   * @param totalEncoderValue Enocder value driven measured by encoder
-   * @return Distance traveled in meters
-   * 
-   */
-  public double getWheelDistanceMeters(double totalEncoderValue){
-    return (Math.PI * Constants.wheelDiameterMeters * totalEncoderValue)/(Constants.gearRatio * Constants.CPR);
-  }
+ 
 
   /**
    * Distance traveled on left side
    */
   public void leftDistanceTraveled(){
-    double leftDistance = Math.abs(getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition()));
+    double leftDistance = getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition());
     
     SmartDashboard.putNumber("Left Distance Traveled", leftDistance );
   }
@@ -140,7 +132,7 @@ public class Drivebase extends SubsystemBase {
    * Distance traveled on right side
    */
   public void rightDistanceTraveled(){
-    double rightDistance = Math.abs(getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
+    double rightDistance = getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition());
     SmartDashboard.putNumber("Right Distance Traveled", rightDistance );
   }
 
@@ -160,27 +152,7 @@ public class Drivebase extends SubsystemBase {
     SmartDashboard.putNumber("Right Speed m/s", rightSpeed);
   }
 
-  /**
-   * 
-   * @param currentSpeed Speed measured by robot encoder
-   * @return Wheel speed in sensor units per seconds 
-   * 
-   */
-  public double getWheelSpeed(double currentSpeed){
-    return ((currentSpeed / 600 ) * (Constants.CPR / Constants.gearRatio)) / (0.1);
-  }
-
-
-  /**
-   *
-   * @param currentSpeed Speed measured by robot encoder 
-   * @return Wheel speed in meters per seconds
-   *
-   */
-  public double getSpeedMetersPerSec(double currentSpeed) {
-    return (getWheelSpeed(currentSpeed) * Constants.wheelDiameterMeters/2);
-  }
-
+  
 
   
   /**
@@ -223,6 +195,39 @@ public class Drivebase extends SubsystemBase {
 
   }
 
+   /**
+   * 
+   * @param totalEncoderValue Enocder value driven measured by encoder
+   * @return Distance traveled in meters
+   * 
+   */
+  public double getWheelDistanceMeters(double totalEncoderValue){
+    return (Math.PI * Constants.wheelDiameterMeters * totalEncoderValue)/(Constants.gearRatio * Constants.CPR);
+  }
+
+  /**
+   * 
+   * @param currentSpeed Speed measured by robot encoder (sensor units per 100 ms)
+   * @return 
+   * 
+   */
+  public double getWheelSpeed(double currentSpeed){
+    double speedSecs = (currentSpeed / 0.1); // Raw Speed in sensor units per seconds
+    double wheelSpeedSecs  = (speedSecs) / (Constants.CPR * Constants.gearRatio); // Wheel speed in sensor units per seconds
+    return wheelSpeedSecs;
+  }
+
+
+  /**
+   *
+   * @param currentSpeed Speed measured by robot encoder 
+   * @return Wheel speed in meters per seconds
+   *
+   */
+  public double getSpeedMetersPerSec(double currentSpeed) {
+    return (getWheelSpeed(currentSpeed) * (Constants.wheelDiameterMeters/2));
+  }
+
 
   /**
    * 
@@ -231,7 +236,7 @@ public class Drivebase extends SubsystemBase {
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
 
-    return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(-leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(-rightMasterMotor.getSelectedSensorVelocity()));
+    return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(rightMasterMotor.getSelectedSensorVelocity()));
   }
 
 
@@ -260,7 +265,7 @@ public class Drivebase extends SubsystemBase {
    */
   public void setDriveVolts(double leftVolts, double rightVolts){
 
-    rDrive.tankDrive(leftVolts/Constants.operatingVoltage, -rightVolts/Constants.operatingVoltage);
+    rDrive.tankDrive(leftVolts/Constants.operatingVoltage, rightVolts/Constants.operatingVoltage);
   }
 
 

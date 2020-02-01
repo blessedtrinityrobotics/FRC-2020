@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Drive;
-import frc.robot.commands.testAuto;
+
 import frc.robot.subsystems.Drivebase;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
@@ -32,7 +32,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Drivebase drivetrain = new Drivebase();
 
-  private final Command testAuto = new testAuto(drivetrain);
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -76,9 +75,6 @@ public class RobotContainer {
     drivetrain.setDefaultCommand( new Drive(drivetrain));     
     configureButtonBindings();   
     
-    autoChooser.setDefaultOption("Test auto", testAuto);
-    autoChooser.addOption("Test auto", testAuto);
-    Shuffleboard.getTab("Autonomous").add(autoChooser);
 
   }
 

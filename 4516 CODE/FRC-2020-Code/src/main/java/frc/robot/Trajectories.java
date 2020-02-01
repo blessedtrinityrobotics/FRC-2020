@@ -18,7 +18,7 @@ public class Trajectories {
     public static final Trajectory driveOff = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)) , 
         List.of(), 
-        new Pose2d(0.75, -0.375, new Rotation2d()), 
+        new Pose2d(3, -1.5, new Rotation2d(0)), 
         Constants.defaultConfig
     );
 
