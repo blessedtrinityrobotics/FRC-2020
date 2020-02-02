@@ -181,15 +181,11 @@ public class Drivebase extends SubsystemBase {
   }
 
 
-
- 
-
   /**
    * 
    * @param angle Angle to reset to
    * 
    */
-
   public void resetYaw(double angle){
     gyro.setYaw(angle);
     gyro.setFusedHeading(angle);
@@ -239,10 +235,6 @@ public class Drivebase extends SubsystemBase {
 
     return new DifferentialDriveWheelSpeeds(getSpeedMetersPerSec(-leftMasterMotor.getSelectedSensorVelocity()), getSpeedMetersPerSec(rightMasterMotor.getSelectedSensorVelocity()));
   }
-
-
- 
- 
 
 
   /**
@@ -296,16 +288,8 @@ public class Drivebase extends SubsystemBase {
    * @param direction Direction to drive straight; 1.0 is Forward, -1.0 is backwards
    *  
    */
-  
-  public void driveToAngle(double angle, double power){
-    for( int i = 0; i < 1; i++){
-      resetYaw(0);
-    }
-    gyro.getYawPitchRoll(ypr);
-    // Yaw = ypr[0]
-    // Pitch = ypr[1]
-    // Roll = ypr[2]
-    double currentAngle = ypr[0];
+  public void driveToAngle(double angle, double power){  
+    double currentAngle = getYaw();
     double targetAngle = angle;
     double speed = power;
     double kP = 0.0;
@@ -315,44 +299,32 @@ public class Drivebase extends SubsystemBase {
     double error = targetAngle - currentAngle;
     derivative = ((error - previousError)/0.02);
     double turnCommand = (error * kP) +  (derivative * kD);
+    tankDrive((speed - turnCommand), (speed + turnCommand));
     previousError = error;
-    leftMasterMotor.set(ControlMode.PercentOutput, (speed - turnCommand));
-    leftSlaveMotor.follow(leftMasterMotor);
-    rightMasterMotor.set(ControlMode.PercentOutput, (speed + turnCommand));
-    rightSlaveMotor.follow(rightMasterMotor);
+  }
+
+  public void turnToAngle(double angle){
+    double currentAngle = getYaw();
+    double targetAngle = angle;
+    double kP = 0.0;
+    double kD = 0.0;
+    double derivative = 0;
+    double previousError = 0;
+    double error = targetAngle - currentAngle;
+    derivative = ((error - previousError)/0.02);
+    double turnCommand = (error * kP) + (derivative * kD);
+    tankDrive(turnCommand, -turnCommand);
+    previousError = error;
+  }
+
 
   
 
-  }
-
-
-  /**
-   * 
-   * @return left encoder
-   */
-  public double getLeftEncoder(){
-    return leftMasterMotor.getSelectedSensorPosition(); 
-  }
-
-  /**
-   * 
-   * @return right encoder
-   */
-  public double getRightEncoder(){
-    return rightMasterMotor.getSelectedSensorPosition(); 
-  }
-
-  public double getLeftVelocity(){
-    return leftMasterMotor.getSelectedSensorVelocity();
-  }
-
-  public double getRightVelocity(){
-    return rightMasterMotor.getSelectedSensorVelocity();
-
-  }
-  
-
-
+/**
+ * 
+ * @param deltaX X distance from target
+ * 
+ */
   public void shooterRPM(double deltaX){
     double sensorVelocity = (Constants.CPR * (  Math.sqrt(
                                                     (2 * Constants.gInchSecondsSquared * Constants.outerPortHeightDelta) 
