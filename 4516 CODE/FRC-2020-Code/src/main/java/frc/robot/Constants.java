@@ -41,6 +41,11 @@ public final class Constants {
     public static final int pigeonIMUPort            = 6;
   //End of Pigeon IMU
 
+  // Pneumatic Ports
+    public static final int solenoidChlTwo = 1;
+    public static final int solenoidChlOne = 0;
+  // End of Pneumatic Ports
+
   // XboxController Ports
     public static final int driveControllerPort      = 0;
     public static final int operatorControllerPort   = 1;
@@ -150,6 +155,7 @@ public static final double gearRatioShooter     = 3.17;   // Gear Ratio
   public final static int PID_TURN    = 1;
   /* ---- Named slots, used to clarify code ---- */
   public final static int kSlot_Drive = 0;
+
 
 
 }

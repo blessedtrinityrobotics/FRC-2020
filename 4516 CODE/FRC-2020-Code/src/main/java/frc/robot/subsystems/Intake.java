@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -16,15 +18,15 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 public class Intake extends SubsystemBase {
 
   // Starts Drive Train GB Motors
-  public static VictorSPX leftIntake   = new VictorSPX(Constants.leftIntake);
-  public static VictorSPX rightIntake  = new VictorSPX(Constants.rightIntake);
+  private static VictorSPX leftIntake   = new VictorSPX(Constants.leftIntake);
+  private static VictorSPX rightIntake  = new VictorSPX(Constants.rightIntake);
+ // private Compressor cp26Compressor = new Compressor();
 
+  private DoubleSolenoid intakeSolenoid =  new DoubleSolenoid(Constants.solenoidChlTwo,Constants.solenoidChlOne );
 
 
   public Intake() {
-
-   
-   
+    intakeSolenoid.clearAllPCMStickyFaults();
   }
 
   @Override
@@ -32,9 +34,13 @@ public class Intake extends SubsystemBase {
       //comment
   }
 
+  public void intakeDown(){
+    intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
 
-
-
+  public void intakeUp(){
+    intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
   
 
 }
