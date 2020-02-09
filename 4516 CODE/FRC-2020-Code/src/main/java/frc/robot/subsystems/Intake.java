@@ -7,26 +7,32 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 
 
 public class Intake extends SubsystemBase {
 
-  // Starts Drive Train GB Motors
-  private static VictorSPX leftIntake   = new VictorSPX(Constants.leftIntake);
-  private static VictorSPX rightIntake  = new VictorSPX(Constants.rightIntake);
+  // Starts Intake Motors
+  private static VictorSPX leftIntake   = new VictorSPX(Constants.leftIntakePort);
+  private static VictorSPX rightIntake  = new VictorSPX(Constants.rightIntakePort);
  // private Compressor cp26Compressor = new Compressor();
 
-  private DoubleSolenoid intakeSolenoid =  new DoubleSolenoid(Constants.solenoidChlTwo,Constants.solenoidChlOne );
+  private DoubleSolenoid intakeSolenoid =  new DoubleSolenoid(Constants.solenoidChlTwo,Constants.solenoidChlOne);
 
 
   public Intake() {
     intakeSolenoid.clearAllPCMStickyFaults();
+    leftIntake.setInverted(false);
+    rightIntake.setInverted(true);
+    leftIntake.setNeutralMode(NeutralMode.Brake);
+    rightIntake.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
@@ -40,6 +46,21 @@ public class Intake extends SubsystemBase {
 
   public void intakeUp(){
     intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void setIntakeMotors(double speed){
+    leftIntake.set(ControlMode.PercentOutput, speed);
+    rightIntake.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void stopIntake(){
+    setIntakeMotors(0);
+    intakeUp();
+  }
+
+  public void startIntake(){
+    setIntakeMotors(0.75);
+    intakeDown();
   }
   
 

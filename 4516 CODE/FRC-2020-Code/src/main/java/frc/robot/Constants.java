@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
  */
 public final class Constants {
 
-    // Motor Ports
+  // Motor Ports
     // Left Drive Train GB Motors
     public static final int  leftMasterMotorPort     = 5;
     public static final int  leftSlaveMotor1Port     = 8;
@@ -31,10 +31,25 @@ public final class Constants {
     public static final int  rightSlaveMotor1Port    = 4;
     // Control Panel Motor
     public static final int controlPanelMotorPort    = 0;
-    //Intake Motors
-    public static final int leftIntake = 100;
-    public static final int rightIntake = 100; 
+    // Intake Motors
+    public static final int leftIntakePort           = 0;
+    public static final int rightIntakePort          = 0; 
+    // Conveyor Motors
+    public static final int leftSideMotorPort        = 0;
+    public static final int rightSideMotorPort       = 0;
+    public static final int centerMotorPort          = 0;
+    // Shooter Motors
+    public static final int shooter1MasterPort       = 0;
+    public static final int shooter1SlavePort        = 0;
+    public static final int shooter2MasterPort       = 0;
+    public static final int shooter2SlavePort        = 0;
   //End of Motor Ports
+
+  // Time of Flight Sensor Ports
+    public static final int checkPointOnePort        = 0;
+    public static final int checkPointRightPort      = 0;
+    public static final int checkPointLeftPort       = 0;
+  // End of ToF Sensor Ports
 
 
   // Pigeon IMU
@@ -155,6 +170,8 @@ public static final double gearRatioShooter     = 3.17;   // Gear Ratio
   public final static int PID_TURN    = 1;
   /* ---- Named slots, used to clarify code ---- */
   public final static int kSlot_Drive = 0;
+
+
 
 
 
