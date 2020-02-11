@@ -20,6 +20,7 @@ public class Intake extends SubsystemBase {
   // Starts Drive Train GB Motors
   private static VictorSPX leftIntake   = new VictorSPX(Constants.leftIntake);
   private static VictorSPX rightIntake  = new VictorSPX(Constants.rightIntake);
+ 
  // private Compressor cp26Compressor = new Compressor();
 
   private DoubleSolenoid intakeSolenoid =  new DoubleSolenoid(Constants.solenoidChlTwo,Constants.solenoidChlOne );
