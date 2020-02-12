@@ -18,6 +18,7 @@ public class Conveyor extends SubsystemBase {
     private static TimeOfFlight checkPointRight = new TimeOfFlight(Constants.checkPointRightPort);
     private static TimeOfFlight checkPointLeft  = new TimeOfFlight(Constants.checkPointLeftPort);
     private int ballsCount = 0;
+    private boolean s; 
     private boolean count = true;
 
 
@@ -67,6 +68,63 @@ public class Conveyor extends SubsystemBase {
         }
     }
 
+    public boolean checkOne(){
+        if(checkPointOne.getRange()>centerMotor.getSelectedSensorPosition())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean rightCheck(){
+        if(checkPointRight.getRange()>rightSideMotor.getSelectedSensorPosition())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean leftCheck(){
+        if(checkPointLeft.getRange()>leftSideMotor.getSelectedSensorPosition())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    public void conveyorActive(){
+        if(getBallCount()>2){
+            if(rightCheck()!=true){
+                rightActivate(.5);
+            }
+
+            else{
+                rightActivate(0);
+                s = true; 
+            }
+        }
+
+        if(s==true){
+            if(leftCheck()!=true){
+                leftActivate(.5);
+            }
+
+            else{
+                leftActivate(0);
+                s = false; 
+            }
+        }
+    }
 
     
 
