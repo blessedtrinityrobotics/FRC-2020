@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.IntakeUp;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -34,6 +35,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public Drivebase drivetrain = new Drivebase();
   public Intake intake = new Intake();
+  public Conveyor conveyor = new Conveyor();
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -94,7 +96,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
         
-    aButtonOperator.whenPressed(new IntakeDown(intake));
+    aButtonOperator.whenPressed(new IntakeDown(intake,conveyor));
     bButtonOperator.whenPressed(new IntakeUp(intake));
 
   }

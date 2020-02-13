@@ -9,30 +9,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
+import frc.robot.RobotContainer;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class IntakeDown extends CommandBase {
   private final Intake intake;
-  public boolean done = false;
+  private final Conveyor conveyor; 
+  
 
 
-  public IntakeDown(Intake subsystem) {
+  public IntakeDown(Intake subsystem, Conveyor conveyor1) {
     intake = subsystem;
     addRequirements(intake);
+    conveyor=conveyor1;
+    addRequirements(conveyor);
     
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    done = true;
-    Robot.m_robotContainer.intake.intakeDown();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    done = true;
+    Robot.m_robotContainer.intake.intakeDown();
+
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +49,6 @@ public class IntakeDown extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return done;
+    return false;
   }
 }

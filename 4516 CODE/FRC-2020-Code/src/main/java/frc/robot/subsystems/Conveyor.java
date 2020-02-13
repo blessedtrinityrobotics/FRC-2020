@@ -68,9 +68,6 @@ public class Conveyor extends SubsystemBase {
         }
     }
 
-    
-    
-   
     public void conveyorIntakeRun(){
         if(getBallCount()<2){
             if(isBallIn(checkPointRight)==false){
