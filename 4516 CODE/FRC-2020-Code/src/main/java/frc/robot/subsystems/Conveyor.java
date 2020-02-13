@@ -37,11 +37,13 @@ public class Conveyor extends SubsystemBase {
         //comment
     }
 
+    
+
     public void blinkRed(){
         ledMotor.set(Constants.red);
     }
 
-    public void blinkGreen(){
+    public void blinkBlue(){
         ledMotor.set(Constants.blue);
     }
 
@@ -103,7 +105,7 @@ public class Conveyor extends SubsystemBase {
                 leftActivate(0);
                 s = false; 
                 resetBallCount();
-                blinkGreen();
+                blinkBlue();
             }
         }
     }
