@@ -60,72 +60,46 @@ public class Conveyor extends SubsystemBase {
     }
         
    
-    public boolean isBallIn (){
-        if(checkPointOne.getRange() < 100 ){
+    public boolean isBallIn (TimeOfFlight sensor){
+        if(sensor.getRange() < 100 ){
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean checkOne(){
-        if(checkPointOne.getRange()>centerMotor.getSelectedSensorPosition())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public boolean rightCheck(){
-        if(checkPointRight.getRange()>rightSideMotor.getSelectedSensorPosition())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public boolean leftCheck(){
-        if(checkPointLeft.getRange()>leftSideMotor.getSelectedSensorPosition())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-
-    public void conveyorActive(){
-        if(getBallCount()>2){
-            if(rightCheck()!=true){
+    
+    
+   
+    public void conveyorIntakeRun(){
+        if(getBallCount()<2){
+            if(isBallIn(checkPointRight)==false){
                 rightActivate(.5);
-            }
-
-            else{
+            } else {
                 rightActivate(0);
                 s = true; 
             }
         }
 
         if(s==true){
-            if(leftCheck()!=true){
+            if(isBallIn(checkPointLeft)==false){
                 leftActivate(.5);
-            }
-
-            else{
+            } else {
                 leftActivate(0);
                 s = false; 
+                resetBallCount();
             }
         }
     }
+    
+    public void conveyorStop(){
+        leftActivate(0);
+        rightActivate(0);
+    }
 
+    public void resetBallCount(){
+        ballsCount = 0;
+    }
     
 
   
