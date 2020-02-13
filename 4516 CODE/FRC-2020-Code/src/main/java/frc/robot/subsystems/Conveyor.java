@@ -18,7 +18,7 @@ public class Conveyor extends SubsystemBase {
     private static TimeOfFlight checkPointRight = new TimeOfFlight(Constants.checkPointRightPort);
     private static TimeOfFlight checkPointLeft  = new TimeOfFlight(Constants.checkPointLeftPort);
     private int ballsCount = 0;
-    private boolean s; 
+    private boolean s = false; 
     private boolean count = true;
 
 
