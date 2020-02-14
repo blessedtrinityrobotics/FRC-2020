@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Drive;
-import frc.robot.commands.IntakeDown;
+import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
@@ -96,7 +96,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
         
-    aButtonOperator.whenPressed(new IntakeDown(intake,conveyor));
+    aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor));
     bButtonOperator.whenPressed(new IntakeUp(intake));
 
   }
@@ -104,85 +104,24 @@ public class RobotContainer {
 
   public Command getAutomousCommand(){
     
-
     if(autoChooser.getSelected().equals("rightDrive")){
-
       // shoot balls and drive off
       Command ramsete = generateRamseteCommand(Trajectories.driveRight);
-    /*
-      RamseteCommand driveOff = new RamseteCommand(
-        Trajectories.driveOff,
-        drivetrain::getPose, 
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
-        Constants.kDriveFF,
-        Constants.kDriveKinematics, 
-        drivetrain::getWheelSpeeds, 
-        new PIDController(Constants.kPDriveVel, 0, 0), 
-        new PIDController(Constants.kPDriveVel, 0, 0), 
-        drivetrain::setDriveVolts,  
-        drivetrain
-      );
-      */
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
 
     } else if(autoChooser.getSelected().equals("leftDrive")){
-
       // shoot balls and drive off
       // go to trench
       Command ramsete = generateRamseteCommand(Trajectories.driveLeft);
-      /*
-      RamseteCommand cm = new RamseteCommand(
-        Trajectories.driveOff,
-        drivetrain::getPose, 
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
-        Constants.kDriveFF,
-        Constants.kDriveKinematics, 
-        drivetrain::getWheelSpeeds, 
-        new PIDController(Constants.kPDriveVel, 0, 0), 
-        new PIDController(Constants.kPDriveVel, 0, 0), 
-        drivetrain::setDriveVolts,  
-        drivetrain
-      );
-      */
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
 
     } else {
-
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
-      /*
-      RamseteCommand driveOff = new RamseteCommand(
-        Trajectories.driveOff,
-        drivetrain::getPose, 
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
-        Constants.kDriveFF,
-        Constants.kDriveKinematics, 
-        drivetrain::getWheelSpeeds, 
-        new PIDController(Constants.kPDriveVel, 0, 0), 
-        new PIDController(Constants.kPDriveVel, 0, 0), 
-        drivetrain::setDriveVolts,  
-        drivetrain
-      );
-      */
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+      
     }  
 
-    /*
-    RamseteCommand ramseteCommand = new RamseteCommand(
-      trajectory,
-      drivetrain::getPose, 
-      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), 
-      Constants.kDriveFF,
-      Constants.kDriveKinematics, 
-      drivetrain::getWheelSpeeds, 
-      new PIDController(Constants.kPDriveVel, 0, 0), 
-      new PIDController(Constants.kPDriveVel, 0, 0), 
-      drivetrain::setDriveVolts,  
-      drivetrain
-    );
-
-    return ramseteCommand.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
-    */
   }
 
   /**

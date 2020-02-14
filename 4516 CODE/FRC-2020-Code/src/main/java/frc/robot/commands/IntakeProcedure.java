@@ -11,44 +11,43 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
-import frc.robot.RobotContainer;
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
-public class IntakeDown extends CommandBase {
+public class IntakeProcedure extends CommandBase {
   private final Intake intake;
   private final Conveyor conveyor; 
   
 
 
-  public IntakeDown(Intake subsystem, Conveyor conveyor1) {
-    intake = subsystem;
-    addRequirements(intake);
-    conveyor=conveyor1;
-    addRequirements(conveyor);
+  public IntakeProcedure(Intake subsystem1, Conveyor subsystem2) {
+    intake = subsystem1;  
+    conveyor = subsystem2;
+    addRequirements(conveyor, intake);
     
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.m_robotContainer.conveyor.initIntake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     Robot.m_robotContainer.intake.intakeDown();
+    Robot.m_robotContainer.conveyor.conveyorIntakeRun();
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.m_robotContainer.intake.intakeUp();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Robot.m_robotContainer.conveyor.isFinished();
   }
 }

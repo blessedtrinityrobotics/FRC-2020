@@ -39,7 +39,7 @@ public class Intake extends SubsystemBase {
 
     public void intakeDown(){
       intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
-      setIntakeMotors(.5);
+      setIntakeMotors(.75);
     }
 
     public void setIntakeMotors(double speed){

@@ -19,8 +19,8 @@ public class Drive extends CommandBase {
   private double rightTrigger;
   private double leftTrigger;
   private double leftStickX;
-  private double leftStickY;
-  private double rightStickY;
+  // private double leftStickY;
+  // private double rightStickY;
   private final Drivebase drivetrain;
 
 
@@ -43,8 +43,8 @@ public class Drive extends CommandBase {
     rightTrigger = Robot.m_robotContainer.getDriverRawAxis(Constants.rightTriggerAxis);
     leftTrigger  = Robot.m_robotContainer.getDriverRawAxis(Constants.leftTriggerAxis);
     leftStickX   = Robot.m_robotContainer.getDriverRawAxis(Constants.leftStickX);
-    rightStickY = Robot.m_robotContainer.getDriverRawAxis(Constants.rightStickY);
-    leftStickY = Robot.m_robotContainer.getDriverRawAxis(Constants.leftStickY);
+    // rightStickY = Robot.m_robotContainer.getDriverRawAxis(Constants.rightStickY);
+    // leftStickY = Robot.m_robotContainer.getDriverRawAxis(Constants.leftStickY);
   /*
     // Tank Drive Options
       // Regular Tank Drive

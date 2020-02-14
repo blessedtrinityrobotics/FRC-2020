@@ -100,10 +100,11 @@ public final class Constants {
   //End of Buttons
 
   //LEDMOTOR
-    public static final int ledMotorConstant  = 1;
-    public static final int red = 1375;
-    public static final int blue = 1425 ; 
-    public static final int rainbow = 1005;
+    public static final int ledMotorPort  = 1;
+    public static final double red = 0.61;
+    public static final double rainbow = -0.99;
+    public static final double green = 0.77;
+    public static final double black = 0.99 ;  
 
   /**
 	 * Set to zero to skip waiting for confirmation.

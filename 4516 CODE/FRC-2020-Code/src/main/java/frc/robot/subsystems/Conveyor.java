@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.playingwithfusion.TimeOfFlight;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,10 +20,11 @@ public class Conveyor extends SubsystemBase {
     private static TimeOfFlight checkPointOne   = new TimeOfFlight(Constants.checkPointOnePort);
     private static TimeOfFlight checkPointRight = new TimeOfFlight(Constants.checkPointRightPort);
     private static TimeOfFlight checkPointLeft  = new TimeOfFlight(Constants.checkPointLeftPort);
-    private static PWMSparkMax ledMotor         = new PWMSparkMax(Constants.ledMotorConstant);
+    private static PWMSparkMax ledMotor         = new PWMSparkMax(Constants.ledMotorPort);
     private int ballsCount = 0;
     private boolean s = false; 
     private boolean count = true;
+    private boolean isFinished = false;
 
 
     public Conveyor() {
@@ -30,6 +33,9 @@ public class Conveyor extends SubsystemBase {
         centerMotor.setNeutralMode(NeutralMode.Brake);
         leftSideMotor.setInverted(false);
         rightSideMotor.setInverted(true);
+        leftSideMotor.setNeutralMode(NeutralMode.Brake);
+        rightSideMotor.setNeutralMode(NeutralMode.Brake);
+        centerMotor.setNeutralMode(NeutralMode.Brake);
     }
   
     @Override
@@ -38,13 +44,14 @@ public class Conveyor extends SubsystemBase {
     }
 
     
-
-    public void blinkRed(){
+    public void LEDRed(){
+        SmartDashboard.putBoolean("Intake Complete?", false);
         ledMotor.set(Constants.red);
     }
 
-    public void blinkBlue(){
-        ledMotor.set(Constants.blue);
+    public void LEDGreen(){
+        SmartDashboard.putBoolean("Intake Complete?", true);
+        ledMotor.set(Constants.green);
     }
 
     public void blinkRainbow(){
@@ -53,17 +60,17 @@ public class Conveyor extends SubsystemBase {
 
 
     public void leftActivate(double speed){
-        leftSideMotor.set(ControlMode.PercentOutput, (speed/2));
-        centerMotor.set(ControlMode.PercentOutput, speed);
+        leftSideMotor.set(ControlMode.PercentOutput, (speed));
+        centerMotor.set(ControlMode.PercentOutput, speed/2);
     }
 
     public void rightActivate(double speed){
-        rightSideMotor.set(ControlMode.PercentOutput, (speed/2));
-        centerMotor.set(ControlMode.PercentOutput, -speed);
+        rightSideMotor.set(ControlMode.PercentOutput, (speed));
+        centerMotor.set(ControlMode.PercentOutput, (-speed/2));
     }
 
     public void countBalls(){
-        if(checkPointOne.getRange() < 100 && count){
+        if(checkPointOne.getRange() < 150 && count){
             ballsCount++;
             count = false;
         } else if(checkPointOne.getRange() > 150 ){
@@ -85,28 +92,39 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void conveyorIntakeRun(){
-        if(getBallCount()<2){
-            blinkRed();
-            if(isBallIn(checkPointRight)==false){
-                rightActivate(.5);
-                blinkRed();
-            } else {
+
+        if(ballsCount <= 2){ // Enter loop b/w 0 balls and 2 balls
+            LEDRed(); // TURN LED RED
+            if(isBallIn(checkPointRight) == true){ // Check if there is a ball right under shooter
                 rightActivate(0);
-                blinkRed();
                 s = true; 
+            } else { // No ball under shooter -> continue
+                if(isBallIn(checkPointOne) == true){ // check if there is ball on the first sensor
+                    rightActivate(0.75); // Run right intake when sensor detects ball
+                } else {
+                    rightActivate(0); // Stop when ball leaves the sensor
+                }
             }
+        } else { 
+            s = true; // Set flag variable to true after 2 balls have entered
         }
 
-        if(s==true){
-            if(isBallIn(checkPointLeft)==false){
-                leftActivate(.5);
-                blinkRed();
-            } else {
+        if(s==true && ballsCount <= 5){ // Flag set to true -> Switch conveyor sides
+            if(isBallIn(checkPointLeft) == true){ // Check if there is a ball right under shooter
                 leftActivate(0);
-                s = false; 
-                resetBallCount();
-                blinkBlue();
+                s = true; 
+                LEDGreen(); // TURN LED GREEN - INTAKE FINISHED
+            } else { // No ball under shooter -> continue
+                if(isBallIn(checkPointOne) == true){ // check if there is ball on the first sensor
+                    leftActivate(0.75); // Run right intake when sensor detects ball
+                } else {
+                    leftActivate(0); // Stop when ball leaves the sensor
+                }
             }
+        } else { // Intake finished -> reset all variables
+            s = false;
+            isFinished = true;
+            resetBallCount();
         }
     }
     
@@ -119,7 +137,13 @@ public class Conveyor extends SubsystemBase {
         ballsCount = 0;
     }
     
+    public boolean isFinished(){
+        return isFinished;
+    }
 
+    public void initIntake(){
+        isFinished = false;
+    }
   
 
   
