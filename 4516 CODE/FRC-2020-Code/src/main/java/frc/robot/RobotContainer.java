@@ -23,6 +23,7 @@ import frc.robot.commands.IntakeUp;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 /**
@@ -36,6 +37,7 @@ public class RobotContainer {
   public Drivebase drivetrain = new Drivebase();
   public Intake intake = new Intake();
   public Conveyor conveyor = new Conveyor();
+  public Limelight limelight = new Limelight();
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -119,7 +121,7 @@ public class RobotContainer {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
-      
+
     }  
 
   }

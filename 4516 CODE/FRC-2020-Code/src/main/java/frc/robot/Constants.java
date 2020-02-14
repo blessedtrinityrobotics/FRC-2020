@@ -100,11 +100,11 @@ public final class Constants {
   //End of Buttons
 
   //LEDMOTOR
-    public static final int ledMotorPort  = 1;
-    public static final double red = 0.61;
-    public static final double rainbow = -0.99;
-    public static final double green = 0.77;
-    public static final double black = 0.99 ;  
+    public static final int ledMotorPort    = 1;
+    public static final double red          = 0.61;
+    public static final double rainbow      = -0.99;
+    public static final double green        = 0.77;
+    public static final double black        = 0.99 ;  
 
   /**
 	 * Set to zero to skip waiting for confirmation.
@@ -155,6 +155,7 @@ public static final double outerPortHeightDelta = 74;     // Delta between outer
 public static final double launchAngle          = 40;     // Degrees of launch angle (from horizontal)
 public static final int shooterRadius           = 2;      // Shooter wheel radius in inches
 public static final double gearRatioShooter     = 3.17;   // Gear Ratio
+public static final double cameraAngle          = 40;     // Limelight Camera Angle
 
 
   /**
