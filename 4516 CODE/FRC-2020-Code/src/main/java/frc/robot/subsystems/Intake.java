@@ -26,20 +26,20 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intakeSolenoid.clearAllPCMStickyFaults();
-    leftIntake.setInverted(false);
-    rightIntake.setInverted(true);
+    leftIntake.setInverted(true);
+    rightIntake.setInverted(false);
     leftIntake.setNeutralMode(NeutralMode.Brake);
     rightIntake.setNeutralMode(NeutralMode.Brake);
   }
 
     public void intakeUp(){
-      intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+      intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
       setIntakeMotors(0);
     }
 
     public void intakeDown(){
-      intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
-      setIntakeMotors(.75);
+      intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+      setIntakeMotors(.5);
     }
 
     public void setIntakeMotors(double speed){
@@ -62,4 +62,5 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  
 }

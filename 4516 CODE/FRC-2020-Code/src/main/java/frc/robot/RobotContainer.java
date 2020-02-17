@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -20,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Drive;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
+import frc.robot.commands.LeftTest;
+import frc.robot.commands.RightTest;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
@@ -101,6 +104,8 @@ public class RobotContainer {
     aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor));
     bButtonOperator.whenPressed(new IntakeUp(intake));
 
+    xButtonOperator.whileHeld(new LeftTest(conveyor));
+    yButtonOperator.whileHeld(new RightTest(conveyor));
   }
 
 

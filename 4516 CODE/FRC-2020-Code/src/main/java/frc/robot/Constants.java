@@ -32,12 +32,12 @@ public final class Constants {
     // Control Panel Motor
     public static final int controlPanelMotorPort    = 0;
     // Intake Motors
-    public static final int leftIntakePort           = 0;
-    public static final int rightIntakePort          = 0; 
+    public static final int leftIntakePort           = 9;
+    public static final int rightIntakePort          = 10; 
     // Conveyor Motors
-    public static final int leftSideMotorPort        = 0;
-    public static final int rightSideMotorPort       = 0;
-    public static final int centerMotorPort          = 0;
+    public static final int leftSideMotorPort        = 3;
+    public static final int rightSideMotorPort       = 14;
+    public static final int centerMotorPort          = 15;
     // Shooter Motors
     public static final int shooter1MasterPort       = 0;
     public static final int shooter1SlavePort        = 0;

@@ -2,11 +2,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.playingwithfusion.TimeOfFlight;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,7 +14,7 @@ import frc.robot.Constants;
 public class Conveyor extends SubsystemBase {
 
     // Starts Conveyor Motors
-    private static VictorSPX leftSideMotor      = new VictorSPX(Constants.leftSideMotorPort);
+    private static TalonSRX leftSideMotor      = new TalonSRX(Constants.leftSideMotorPort);
     private static VictorSPX rightSideMotor     = new VictorSPX(Constants.rightSideMotorPort);
     private static VictorSPX centerMotor        = new VictorSPX(Constants.centerMotorPort);
     private static TimeOfFlight checkPointOne   = new TimeOfFlight(Constants.checkPointOnePort);
