@@ -25,6 +25,7 @@ public class Conveyor extends SubsystemBase {
     private boolean s = false; 
     private boolean count = true;
     private boolean isFinished = false;
+    private boolean check;
 
 
     public Conveyor() {
@@ -67,6 +68,7 @@ public class Conveyor extends SubsystemBase {
     public void rightActivate(double speed){
         rightSideMotor.set(ControlMode.PercentOutput, (speed));
         centerMotor.set(ControlMode.PercentOutput, (-speed/2));
+        leftSideMotor.set(ControlMode.PercentOutput, (speed/2));
     }
 
     public void countBalls(){
@@ -94,6 +96,7 @@ public class Conveyor extends SubsystemBase {
     public void conveyorIntakeRun(){
 
         if(ballsCount <= 2){ // Enter loop b/w 0 balls and 2 balls
+            checkSet(false);
             LEDRed(); // TURN LED RED
             if(isBallIn(checkPointRight) == true){ // Check if there is a ball right under shooter
                 rightActivate(0);
@@ -125,6 +128,28 @@ public class Conveyor extends SubsystemBase {
             s = false;
             isFinished = true;
             resetBallCount();
+            checkSet(true);
+        }
+        
+    }
+
+    public void checkSet(boolean a){
+        check = a;
+    }
+
+    public void conveyorShoot(){
+        if(check==true&& (ballsCount>3)){
+            if(isBallIn(checkPointOne)){
+                leftActivate(-.5);
+            }
+
+            else if(check=true && (ballsCount>0)){
+                rightActivate(-.5);
+            }
+
+            else{
+                conveyorIntakeRun();
+            }
         }
     }
     
@@ -143,6 +168,10 @@ public class Conveyor extends SubsystemBase {
 
     public void initIntake(){
         isFinished = false;
+    }
+
+    public void conveyorShooterRun(){
+
     }
   
 

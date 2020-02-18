@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -22,7 +24,6 @@ public class Intake extends SubsystemBase {
   private static VictorSPX leftIntake   = new VictorSPX(Constants.leftIntakePort);
   private static VictorSPX rightIntake  = new VictorSPX(Constants.rightIntakePort);
   private DoubleSolenoid intakeSolenoid =  new DoubleSolenoid(Constants.solenoidChlTwo,Constants.solenoidChlOne);
-
 
   public Intake() {
     intakeSolenoid.clearAllPCMStickyFaults();
@@ -37,9 +38,10 @@ public class Intake extends SubsystemBase {
       setIntakeMotors(0);
     }
 
-    public void intakeDown(){
+
+    public void intakeDown(double speed){
       intakeSolenoid.set(DoubleSolenoid.Value.kForward);
-      setIntakeMotors(.5);
+      setIntakeMotors(speed);
     }
 
     public void setIntakeMotors(double speed){
@@ -54,7 +56,7 @@ public class Intake extends SubsystemBase {
   
     public void startIntake(){
       setIntakeMotors(0.75);
-      intakeDown();
+      //intakeDown();
     }
 
 

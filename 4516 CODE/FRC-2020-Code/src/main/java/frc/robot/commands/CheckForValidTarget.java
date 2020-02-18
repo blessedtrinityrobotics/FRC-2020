@@ -41,3 +41,4 @@ public class CheckForValidTarget extends CommandBase {
     return false;
   }
 }
+

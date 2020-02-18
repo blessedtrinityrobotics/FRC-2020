@@ -98,7 +98,7 @@ public class Drivebase extends SubsystemBase {
   @Override
   public void periodic() {
     driveOdometry.update(Rotation2d.fromDegrees(getYaw()), getWheelDistanceMeters(-leftMasterMotor.getSelectedSensorPosition()), getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
-    System.out.println(driveOdometry.getPoseMeters().toString());
+    //System.out.println(driveOdometry.getPoseMeters().toString());
   }
 
 

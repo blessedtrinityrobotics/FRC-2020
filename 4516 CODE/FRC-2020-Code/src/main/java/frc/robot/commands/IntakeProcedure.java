@@ -8,13 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 
 public class IntakeProcedure extends CommandBase {
   private final Intake intake;
-  private final Conveyor conveyor; 
+  private final Conveyor conveyor;
+  private double leftStickY;
+ 
   
 
 
@@ -34,8 +37,10 @@ public class IntakeProcedure extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.m_robotContainer.intake.intakeDown();
-    Robot.m_robotContainer.conveyor.conveyorIntakeRun();
+    //leftStickY =  Robot.m_robotContainer.getOperatorRawAxis(Constants.leftStickY);
+    Robot.m_robotContainer.intake.intakeDown(0.5);
+    //Robot.m_robotContainer.conveyor.conveyorIntakeRun();
+    Robot.m_robotContainer.conveyor.rightActivate(0.25);
 
   }
 
@@ -43,6 +48,7 @@ public class IntakeProcedure extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     Robot.m_robotContainer.intake.intakeUp();
+    Robot.m_robotContainer.conveyor.rightActivate(0);
   }
 
   // Returns true when the command should end.
