@@ -26,20 +26,20 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 public class Drivebase extends SubsystemBase {
 
   // Starts Drive Train GB Motors
-  public static WPI_TalonFX leftMasterMotor   = new WPI_TalonFX(Constants.leftMasterMotorPort);
-  public static WPI_TalonFX leftSlaveMotor    = new WPI_TalonFX(Constants.leftSlaveMotor1Port);
-  public static WPI_TalonFX rightMasterMotor  = new WPI_TalonFX(Constants.rightMasterMotorPort);
-  public static WPI_TalonFX rightSlaveMotor   = new WPI_TalonFX(Constants.rightSlaveMotor1Port);
-  public static TalonSRX pigeonTalon          = new TalonSRX(Constants.pigeonIMUPort);
-  SpeedControllerGroup leftMotors = new SpeedControllerGroup(leftMasterMotor, leftSlaveMotor);
-  SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
+  private static WPI_TalonFX leftMasterMotor   = new WPI_TalonFX(Constants.leftMasterMotorPort);
+  private static WPI_TalonFX leftSlaveMotor    = new WPI_TalonFX(Constants.leftSlaveMotor1Port);
+  private static WPI_TalonFX rightMasterMotor  = new WPI_TalonFX(Constants.rightMasterMotorPort);
+  private static WPI_TalonFX rightSlaveMotor   = new WPI_TalonFX(Constants.rightSlaveMotor1Port);
+  private static TalonSRX pigeonTalon          = new TalonSRX(Constants.pigeonIMUPort);
+  private SpeedControllerGroup leftMotors = new SpeedControllerGroup(leftMasterMotor, leftSlaveMotor);
+  private SpeedControllerGroup rightMotors = new SpeedControllerGroup(rightMasterMotor, rightSlaveMotor);
 
 
-  public DifferentialDrive rDrive; 
-  public DifferentialDriveOdometry driveOdometry;
-  public Pose2d pose;
+  private DifferentialDrive rDrive; 
+  private DifferentialDriveOdometry driveOdometry;
+  private Pose2d pose;
 
-  public PigeonIMU gyro;
+  private PigeonIMU gyro;
 
   double [] ypr  = new double[3];
 

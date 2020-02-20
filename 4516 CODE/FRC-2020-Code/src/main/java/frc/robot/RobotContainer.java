@@ -104,8 +104,6 @@ public class RobotContainer {
     aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor));
     bButtonOperator.whenPressed(new IntakeUp(intake));
 
-    xButtonOperator.whileHeld(new LeftTest(conveyor));
-    yButtonOperator.whileHeld(new RightTest(conveyor));
   }
 
 
@@ -128,7 +126,6 @@ public class RobotContainer {
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
 
     }  
-
   }
 
   /**

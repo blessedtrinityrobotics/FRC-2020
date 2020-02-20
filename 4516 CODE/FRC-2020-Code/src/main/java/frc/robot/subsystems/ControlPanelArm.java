@@ -19,9 +19,10 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public class ControlPanelArm extends SubsystemBase {
 
-  public VictorSPX controlPanelMotor = new VictorSPX(Constants.controlPanelMotorPort);
-  public final I2C.Port i2cPort = I2C.Port.kOnboard;
-  public final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+  private final VictorSPX controlPanelMotor = new VictorSPX(Constants.controlPanelMotorPort);
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+
   
 
 

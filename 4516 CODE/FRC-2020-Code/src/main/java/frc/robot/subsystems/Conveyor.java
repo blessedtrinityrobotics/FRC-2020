@@ -63,6 +63,7 @@ public class Conveyor extends SubsystemBase {
     public void leftActivate(double speed){
         leftSideMotor.set(ControlMode.PercentOutput, (speed));
         centerMotor.set(ControlMode.PercentOutput, speed/2);
+        rightSideMotor.set(ControlMode.PercentOutput, (speed/2));
     }
 
     public void rightActivate(double speed){
