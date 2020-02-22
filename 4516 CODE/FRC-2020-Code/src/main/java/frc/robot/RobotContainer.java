@@ -23,6 +23,7 @@ import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
 import frc.robot.commands.LeftTest;
 import frc.robot.commands.RightTest;
+import frc.robot.commands.ShootingS;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
@@ -43,6 +44,7 @@ public class RobotContainer {
   public Conveyor conveyor = new Conveyor();
   public Limelight limelight = new Limelight();
   public Shooter shooter = new Shooter();
+  public ShootingS shoots = new ShootingS();
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -91,6 +93,7 @@ public class RobotContainer {
     autoChooser.addOption("Drive Left", "leftDrive");
     autoChooser.setDefaultOption("Drive Forward", "driveOff");
     autoChooser.addOption("Drive Right", "rightDrive");
+    autoChooser.addOption("David Drive", "davieDrive");
     Shuffleboard.getTab("Autonomous").add(autoChooser);
 
   }
@@ -123,6 +126,7 @@ public class RobotContainer {
       // go to trench
       Command ramsete = generateRamseteCommand(Trajectories.driveLeft);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+      
 
     } else {
       // drive off the line
