@@ -10,33 +10,35 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 public class ShootRight extends CommandBase {
-  private final Conveyor conveyor; 
   private final Shooter shooter; 
-  
-  public ShootRight(Conveyor subsystem, Shooter subsystem1) {
+  private double distance;
+  public ShootRight(Shooter subsystem ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    conveyor = subsystem;
-    shooter = subsystem1;
-    addRequirements(conveyor, shooter);
+    shooter = subsystem;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    distance = Robot.m_robotContainer.limelight.getDistance();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    shooter.shooterRPM(distance);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooter.setMotorSpeed(0);
   }
 
   // Returns true when the command should end.
