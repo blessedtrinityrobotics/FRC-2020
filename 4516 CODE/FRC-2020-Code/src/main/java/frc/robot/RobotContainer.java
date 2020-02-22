@@ -29,6 +29,7 @@ import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
+import frc.robot.commands.ShootingS;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 /**
@@ -106,8 +107,14 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
         
+    //Intake Commands 
     aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor));
     bButtonOperator.whenPressed(new IntakeUp(intake));
+
+    //Shooting Commands 
+    xButtonOperator.whenPressed(new ShootingS());
+
+
 
     
 
