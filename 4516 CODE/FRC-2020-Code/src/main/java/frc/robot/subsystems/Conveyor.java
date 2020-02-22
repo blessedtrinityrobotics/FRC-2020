@@ -22,6 +22,10 @@ public class Conveyor extends SubsystemBase {
     private static TimeOfFlight checkPointLeft  = new TimeOfFlight(Constants.checkPointLeftPort);
     private static PWMSparkMax ledMotor         = new PWMSparkMax(Constants.ledMotorPort);
     private int ballsCount = 0;
+    private int rightBallCount;
+    private int leftBallCount; 
+    private boolean countL = true;
+    private boolean countR = true; 
     private boolean s = false; 
     private boolean count = true;
     private boolean isFinished = false;
@@ -78,6 +82,24 @@ public class Conveyor extends SubsystemBase {
             count = false;
         } else if(checkPointOne.getRange() > 150 ){
             count = true;
+        }
+    }
+
+    public void countLeftB(){
+        if(checkPointLeft.getRange() < 50 && countL){
+            leftBallCount++;
+            countL = false;
+        } else if(checkPointLeft.getRange() > 50){
+            countL = true;
+        }
+    }
+
+    public void countRight(){
+        if(checkPointRight.getRange() < 50 && countL){
+            rightBallCount++;
+            countR = false;
+        } else if(checkPointRight.getRange() > 50){
+            countR = true;
         }
     }
 
@@ -138,19 +160,21 @@ public class Conveyor extends SubsystemBase {
         check = a;
     }
 
-    public void conveyorShoot(){
-        if(check==true&& (ballsCount>3)){
-            if(isBallIn(checkPointOne)){
-                leftActivate(-.5);
-            }
+    public boolean leftStatus(){
+        if(leftBallCount >= 3){
+            return true; 
+        }
+        else {
+            return false; 
+        }
+    }
 
-            else if(check=true && (ballsCount>0)){
-                rightActivate(-.5);
-            }
-
-            else{
-                conveyorIntakeRun();
-            }
+    public boolean rightStatus(){
+        if(rightBallCount >= 2){
+            return true;
+        }
+        else{
+            return false;
         }
     }
     

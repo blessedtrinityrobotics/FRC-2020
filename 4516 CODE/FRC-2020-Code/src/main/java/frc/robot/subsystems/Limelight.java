@@ -36,7 +36,7 @@ public class Limelight extends SubsystemBase {
    * This function implements a simple method of generating driving and steering commands
    * based on the tracking data from a limelight camera.
   */
-  public void approachTargetWithVision() {
+  public void approachTargetWithVision(double xTarget) {
     final double STEER_P = 0.0;                    
     final double DRIVE_P = 0.0;    
     final double STEER_D = 0.0;                 
@@ -49,7 +49,7 @@ public class Limelight extends SubsystemBase {
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    xError = tx;
+    xError = xTarget - tx;
     distance = (Constants.outerPortHeightDelta)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
     distanceError = (targetDistance - distance);
     STEER_DERIVATIVE = (xError - STEER_ERROR_PRIOR)/0.02;
@@ -129,6 +129,15 @@ public class Limelight extends SubsystemBase {
   public boolean LEDStatus(){
     return LEDStatus;
   }
+
+  public double getDistance(){
+    double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    double distance = (Constants.outerPortHeightDelta)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
+
+    return distance;
+  }
+
+  
 
   
 

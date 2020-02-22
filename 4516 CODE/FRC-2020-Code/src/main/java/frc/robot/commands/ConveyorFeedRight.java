@@ -8,16 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
-public class ShootingProcedure extends CommandBase {
-  private final Shooter shooter;
+public class ConveyorFeedRight extends CommandBase {
   private final Conveyor conveyor; 
-  public ShootingProcedure(Shooter subsystem1, Conveyor subsystem2) {
-    shooter = subsystem1;  
+  public ConveyorFeedRight(Conveyor subsystem2) {
     conveyor = subsystem2;
-    addRequirements(conveyor, shooter);
+    addRequirements(conveyor);
   }
 
   // Called when the command is initially scheduled.
@@ -29,6 +29,8 @@ public class ShootingProcedure extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Robot.m_robotContainer.conveyor.rightActivate(.5);
+
   }
 
   // Called once the command ends or is interrupted.
@@ -39,6 +41,6 @@ public class ShootingProcedure extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Robot.m_robotContainer.conveyor.rightStatus();
   }
 }

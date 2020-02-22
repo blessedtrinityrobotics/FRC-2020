@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -27,6 +26,7 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 /**
@@ -41,6 +41,7 @@ public class RobotContainer {
   public Intake intake = new Intake();
   public Conveyor conveyor = new Conveyor();
   public Limelight limelight = new Limelight();
+  public Shooter shooter = new Shooter();
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -126,6 +127,7 @@ public class RobotContainer {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+
 
     }  
   }
