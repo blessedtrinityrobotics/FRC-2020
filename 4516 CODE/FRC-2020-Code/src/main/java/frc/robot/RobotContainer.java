@@ -45,7 +45,7 @@ public class RobotContainer {
   public Conveyor conveyor = new Conveyor();
   public Limelight limelight = new Limelight();
   public Shooter shooter = new Shooter();
-  public ShootingS shoots = new ShootingS();
+  public ShootingS shootseq = new ShootingS();
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -124,18 +124,22 @@ public class RobotContainer {
   public Command getAutomousCommand(){
     
     if(autoChooser.getSelected().equals("rightDrive")){
-      // shoot balls and drive off
+      //Shoot balls and drive off
+      new ShootingS();   
+      //Follow Trajectories 
       Command ramsete = generateRamseteCommand(Trajectories.driveRight);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
 
     } else if(autoChooser.getSelected().equals("leftDrive")){
-      // shoot balls and drive off
-      // go to trench
+      //Shoot balls and drive off
+      new ShootingS();
+      //Follow Trajectories
       Command ramsete = generateRamseteCommand(Trajectories.driveLeft);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
-      
-
+  
     } else {
+      //Shoot 
+      new ShootingS();
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
