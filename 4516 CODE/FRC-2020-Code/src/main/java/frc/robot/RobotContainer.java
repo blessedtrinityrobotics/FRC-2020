@@ -29,7 +29,6 @@ import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
-import frc.robot.commands.ShootingS;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 /**
@@ -45,7 +44,6 @@ public class RobotContainer {
   public Conveyor conveyor = new Conveyor();
   public Limelight limelight = new Limelight();
   public Shooter shooter = new Shooter();
-  public ShootingS shootseq = new ShootingS();
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -91,10 +89,12 @@ public class RobotContainer {
     drivetrain.setDefaultCommand( new Drive(drivetrain));     
     configureButtonBindings();   
     
-    autoChooser.addOption("Drive Left", "leftDrive");
-    autoChooser.setDefaultOption("Drive Forward", "driveOff");
-    autoChooser.addOption("Drive Right", "rightDrive");
-    autoChooser.addOption("David Drive", "davieDrive");
+    autoChooser.addOption("Drive Off Left", "leftDrive");
+    autoChooser.addOption("Shoot Right Drive", "RshootDrive");
+    autoChooser.addOption("Drive Middle Shoot", "DriveMShoot");
+    autoChooser.addOption("Drive Off Right", "rightDrive");
+    autoChooser.setDefaultOption("Drive Off Forward", "driveOff");
+    //autoChooser.addOption("David Drive", "davieDrive");
     Shuffleboard.getTab("Autonomous").add(autoChooser);
 
   }
@@ -112,7 +112,7 @@ public class RobotContainer {
     bButtonOperator.whenPressed(new IntakeUp(intake));
 
     //Shooting Commands 
-    xButtonOperator.whenPressed(new ShootingS());
+    //xButtonOperator.whenPressed(new ShootingS());
 
 
 
@@ -124,22 +124,23 @@ public class RobotContainer {
   public Command getAutomousCommand(){
     
     if(autoChooser.getSelected().equals("rightDrive")){
-      //Shoot balls and drive off
-      new ShootingS();   
       //Follow Trajectories 
       Command ramsete = generateRamseteCommand(Trajectories.driveRight);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
 
     } else if(autoChooser.getSelected().equals("leftDrive")){
-      //Shoot balls and drive off
-      new ShootingS();
       //Follow Trajectories
       Command ramsete = generateRamseteCommand(Trajectories.driveLeft);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
   
-    } else {
-      //Shoot 
-      new ShootingS();
+    } else if(autoChooser.getSelected().equals("RshootDrive")){
+      // robot on right side and shoot then drive off
+      Command ramsete = generateRamseteCommand(Trajectories.driveOff);
+      Command shoot = new ShootingS();
+      return shoot.andThen(ramsete);
+
+    } 
+    else {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);

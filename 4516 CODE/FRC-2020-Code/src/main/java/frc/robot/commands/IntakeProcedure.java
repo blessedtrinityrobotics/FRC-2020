@@ -8,7 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+//import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
@@ -16,7 +16,7 @@ import frc.robot.subsystems.Intake;
 public class IntakeProcedure extends CommandBase {
   private final Intake intake;
   private final Conveyor conveyor;
-  private double leftStickY;
+  //private double leftStickY;
  
   
 

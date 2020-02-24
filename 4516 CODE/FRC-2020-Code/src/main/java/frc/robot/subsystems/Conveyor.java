@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.playingwithfusion.TimeOfFlight;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,22 +15,20 @@ import frc.robot.Constants;
 public class Conveyor extends SubsystemBase {
 
     // Starts Conveyor Motors
-    private static TalonSRX leftSideMotor      = new TalonSRX(Constants.leftSideMotorPort);
+    private static TalonSRX leftSideMotor       = new TalonSRX(Constants.leftSideMotorPort);
     private static VictorSPX rightSideMotor     = new VictorSPX(Constants.rightSideMotorPort);
     private static VictorSPX centerMotor        = new VictorSPX(Constants.centerMotorPort);
     private static TimeOfFlight checkPointOne   = new TimeOfFlight(Constants.checkPointOnePort);
     private static TimeOfFlight checkPointRight = new TimeOfFlight(Constants.checkPointRightPort);
     private static TimeOfFlight checkPointLeft  = new TimeOfFlight(Constants.checkPointLeftPort);
     private static PWMSparkMax ledMotor         = new PWMSparkMax(Constants.ledMotorPort);
-    private int ballsCount = 0;
-    private int rightBallCount;
-    private int leftBallCount; 
-    private boolean countL = true;
-    private boolean countR = true; 
-    private boolean s = false; 
-    private boolean count = true;
-    private boolean isFinished = false;
-    private boolean check;
+    private int genericCount        = 0;
+    private int ballsCount          = 0;
+    private int rightBallCount      = 0;
+    private int leftBallCount       = 0; 
+    private boolean flag            = true;
+    private boolean s               = false; 
+    private boolean isFinished      = false;
 
 
     public Conveyor() {
@@ -76,35 +75,30 @@ public class Conveyor extends SubsystemBase {
         leftSideMotor.set(ControlMode.PercentOutput, (speed/2));
     }
 
-    public void countBalls(){
-        if(checkPointOne.getRange() < 150 && count){
-            ballsCount++;
-            count = false;
-        } else if(checkPointOne.getRange() > 150 ){
-            count = true;
+    /**
+     * 
+     * @param speed Speed to run conveyor at
+     * @param time Time to run in seconds
+     */
+    public void rightActivateTime(double speed, long time){
+        Timer.delay(time);
+        rightActivate(speed);
+    }
+
+    public void countBalls(TimeOfFlight sensor, int ballCount){
+        if(sensor.getRange() < 50 && flag){
+            genericCount++;
+            flag = false;
+            ballCount = genericCount;
+        } else if(sensor.getRange() > 50 ){
+            flag = true;
         }
     }
 
-    public void countLeftB(){
-        if(checkPointLeft.getRange() < 50 && countL){
-            leftBallCount++;
-            countL = false;
-        } else if(checkPointLeft.getRange() > 50){
-            countL = true;
-        }
-    }
 
-    public void countRight(){
-        if(checkPointRight.getRange() < 50 && countL){
-            rightBallCount++;
-            countR = false;
-        } else if(checkPointRight.getRange() > 50){
-            countR = true;
-        }
-    }
 
-    public int getBallCount(){
-        return ballsCount;
+    public int getBallCount(int ballCount){
+        return ballCount;
     }
         
    
@@ -117,9 +111,8 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void conveyorIntakeRun(){
-
+        countBalls(checkPointOne, ballsCount); // count balls everytime loop runs
         if(ballsCount <= 2){ // Enter loop b/w 0 balls and 2 balls
-            checkSet(false);
             LEDRed(); // TURN LED RED
             if(isBallIn(checkPointRight) == true){ // Check if there is a ball right under shooter
                 rightActivate(0);
@@ -151,16 +144,13 @@ public class Conveyor extends SubsystemBase {
             s = false;
             isFinished = true;
             resetBallCount();
-            checkSet(true);
         }
         
     }
 
-    public void checkSet(boolean a){
-        check = a;
-    }
-
+ 
     public boolean leftStatus(){
+        countBalls(checkPointLeft, leftBallCount);
         if(leftBallCount >= 3){
             return true; 
         }
@@ -170,6 +160,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public boolean rightStatus(){
+        countBalls(checkPointRight, rightBallCount);
         if(rightBallCount >= 2){
             return true;
         }

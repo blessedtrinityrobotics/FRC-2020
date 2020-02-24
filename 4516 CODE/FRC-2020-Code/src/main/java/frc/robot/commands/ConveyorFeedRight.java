@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
 
 public class ConveyorFeedRight extends CommandBase {
   private final Conveyor conveyor; 

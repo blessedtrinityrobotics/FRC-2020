@@ -9,8 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 public class ShootRight extends CommandBase {

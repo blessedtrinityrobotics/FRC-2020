@@ -8,14 +8,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
 public class StopShooting extends CommandBase {
   private final Shooter shooter;
+  private final Conveyor conveyor;
   
-  public StopShooting(Shooter subsystem) {
+  public StopShooting(Shooter subsystem, Conveyor subsystem1) {
     shooter = subsystem;  
-    addRequirements(shooter);
+    conveyor = subsystem1;
+    addRequirements(shooter, conveyor);
   }
 
   // Called when the command is initially scheduled.
@@ -26,6 +29,10 @@ public class StopShooting extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    shooter.setMotorSpeed(0);
+    conveyor.leftActivate(0);
+    conveyor.rightActivate(0);
+    
   }
 
   // Called once the command ends or is interrupted.

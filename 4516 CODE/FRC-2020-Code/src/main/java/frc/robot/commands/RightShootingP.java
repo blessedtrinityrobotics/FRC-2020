@@ -20,6 +20,6 @@ public class RightShootingP extends ParallelRaceGroup {
   public RightShootingP() {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new ShootRight(Robot.m_robotContainer.shooter), new ConveyorFeedRight(Robot.m_robotContainer.conveyor));
+    super(new ShootRight(Robot.m_robotContainer.shooter), new ConveyorFeedRight(Robot.m_robotContainer.conveyor) );
   }
 }

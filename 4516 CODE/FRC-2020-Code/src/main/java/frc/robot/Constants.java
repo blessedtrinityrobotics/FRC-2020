@@ -150,12 +150,15 @@ public final class Constants {
 
 
 // Shooter Constants
-public static final double gInchSecondsSquared  = 389.09; // Gravity in inches per second per second (Positive as negative cancel out later)
-public static final double outerPortHeightDelta = 74;     // Delta between outer port and center of shooter
-public static final double launchAngle          = 40;     // Degrees of launch angle (from horizontal)
-public static final int shooterRadius           = 2;      // Shooter wheel radius in inches
-public static final double gearRatioShooter     = 3.17;   // Gear Ratio
-public static final double cameraAngle          = 40;     // Limelight Camera Angle
+public static final double gInchSecondsSquared   = 389.09; // Gravity in inches per second per second (Positive as negative cancel out later)
+public static final double outerPortHeightDelta  = 74;     // Delta between outer port and center of shooter
+public static final double launchAngle           = 40;     // Degrees of launch angle (from horizontal)
+public static final int shooterRadius            = 2;      // Shooter wheel radius in inches
+public static final double gearRatioShooter      = 3.17;   // Gear Ratio
+public static final double cameraAngle           = 40;     // Limelight Camera Angle
+public static final double leftShooterXDistance  = 1;      // Shooter limelight x distance for left shooter side
+public static final double rightShooterXDistance = -1;     // // Shooter limelight x distance for right shooter side 
+
 
 
   /**

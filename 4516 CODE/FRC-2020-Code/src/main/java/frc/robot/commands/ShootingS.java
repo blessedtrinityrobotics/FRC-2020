@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Robot;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -19,6 +20,6 @@ public class ShootingS extends SequentialCommandGroup {
   public ShootingS() { 
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new LeftShootingP(), new RightShootingP());
+    super(new AlignLeft(Robot.m_robotContainer.drivetrain, Robot.m_robotContainer.limelight), new LeftShootingP(), new AlignRight(Robot.m_robotContainer.drivetrain, Robot.m_robotContainer.limelight), new RightShootingP());
   }
 }
