@@ -46,14 +46,14 @@ public final class Constants {
   //End of Motor Ports
 
   // Time of Flight Sensor Ports
-    public static final int checkPointOnePort        = 0;
-    public static final int checkPointRightPort      = 0;
-    public static final int checkPointLeftPort       = 0;
+    public static final int checkPointOnePort        = 16;
+    public static final int checkPointRightPort      = 18;
+    public static final int checkPointLeftPort       = 17;
   // End of ToF Sensor Ports
 
 
   // Pigeon IMU
-    public static final int pigeonIMUPort            = 6;
+    public static final int pigeonIMUPort            = 3;
   //End of Pigeon IMU
 
   // Pneumatic Ports

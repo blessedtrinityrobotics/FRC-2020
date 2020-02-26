@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.playingwithfusion.TimeOfFlight;
+import com.playingwithfusion.TimeOfFlight.RangingMode;
 
 import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj.Timer;
@@ -40,6 +41,9 @@ public class Conveyor extends SubsystemBase {
         leftSideMotor.setNeutralMode(NeutralMode.Brake);
         rightSideMotor.setNeutralMode(NeutralMode.Brake);
         centerMotor.setNeutralMode(NeutralMode.Brake);
+        checkPointOne.setRangingMode(RangingMode.Short, 24);
+        checkPointRight.setRangingMode(RangingMode.Short, 24);
+        checkPointLeft.setRangingMode(RangingMode.Short, 24);
     }
   
     @Override
@@ -103,7 +107,7 @@ public class Conveyor extends SubsystemBase {
         
    
     public boolean isBallIn (TimeOfFlight sensor){
-        if(sensor.getRange() < 100 ){
+        if(sensor.getRange() < 150 ){
             return true;
         } else {
             return false;
@@ -148,6 +152,14 @@ public class Conveyor extends SubsystemBase {
         
     }
 
+    public void printTOFValues(){
+        SmartDashboard.putBoolean("Time Of Flight Value Right Side ", isBallIn(checkPointRight));
+        
+        SmartDashboard.putBoolean("Time Of Flight Value Left Side ", isBallIn(checkPointLeft));
+        
+        SmartDashboard.putBoolean("Time Of Flight Value Intake Side ",isBallIn(checkPointOne));
+    }
+
  
     public boolean leftStatus(){
         countBalls(checkPointLeft, leftBallCount);
@@ -156,6 +168,19 @@ public class Conveyor extends SubsystemBase {
         }
         else {
             return false; 
+        }
+    }
+
+    public void runWithSensor(){
+        if(isBallIn(checkPointLeft)){
+            rightActivate(0);
+        } else {
+            if(isBallIn(checkPointOne)){
+                rightActivate(0.375);
+            } else {
+                rightActivate(0);
+                leftActivate(0);
+            }
         }
     }
 

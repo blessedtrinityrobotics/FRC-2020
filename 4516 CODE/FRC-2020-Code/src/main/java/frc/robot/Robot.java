@@ -34,7 +34,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     m_robotContainer.drivetrain.resetYaw(0);
-    
   }
 
   /**
@@ -55,6 +54,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.drivetrain.rightDistanceTraveled();
     m_robotContainer.drivetrain.leftSpeed();
     m_robotContainer.drivetrain.rightSpeed();
+    m_robotContainer.conveyor.printTOFValues();
     SmartDashboard.putNumber("Yaw", m_robotContainer.drivetrain.getYaw());
   }
 
@@ -81,7 +81,6 @@ public class Robot extends TimedRobot {
     if(m_autonomousCommand != null){
       m_autonomousCommand.schedule();
     }
-
   }
 
   /**
@@ -89,7 +88,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-
   }
 
   @Override
@@ -112,16 +110,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     
-
-
-//
   }
 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-
   }
 
   /**

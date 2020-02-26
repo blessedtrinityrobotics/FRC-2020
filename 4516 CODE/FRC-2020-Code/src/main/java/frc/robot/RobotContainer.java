@@ -113,14 +113,7 @@ public class RobotContainer {
 
     //Shooting Commands 
     //xButtonOperator.whenPressed(new ShootingS());
-
-
-
-    
-
   }
-
-
   public Command getAutomousCommand(){
     
     if(autoChooser.getSelected().equals("rightDrive")){
@@ -138,14 +131,10 @@ public class RobotContainer {
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       Command shoot = new ShootingS();
       return shoot.andThen(ramsete);
-
-    } 
-    else {
+    } else {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
-
-
     }  
   }
 
@@ -192,7 +181,6 @@ public class RobotContainer {
       drivetrain::setDriveVolts,  
       drivetrain
     );
-
     return ramseteCommand;
   }
   
