@@ -37,7 +37,7 @@ public class Limelight extends SubsystemBase {
    * based on the tracking data from a limelight camera.
   */
   public void approachTargetWithVision(double xTarget) {
-    final double STEER_P = 0.02;                    
+    final double STEER_P = 0.05;                    
     final double DRIVE_P = 0.0;    
     final double STEER_D = 0.0;                 
     final double targetDistance = 132;  // Inches to target       
@@ -62,7 +62,7 @@ public class Limelight extends SubsystemBase {
     } else {
       validTarget = true;
       // Start with proportional steering
-      steer_cmd = (xError * STEER_P) + (STEER_DERIVATIVE * STEER_D);
+      steer_cmd = (xError * STEER_P);
 
       // try to drive forward until the target area reaches our desired area
       //drive_cmd = (distanceError * DRIVE_P);
@@ -71,8 +71,7 @@ public class Limelight extends SubsystemBase {
         drive_cmd = maxDrive;
       }
     }
-
-    Robot.m_robotContainer.drivetrain.tankDrive(drive_cmd - steer_cmd, drive_cmd + steer_cmd);
+    Robot.m_robotContainer.drivetrain.tankDrive(-steer_cmd, steer_cmd);
 
     STEER_ERROR_PRIOR = xError;
 

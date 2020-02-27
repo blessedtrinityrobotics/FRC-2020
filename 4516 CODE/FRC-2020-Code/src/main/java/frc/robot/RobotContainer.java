@@ -127,7 +127,7 @@ public class RobotContainer {
 
     } else if(autoChooser.getSelected().equals("leftDrive")){
       //Follow Trajectories
-      Command ramsete = generateRamseteCommand(Trajectories.driveLeft);
+      Command ramsete = generateRamseteCommand(Trajectories.driveLeft); 
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
   
     } else if(autoChooser.getSelected().equals("RshootDrive")){

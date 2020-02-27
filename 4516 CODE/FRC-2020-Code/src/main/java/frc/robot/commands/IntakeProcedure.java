@@ -31,7 +31,7 @@ public class IntakeProcedure extends CommandBase {
   public void initialize() {
     conveyor.initIntake();
     conveyor.LEDGreen();
-    conveyor.setTime();
+   // conveyor.setTime();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
