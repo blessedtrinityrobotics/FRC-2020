@@ -16,6 +16,7 @@ import frc.robot.subsystems.Limelight;
 public class AlignLeft extends CommandBase {
   private final Drivebase drivebase;
   private final Limelight limelight;
+  
   /**
    * Creates a new AlignLeft.
    */
@@ -34,7 +35,7 @@ public class AlignLeft extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.m_robotContainer.limelight.approachTargetWithVision(Constants.leftShooterXDistance);
+    Robot.m_robotContainer.limelight.approachTargetWithVision(0);
   }
 
   // Called once the command ends or is interrupted.
@@ -46,6 +47,6 @@ public class AlignLeft extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Robot.m_robotContainer.limelight.isFinished();
+    return false;
   }
 }

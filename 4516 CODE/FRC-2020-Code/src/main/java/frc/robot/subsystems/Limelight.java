@@ -37,7 +37,7 @@ public class Limelight extends SubsystemBase {
    * based on the tracking data from a limelight camera.
   */
   public void approachTargetWithVision(double xTarget) {
-    final double STEER_P = 0.0;                    
+    final double STEER_P = 0.02;                    
     final double DRIVE_P = 0.0;    
     final double STEER_D = 0.0;                 
     final double targetDistance = 132;  // Inches to target       
@@ -49,10 +49,12 @@ public class Limelight extends SubsystemBase {
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    xError = xTarget - tx;
+    SmartDashboard.putNumber("TX Error", tx);
+    xError = tx;
     distance = (Constants.outerPortHeightDelta)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
     distanceError = (targetDistance - distance);
     STEER_DERIVATIVE = (xError - STEER_ERROR_PRIOR)/0.02;
+    
     if (tv < 1.0) {
       validTarget = false;
       drive_cmd = 0.0;
@@ -63,7 +65,7 @@ public class Limelight extends SubsystemBase {
       steer_cmd = (xError * STEER_P) + + (STEER_DERIVATIVE * STEER_D);
 
       // try to drive forward until the target area reaches our desired area
-      drive_cmd = (distanceError * DRIVE_P);
+      //drive_cmd = (distanceError * DRIVE_P);
       // don't let the robot drive too fast into the goal
       if (drive_cmd > maxDrive){
         drive_cmd = maxDrive;

@@ -32,6 +32,7 @@ public class IntakeProcedure extends CommandBase {
   @Override
   public void initialize() {
     Robot.m_robotContainer.conveyor.initIntake();
+    conveyor.LEDGreen();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,6 +41,7 @@ public class IntakeProcedure extends CommandBase {
     Robot.m_robotContainer.intake.intakeDown(0.75);
     //Robot.m_robotContainer.conveyor.conveyorIntakeRun();
     conveyor.runWithSensor();
+    
 
   }
 
