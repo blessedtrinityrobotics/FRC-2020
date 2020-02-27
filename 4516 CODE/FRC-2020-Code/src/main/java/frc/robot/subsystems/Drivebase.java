@@ -38,6 +38,8 @@ public class Drivebase extends SubsystemBase {
   private DifferentialDrive rDrive; 
   private DifferentialDriveOdometry driveOdometry;
   private Pose2d pose;
+  private double rightDistance;
+  private double leftDistance;
 
   private PigeonIMU gyro;
 
@@ -111,14 +113,20 @@ public class Drivebase extends SubsystemBase {
     return driveOdometry.getPoseMeters();
   }
 
-
+  public void resetDrivetrain(){
+    resetYaw(0);
+    leftMasterMotor.setSelectedSensorPosition(0);
+    rightMasterMotor.setSelectedSensorPosition(0);
+    rightDistance = 0;
+    leftDistance = 0;
+  }
  
 
   /**
    * Distance traveled on left side
    */
   public void leftDistanceTraveled(){
-    double leftDistance = getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition());
+    leftDistance = getWheelDistanceMeters(leftMasterMotor.getSelectedSensorPosition());
     
     SmartDashboard.putNumber("Left Distance Traveled", leftDistance );
   }
@@ -127,7 +135,7 @@ public class Drivebase extends SubsystemBase {
    * Distance traveled on right side
    */
   public void rightDistanceTraveled(){
-    double rightDistance = getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition());
+    rightDistance = getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition());
     SmartDashboard.putNumber("Right Distance Traveled", rightDistance );
   }
 

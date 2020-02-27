@@ -23,7 +23,7 @@ public class AlignRight extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     drivebase = subsystem;
     limelight = limeLightSub1;
-    addRequirements(drivebase,limelight);
+    addRequirements(drivebase, limelight);
 
   }
 

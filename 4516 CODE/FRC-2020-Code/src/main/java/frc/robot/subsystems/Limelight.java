@@ -62,7 +62,7 @@ public class Limelight extends SubsystemBase {
     } else {
       validTarget = true;
       // Start with proportional steering
-      steer_cmd = (xError * STEER_P) + + (STEER_DERIVATIVE * STEER_D);
+      steer_cmd = (xError * STEER_P) + (STEER_DERIVATIVE * STEER_D);
 
       // try to drive forward until the target area reaches our desired area
       //drive_cmd = (distanceError * DRIVE_P);

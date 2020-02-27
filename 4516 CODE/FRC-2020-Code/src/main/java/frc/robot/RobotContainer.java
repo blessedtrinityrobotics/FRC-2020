@@ -112,7 +112,7 @@ public class RobotContainer {
     //Intake Commands 
     aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor));
     bButtonOperator.whenPressed(new IntakeUp(intake));
-    aButtonDriver.whenActive(new AlignLeft(drivetrain, limelight));
+    aButtonDriver.whileHeld(new AlignLeft(drivetrain, limelight));
     bButtonDriver.whenPressed(new ToggleLimelight(limelight));
 
     //Shooting Commands 
