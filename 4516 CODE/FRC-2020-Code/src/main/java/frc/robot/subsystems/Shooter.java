@@ -16,6 +16,7 @@ public class Shooter extends SubsystemBase {
     private static TalonSRX shooter2Master = new TalonSRX(Constants.shooter2MasterPort);
     private static VictorSPX shooter2Slave = new VictorSPX(Constants.shooter2SlavePort);
     private  double sensorVelocity;
+    private double initVelocity;
 
     
     public Shooter() {
@@ -33,20 +34,8 @@ public class Shooter extends SubsystemBase {
  * 
  */
   public void shooterRPM(double deltaX){
-    sensorVelocity = (Constants.CPR * (  Math.sqrt(
-                                                    (2 * Constants.gInchSecondsSquared * Constants.outerPortHeightDelta) 
-                                                      + 
-                                                    ( (2 * Constants.gInchSecondsSquared * Constants.outerPortHeightDelta) 
-                                                      / 
-                                                      ( Math.pow( Math.tan(Math.toRadians(Constants.launchAngle) ), 2) ) )
-                                                  ) 
-                                                  / 
-                                                  ( 6 * Constants.shooterRadius )   
-                                                
-                                              )
-                            )
-                            /
-                            (600 * Constants.gearRatioShooter);
+    initVelocity = Math.sqrt( ( (-Constants.gravity * deltaX)/( ((Constants.outerPortHeightDelta * Math.cos(Math.toRadians(Constants.launchAngle)))/(deltaX)) - Math.sin(Math.toRadians(Constants.launchAngle)) ) )/( 2 * Math.cos( Math.toRadians(Constants.launchAngle)) ) );
+    sensorVelocity = ( Constants.CPR* ( initVelocity/(6 * Constants.shooterRadius) ) )/(600 * Constants.gearRatioShooter);
 
     shooter1Master.set(ControlMode.Velocity, sensorVelocity, DemandType.Neutral, sensorVelocity);
     shooter1Slave.follow(shooter1Master);
