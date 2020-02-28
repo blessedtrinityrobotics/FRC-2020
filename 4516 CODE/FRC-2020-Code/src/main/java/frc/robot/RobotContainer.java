@@ -42,10 +42,10 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public Drivebase drivetrain = new Drivebase();
-  public Intake intake = new Intake();
-  public Conveyor conveyor = new Conveyor();
-  public Limelight limelight = new Limelight();
-  public Shooter shooter = new Shooter();
+  public Intake intake        = new Intake();
+  public Conveyor conveyor    = new Conveyor();
+  public Limelight limelight  = new Limelight();
+  public Shooter shooter      = new Shooter();
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -53,7 +53,7 @@ public class RobotContainer {
 
 
   // Starts Xbox Controllers
-  public XboxController driverController = new XboxController(Constants.driveControllerPort);
+  public XboxController driverController   = new XboxController(Constants.driveControllerPort);
   public XboxController operatorController = new XboxController(Constants.operatorControllerPort);
 
   // Starts Driver Buttons

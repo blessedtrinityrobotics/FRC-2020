@@ -16,8 +16,8 @@ import frc.robot.Robot;
 public class Limelight extends SubsystemBase {
   private boolean validTarget = false;
   private boolean LEDStatus = true; 
-  private double steer_cmd;
-  private double drive_cmd;
+  private double steer_cmd = 0;
+  private double drive_cmd = 0;
   private double STEER_DERIVATIVE;
   private double STEER_ERROR_PRIOR;
   private boolean isFinished = false;
@@ -37,7 +37,7 @@ public class Limelight extends SubsystemBase {
    * based on the tracking data from a limelight camera.
   */
   public void approachTargetWithVision(double xTarget) {
-    final double STEER_P = 0.05;                    
+    final double STEER_P = 0.025;                    
     final double DRIVE_P = 0.0;    
     final double STEER_D = 0.0;                 
     final double targetDistance = 132;  // Inches to target       
@@ -62,7 +62,7 @@ public class Limelight extends SubsystemBase {
     } else {
       validTarget = true;
       // Start with proportional steering
-      steer_cmd = (xError * STEER_P);
+      steer_cmd = (xError * STEER_P) + (STEER_DERIVATIVE * STEER_D);
 
       // try to drive forward until the target area reaches our desired area
       //drive_cmd = (distanceError * DRIVE_P);

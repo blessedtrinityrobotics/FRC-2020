@@ -30,8 +30,8 @@ public class Conveyor extends SubsystemBase {
     private boolean flag            = true;
     private boolean s               = false; 
     private boolean isFinished      = false;
-    //private Timer time;
-    //private double stopTime         = 0;
+    private Timer time;
+    private double stopTime         = 0;
 
 
     public Conveyor() {
@@ -46,7 +46,7 @@ public class Conveyor extends SubsystemBase {
         checkPointOne.setRangingMode(RangingMode.Short, 24);
         checkPointRight.setRangingMode(RangingMode.Short, 24);
         checkPointLeft.setRangingMode(RangingMode.Short, 24);
-        //time.start();
+        time = new Timer();
     }
   
     @Override
@@ -175,20 +175,25 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void runWithSensor(){
+        
         if(isBallIn(checkPointLeft)){
             rightActivate(0);
         } else {
             if(isBallIn(checkPointOne)){
                 rightActivate(0.375);
             } else {
-                
+                if(time.get() > stopTime + 1){
                     rightActivate(0);
-            }
+                }
+            }   
         }
     }
 
     public void setTime(){
-        //stopTime = time.get();
+        stopTime = time.get();
+    }
+    public void startTime(){
+        time.start();
     }
 
     public boolean rightStatus(){
