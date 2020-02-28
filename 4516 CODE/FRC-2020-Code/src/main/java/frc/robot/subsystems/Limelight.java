@@ -63,7 +63,7 @@ public class Limelight extends SubsystemBase {
       validTarget = true;
       // Start with proportional steering
       steer_cmd = (xError * STEER_P) + (STEER_DERIVATIVE * STEER_D);
-
+      SmartDashboard.putNumber("Steer Command", steer_cmd);
       // try to drive forward until the target area reaches our desired area
       //drive_cmd = (distanceError * DRIVE_P);
       // don't let the robot drive too fast into the goal
@@ -79,6 +79,10 @@ public class Limelight extends SubsystemBase {
       isFinished = true;
     }
 
+  }
+
+  public boolean getLEDStatus(){
+    return LEDStatus;
   }
 
   /**

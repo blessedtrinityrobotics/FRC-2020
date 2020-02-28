@@ -57,8 +57,10 @@ public final class Constants {
   //End of Pigeon IMU
 
   // Pneumatic Ports
-    public static final int solenoidChlTwo = 1;
-    public static final int solenoidChlOne = 0;
+    public static final int solenoidChlTwo = 1; // intake pneumatic port one
+    public static final int solenoidChlOne = 0; // intake pneumatic port two
+    public static final int controlChannelPortOne = 0; // control panel arm port one
+    public static final int controlChannelPortTwo = 0; // control panel arm port two
   // End of Pneumatic Ports
 
   // XboxController Ports
