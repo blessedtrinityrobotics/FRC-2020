@@ -32,6 +32,7 @@ public class Conveyor extends SubsystemBase {
     private boolean isFinished      = false;
     private Timer time;
     private double stopTime         = 0;
+    private int i = 0;
 
 
     public Conveyor() {
@@ -81,6 +82,7 @@ public class Conveyor extends SubsystemBase {
         centerMotor.set(ControlMode.PercentOutput, (-speed/2));
         leftSideMotor.set(ControlMode.PercentOutput, (speed/2));
     }
+
 
     /**
      * 
@@ -175,15 +177,20 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void runWithSensor(){
-        
+        SmartDashboard.putNumber("time", time.get());
         if(isBallIn(checkPointLeft)){
             rightActivate(0);
         } else {
             if(isBallIn(checkPointOne)){
+                for(i = 0; i < 1; i++){
+                    setTime();
+                }
                 rightActivate(0.375);
+                SmartDashboard.putNumber("stoptime", stopTime);
             } else {
-                if(time.get() > stopTime + 1){
+                if(time.get() > stopTime + 0.1875){
                     rightActivate(0);
+                    i = 0;
                 }
             }   
         }
@@ -193,6 +200,8 @@ public class Conveyor extends SubsystemBase {
         stopTime = time.get();
     }
     public void startTime(){
+        time.stop();
+        time.reset();
         time.start();
     }
 

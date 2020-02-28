@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.Constants;
@@ -76,6 +77,7 @@ public class Drive extends CommandBase {
       double leftOutput = -triggerValue1 + turnValue1;
       double rightOutput = -triggerValue1 - turnValue1;
       drivetrain.tankDrive(leftOutput, rightOutput );
+      SmartDashboard.putNumber("Forward power", triggerValue1);
 
       //drivetrain.tankDrive(leftStickY, rightStickY);
       /*

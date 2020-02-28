@@ -157,7 +157,7 @@ public static final double outerPortHeightDelta  = 74;     // Delta between oute
 public static final double launchAngle           = 40;     // Degrees of launch angle (from horizontal)
 public static final int shooterRadius            = 2;      // Shooter wheel radius in inches
 public static final double gearRatioShooter      = 3.17;   // Gear Ratio
-public static final double cameraAngle           = 40;     // Limelight Camera Angle
+public static final double cameraAngle           = 25;     // Limelight Camera Angle
 public static final double leftShooterXDistance  = 1;      // Shooter limelight x distance for left shooter side
 public static final double rightShooterXDistance = -1;     // // Shooter limelight x distance for right shooter side 
 

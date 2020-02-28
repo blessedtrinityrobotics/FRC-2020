@@ -37,9 +37,9 @@ public class Limelight extends SubsystemBase {
    * based on the tracking data from a limelight camera.
   */
   public void approachTargetWithVision(double xTarget) {
-    final double STEER_P = 0.025;                    
+    final double STEER_P = 0.035;                    
     final double DRIVE_P = 0.0;    
-    final double STEER_D = 0.0;                 
+    final double STEER_D = 0.01;                 
     final double targetDistance = 132;  // Inches to target       
     final double maxDrive = 0.75;        // Simple speed limit so we don't drive too fast
     final double xError;
@@ -49,9 +49,11 @@ public class Limelight extends SubsystemBase {
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    SmartDashboard.putNumber("TX Error", tx);
+    //SmartDashboard.putNumber("TX Error", tx);
+    //SmartDashboard.putNumber("TY Error", ty);
     xError = tx;
-    distance = (Constants.outerPortHeightDelta)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
+    distance = (1.55)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
+    SmartDashboard.putNumber("Distance", distance);
     distanceError = (targetDistance - distance);
     STEER_DERIVATIVE = (xError - STEER_ERROR_PRIOR)/0.02;
     
@@ -63,7 +65,7 @@ public class Limelight extends SubsystemBase {
       validTarget = true;
       // Start with proportional steering
       steer_cmd = (xError * STEER_P) + (STEER_DERIVATIVE * STEER_D);
-      SmartDashboard.putNumber("Steer Command", steer_cmd);
+      //SmartDashboard.putNumber("Steer Command", steer_cmd);
       // try to drive forward until the target area reaches our desired area
       //drive_cmd = (distanceError * DRIVE_P);
       // don't let the robot drive too fast into the goal
