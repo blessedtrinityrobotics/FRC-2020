@@ -8,42 +8,48 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Conveyor;
+import frc.robot.Robot;
+import frc.robot.subsystems.Shooter;
 
-public class ConveyorFeedRight extends CommandBase {
-  private final Conveyor conveyor; 
-  public ConveyorFeedRight(Conveyor subsystem2) {
-    conveyor = subsystem2;
-    addRequirements(conveyor);
+public class Shoot extends CommandBase {
+  private final Shooter shooter;
+  private double distance;
+  public Shoot(Shooter subsystem) {
+    shooter = subsystem;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    conveyor.startTime(); 
-    conveyor.setTime();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(conveyor.getTime() > conveyor.getWaitTime() + 1 ){
-      conveyor.rightActivate(0);
-    } else {
-      conveyor.rightActivate(.5);
-    }
-    
+
+    distance = Robot.m_robotContainer.limelight.getDistance();
+
+    shooter.shooterRPM(distance);
+
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    conveyor.rightActivate(0);
+    if(interrupted){ // run code if shooter was interrupted
+
+    } 
+    
+    shooter.setMotorSpeed(0);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return conveyor.rightStatus();
+    return false;
   }
 }

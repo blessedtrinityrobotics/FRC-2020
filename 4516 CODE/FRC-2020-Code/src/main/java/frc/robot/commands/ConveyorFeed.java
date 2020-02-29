@@ -10,9 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 
-public class ConveyorFeedRight extends CommandBase {
+public class ConveyorFeed extends CommandBase {
   private final Conveyor conveyor; 
-  public ConveyorFeedRight(Conveyor subsystem2) {
+  public ConveyorFeed(Conveyor subsystem2) {
     conveyor = subsystem2;
     addRequirements(conveyor);
   }
@@ -28,22 +28,22 @@ public class ConveyorFeedRight extends CommandBase {
   @Override
   public void execute() {
     if(conveyor.getTime() > conveyor.getWaitTime() + 1 ){
-      conveyor.rightActivate(0);
+      conveyor.conveyorFeed(0);
     } else {
-      conveyor.rightActivate(.5);
+      conveyor.conveyorFeed(0.75);
     }
-    
   }
+  
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    conveyor.rightActivate(0);
+    conveyor.conveyorFeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return conveyor.rightStatus();
+    return false;
   }
 }

@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -41,13 +42,15 @@ public class Shooter extends SubsystemBase {
     shooter1Slave.follow(shooter1Master);
     shooter2Master.set(ControlMode.Velocity, sensorVelocity, DemandType.Neutral, sensorVelocity);
     shooter2Slave.follow(shooter1Master);
+    SmartDashboard.putNumber("Shooter Speed in m/s", initVelocity);
+    SmartDashboard.putNumber("Shooter Sensor Speed", sensorVelocity);
   }
 
   public void setMotorSpeed(double speed){
     shooter1Master.set(ControlMode.PercentOutput, speed);
-    shooter1Slave.set(ControlMode.PercentOutput, speed);
+    shooter1Slave.set(ControlMode.PercentOutput, -speed);
     shooter2Master.set(ControlMode.PercentOutput, speed);
-    shooter2Slave.set(ControlMode.PercentOutput, speed);
+    shooter2Slave.set(ControlMode.PercentOutput, -speed);
 
   }
 

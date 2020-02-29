@@ -55,7 +55,6 @@ public class Robot extends TimedRobot {
     m_robotContainer.drivetrain.rightDistanceTraveled();
     m_robotContainer.drivetrain.leftSpeed();
     m_robotContainer.drivetrain.rightSpeed();
-    m_robotContainer.conveyor.printTOFValues();
     SmartDashboard.putNumber("Yaw", m_robotContainer.drivetrain.getYaw());
   }
 

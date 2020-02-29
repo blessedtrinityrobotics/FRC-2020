@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -32,7 +33,8 @@ public class Conveyor extends SubsystemBase {
     private boolean isFinished      = false;
     private Timer time;
     private double stopTime         = 0;
-    private int i = 0;
+    private int i                   = 0;
+    private double waitTime         = 0;
 
 
     public Conveyor() {
@@ -58,7 +60,7 @@ public class Conveyor extends SubsystemBase {
     
     public void LEDRed(){
         SmartDashboard.putBoolean("Intake Complete?", false);
-        ledMotor.set(Constants.red);
+        ledMotor.set(Constants.red );
     }
 
     public void LEDGreen(){
@@ -81,25 +83,24 @@ public class Conveyor extends SubsystemBase {
         rightSideMotor.set(ControlMode.PercentOutput, (speed));
         centerMotor.set(ControlMode.PercentOutput, (-speed/2));
         leftSideMotor.set(ControlMode.PercentOutput, (speed/2));
+        
     }
 
+    public void conveyorFeed(double speed){
+        rightSideMotor.set(ControlMode.PercentOutput, (speed));
+        leftSideMotor.set(ControlMode.PercentOutput, (speed));
+        centerMotor.set(ControlMode.PercentOutput, (-speed/2));
 
-    /**
-     * 
-     * @param speed Speed to run conveyor at
-     * @param time Time to run in seconds
-     */
-    public void rightActivateTime(double speed, long time){
-        Timer.delay(time);
-        rightActivate(speed);
     }
+
+   
 
     public void countBalls(TimeOfFlight sensor, int ballCount){
-        if(sensor.getRange() < 50 && flag){
+        if(sensor.getRange() < 100 && flag){
             genericCount++;
             flag = false;
             ballCount = genericCount;
-        } else if(sensor.getRange() > 50 ){
+        } else if(sensor.getRange() > 100 ){
             flag = true;
         }
     }
@@ -123,31 +124,43 @@ public class Conveyor extends SubsystemBase {
         countBalls(checkPointOne, ballsCount); // count balls everytime loop runs
         if(ballsCount <= 2){ // Enter loop b/w 0 balls and 2 balls
             LEDRed(); // TURN LED RED
-            if(isBallIn(checkPointRight) == true){ // Check if there is a ball right under shooter
+            if(isBallIn(checkPointRight)){ // Check if there is a ball right under shooter
                 rightActivate(0);
                 s = true; 
             } else { // No ball under shooter -> continue
-                if(isBallIn(checkPointOne) == true){ // check if there is ball on the first sensor
-                    rightActivate(0.75); // Run right intake when sensor detects ball
+                if(isBallIn(checkPointOne)){
+                    for(i = 0; i < 1; i++){
+                        setTime();
+                    }
+                    rightActivate(0.375);
                 } else {
-                    rightActivate(0); // Stop when ball leaves the sensor
-                }
+                    if(time.get() > stopTime + 0.1875){
+                        rightActivate(0);
+                        i = 0;
+                    }
+                } 
             }
         } else { 
             s = true; // Set flag variable to true after 2 balls have entered
         }
 
-        if(s==true && ballsCount <= 5){ // Flag set to true -> Switch conveyor sides
-            if(isBallIn(checkPointLeft) == true){ // Check if there is a ball right under shooter
+        if(s && ballsCount <= 5){ // Flag set to true -> Switch conveyor sides
+            if(isBallIn(checkPointLeft)){ // Check if there is a ball right under shooter
                 leftActivate(0);
                 s = true; 
                 LEDGreen(); // TURN LED GREEN - INTAKE FINISHED
             } else { // No ball under shooter -> continue
-                if(isBallIn(checkPointOne) == true){ // check if there is ball on the first sensor
-                    leftActivate(0.75); // Run right intake when sensor detects ball
+                if(isBallIn(checkPointOne)){
+                    for(i = 0; i < 1; i++){
+                        setTime();
+                    }
+                    leftActivate(0.375);
                 } else {
-                    leftActivate(0); // Stop when ball leaves the sensor
-                }
+                    if(time.get() > stopTime + 0.1875){
+                        leftActivate(0);
+                        i = 0;
+                    }
+                } 
             }
         } else { // Intake finished -> reset all variables
             s = false;
@@ -177,7 +190,6 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void runWithSensor(){
-        SmartDashboard.putNumber("time", time.get());
         if(isBallIn(checkPointLeft)){
             rightActivate(0);
         } else {
@@ -186,7 +198,6 @@ public class Conveyor extends SubsystemBase {
                     setTime();
                 }
                 rightActivate(0.375);
-                SmartDashboard.putNumber("stoptime", stopTime);
             } else {
                 if(time.get() > stopTime + 0.1875){
                     rightActivate(0);
@@ -196,16 +207,25 @@ public class Conveyor extends SubsystemBase {
         }
     }
 
+    public double getTime(){
+        return time.get();
+    }
+
     public void setTime(){
         stopTime = time.get();
     }
+
     public void startTime(){
         time.stop();
         time.reset();
         time.start();
     }
 
-    public boolean rightStatus(){
+    public double getWaitTime(){
+        return waitTime;
+    }
+
+    public boolean rightStatus(){ // during shooter
         countBalls(checkPointRight, rightBallCount);
         if(rightBallCount >= 2){
             return true;
@@ -214,7 +234,7 @@ public class Conveyor extends SubsystemBase {
             return false;
         }
     }
-    
+
     public void conveyorStop(){
         leftActivate(0);
         rightActivate(0);
@@ -222,6 +242,8 @@ public class Conveyor extends SubsystemBase {
 
     public void resetBallCount(){
         ballsCount = 0;
+        leftBallCount = 0;
+        rightBallCount = 0;
     }
     
     public boolean isFinished(){

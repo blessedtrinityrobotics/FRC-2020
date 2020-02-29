@@ -8,42 +8,42 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Limelight;
 
-public class ConveyorFeedRight extends CommandBase {
-  private final Conveyor conveyor; 
-  public ConveyorFeedRight(Conveyor subsystem2) {
-    conveyor = subsystem2;
-    addRequirements(conveyor);
+public class AlignRobotCenter extends CommandBase {
+  private final Drivebase drivebase;
+  private final Limelight limelight;
+
+  public AlignRobotCenter(Drivebase subsystem, Limelight limeLightSub1) {
+    drivebase = subsystem;
+    limelight = limeLightSub1;
+    addRequirements(drivebase,limelight);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    conveyor.startTime(); 
-    conveyor.setTime();
+    if(!limelight.getLEDStatus()){
+      limelight.toggleVision();
+  }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(conveyor.getTime() > conveyor.getWaitTime() + 1 ){
-      conveyor.rightActivate(0);
-    } else {
-      conveyor.rightActivate(.5);
-    }
-    
+    limelight.approachTargetWithVision(0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    conveyor.rightActivate(0);
+    drivebase.tankDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return conveyor.rightStatus();
+    return false;
   }
 }

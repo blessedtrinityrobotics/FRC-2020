@@ -18,12 +18,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AlignLeft;
+import frc.robot.commands.AlignRobotCenter;
+import frc.robot.commands.CheckForValidTarget;
 import frc.robot.commands.Drive;
+import frc.robot.commands.EmptyIntake;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
-import frc.robot.commands.LeftTest;
-import frc.robot.commands.RightTest;
 import frc.robot.commands.ShootingS;
 import frc.robot.commands.ToggleLimelight;
 import frc.robot.subsystems.Conveyor;
@@ -88,7 +88,9 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    drivetrain.setDefaultCommand( new Drive(drivetrain));     
+    drivetrain.setDefaultCommand( new Drive(drivetrain));    
+    limelight.setDefaultCommand(new CheckForValidTarget(limelight)); 
+
     configureButtonBindings();   
     
     autoChooser.addOption("Drive Off Left", "leftDrive");
@@ -110,10 +112,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
         
     //Intake Commands 
-    aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor));
-    bButtonOperator.whenPressed(new IntakeUp(intake));
-    aButtonDriver.whileHeld(new AlignLeft(drivetrain, limelight));
-    bButtonDriver.whenPressed(new ToggleLimelight(limelight));
+    aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor)); // Intake down and start intake procedure
+    bButtonOperator.whenPressed(new IntakeUp(intake)); // Intake up and stop intake procedure
+    aButtonDriver.whileHeld(new AlignRobotCenter(drivetrain, limelight)); // Align to target
+    bButtonDriver.whenPressed(new ToggleLimelight(limelight)); // Turn on/off limelight
+    xButtonOperator.whileHeld(new EmptyIntake(conveyor, intake)); // Reverse intake
+    
 
     //Shooting Commands 
     //xButtonOperator.whenPressed(new ShootingS());

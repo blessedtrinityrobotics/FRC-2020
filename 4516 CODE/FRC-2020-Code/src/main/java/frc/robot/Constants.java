@@ -53,12 +53,12 @@ public final class Constants {
 
 
   // Pigeon IMU
-    public static final int pigeonIMUPort            = 3;
+    public static final int pigeonIMUPort         = 3;
   //End of Pigeon IMU
 
   // Pneumatic Ports
-    public static final int solenoidChlTwo = 1; // intake pneumatic port one
-    public static final int solenoidChlOne = 0; // intake pneumatic port two
+    public static final int solenoidChlTwo        = 1; // intake pneumatic port one
+    public static final int solenoidChlOne        = 0; // intake pneumatic port two
     public static final int controlChannelPortOne = 0; // control panel arm port one
     public static final int controlChannelPortTwo = 0; // control panel arm port two
   // End of Pneumatic Ports
@@ -152,11 +152,11 @@ public final class Constants {
 
 
 // Shooter Constants
-public static final double gravity   = 9.81; // Gravity in inches per second per second (Positive as negative cancel out later)
-public static final double outerPortHeightDelta  = 74;     // Delta between outer port and center of shooter
+public static final double gravity               = 9.81;   // Gravity in inches per second per second (Positive as negative cancel out later)
+public static final double outerPortHeightDelta  = 1.88;   // Delta between outer port and center of shooter
 public static final double launchAngle           = 40;     // Degrees of launch angle (from horizontal)
 public static final int shooterRadius            = 2;      // Shooter wheel radius in inches
-public static final double gearRatioShooter      = 3.17;   // Gear Ratio
+public static final double gearRatioShooter      = 4;      // Gear Ratio
 public static final double cameraAngle           = 25;     // Limelight Camera Angle
 public static final double leftShooterXDistance  = 1;      // Shooter limelight x distance for left shooter side
 public static final double rightShooterXDistance = -1;     // // Shooter limelight x distance for right shooter side 
@@ -168,8 +168,8 @@ public static final double rightShooterXDistance = -1;     // // Shooter limelig
      * kF: 1023 represents output value to Talon at 100%, 6800 represents Velocity units at 100% output
      * Not all set of Gains are used in this project and may be removed as desired.
      * 
-   * 	                                    	       kP   kI   kD   kF                          Iz   PeakOut */
-  public final static Gains kGains_Drive = new Gains( 0.0, 0.0,  0.0, 0.0, 100,  0.50 );
+   * 	                                    	          kP   kI   kD   kF   Iz   PeakOut */
+  public final static Gains kGains_Drive = new Gains( 0.0, 0.0, 0.0, 0.0, 100, 0.50 );
 
 
 

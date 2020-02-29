@@ -18,7 +18,6 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import edu.wpi.first.wpilibj.util.Color;
 
 
@@ -82,27 +81,47 @@ public class ControlPanelArm extends SubsystemBase {
     return colorSensor.getColor().green;
   }
 
+  /**
+   * Rotation Control on Control Panel
+   */
   public void rotationControl(){
     controlPanelArm.set(DoubleSolenoid.Value.kForward);
     setMotor(0.5);
   }
 
+  /**
+   * Stop motor and reverse it to stop Control Panel Rotation
+   */
   public void stop(){
     setMotor(-0.1);
   }
 
+  /**
+   * Control Panel Arm Down and stop motor
+   */
   public void armDown(){
     controlPanelArm.set(DoubleSolenoid.Value.kReverse);
     setMotor(0);
   }
 
+  /**
+   * Find game data color
+   */
   public void determineGameColor(){
     gameData = DriverStation.getInstance().getGameSpecificMessage();
   }
 
+  /**
+   * 
+   * @param speed Speed to set Control Panel Motor
+   */
   public void setMotor(double speed){
     controlPanelMotor.set(ControlMode.PercentOutput, speed);
   }
+
+  /**
+   * Position Control on Control Panel
+   */
   public void positionControl(){
     if(gameData.length() > 0){
 
@@ -139,7 +158,8 @@ public class ControlPanelArm extends SubsystemBase {
   }
 
   /**
-   * Has position control finished?
+   * Has Position Control Finished
+   * @return If position control has finished
    */
   public boolean isFinished(){
     return isFinished;

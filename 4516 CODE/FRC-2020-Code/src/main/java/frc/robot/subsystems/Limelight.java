@@ -51,7 +51,7 @@ public class Limelight extends SubsystemBase {
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     //SmartDashboard.putNumber("TX Error", tx);
     //SmartDashboard.putNumber("TY Error", ty);
-    xError = tx;
+    xError = xTarget - tx;
     distance = (1.55)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
     SmartDashboard.putNumber("Distance", distance);
     distanceError = (targetDistance - distance);
@@ -103,10 +103,10 @@ public class Limelight extends SubsystemBase {
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 
     if(tv >= 1.00) {
-      SmartDashboard.putBoolean("ValidVisionTarget", true);  
+      SmartDashboard.putBoolean("Valid Vision Target", true);  
       return true;
     } else {
-      SmartDashboard.putBoolean("ValidVisionTarget", false); 
+      SmartDashboard.putBoolean("Valid Vision Target", false); 
       return false;
     }
   }
@@ -139,7 +139,7 @@ public class Limelight extends SubsystemBase {
 
   public double getDistance(){
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    double distance = (Constants.outerPortHeightDelta)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
+    double distance = (1.55)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
 
     return distance;
   }
