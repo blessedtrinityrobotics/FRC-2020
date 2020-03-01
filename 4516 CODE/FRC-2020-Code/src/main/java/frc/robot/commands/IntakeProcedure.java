@@ -50,7 +50,6 @@ public class IntakeProcedure extends CommandBase {
   public void end(boolean interrupted) {
     //Robot.m_robotContainer.intake.intakeUp();
     conveyor.rightActivate(0);
-    conveyor.leftActivate(0);
   }
 
   // Returns true when the command should end.
