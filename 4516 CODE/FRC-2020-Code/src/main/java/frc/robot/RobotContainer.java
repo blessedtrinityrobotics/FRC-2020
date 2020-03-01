@@ -25,6 +25,7 @@ import frc.robot.commands.EmptyIntake;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
 import frc.robot.commands.ShootingS;
+import frc.robot.commands.TestShooter;
 import frc.robot.commands.ToggleLimelight;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
@@ -117,6 +118,7 @@ public class RobotContainer {
     aButtonDriver.whileHeld(new AlignRobotCenter(drivetrain, limelight)); // Align to target
     bButtonDriver.whenPressed(new ToggleLimelight(limelight)); // Turn on/off limelight
     xButtonOperator.whileHeld(new EmptyIntake(conveyor, intake)); // Reverse intake
+    yButtonOperator.whileHeld(new TestShooter(shooter));
     
 
     //Shooting Commands 
