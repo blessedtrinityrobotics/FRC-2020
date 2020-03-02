@@ -128,6 +128,7 @@ public class RobotContainer {
   }
   public Command getAutomousCommand(){
     
+    
     if(autoChooser.getSelected().equals("rightDrive")){
       //Follow Trajectories 
       Command ramsete = generateRamseteCommand(Trajectories.driveRight);

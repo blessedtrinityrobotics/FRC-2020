@@ -88,7 +88,7 @@ public class Conveyor extends SubsystemBase {
 
     public void conveyorFeed(double speed){
         rightSideMotor.set(ControlMode.PercentOutput, (speed));
-        leftSideMotor.set(ControlMode.PercentOutput, (speed));
+        //leftSideMotor.set(ControlMode.PercentOutput, (speed));
         centerMotor.set(ControlMode.PercentOutput, (-speed/2));
 
     }

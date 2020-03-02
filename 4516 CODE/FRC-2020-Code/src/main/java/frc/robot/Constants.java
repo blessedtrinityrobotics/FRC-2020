@@ -39,10 +39,10 @@ public final class Constants {
     public static final int rightSideMotorPort       = 14;
     public static final int centerMotorPort          = 15;
     // Shooter Motors
-    public static final int shooter1MasterPort       = 0;
-    public static final int shooter1SlavePort        = 0;
-    public static final int shooter2MasterPort       = 0;
-    public static final int shooter2SlavePort        = 0;
+    public static final int shooter1MasterPort       = 6; 
+    public static final int shooter1SlavePort        = 12;
+    public static final int shooter2MasterPort       = 2;
+    public static final int shooter2SlavePort        = 13;
   //End of Motor Ports
 
   // Time of Flight Sensor Ports
