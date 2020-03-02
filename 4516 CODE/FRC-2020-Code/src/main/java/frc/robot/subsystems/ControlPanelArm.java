@@ -27,7 +27,7 @@ public class ControlPanelArm extends SubsystemBase {
   private final VictorSPX controlPanelMotor = new VictorSPX(Constants.controlPanelMotorPort);
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
-  private final DoubleSolenoid controlPanelArm = new DoubleSolenoid(Constants.controlChannelPortOne, Constants.controlChannelPortTwo);
+  //private final DoubleSolenoid controlPanelArm = new DoubleSolenoid(Constants.controlChannelPortOne, Constants.controlChannelPortTwo);
   private String gameData = "";
   private boolean isFinished = false;
 
@@ -85,7 +85,7 @@ public class ControlPanelArm extends SubsystemBase {
    * Rotation Control on Control Panel
    */
   public void rotationControl(){
-    controlPanelArm.set(DoubleSolenoid.Value.kForward);
+    //controlPanelArm.set(DoubleSolenoid.Value.kForward);
     setMotor(0.5);
   }
 
@@ -100,7 +100,7 @@ public class ControlPanelArm extends SubsystemBase {
    * Control Panel Arm Down and stop motor
    */
   public void armDown(){
-    controlPanelArm.set(DoubleSolenoid.Value.kReverse);
+    //controlPanelArm.set(DoubleSolenoid.Value.kReverse);
     setMotor(0);
   }
 

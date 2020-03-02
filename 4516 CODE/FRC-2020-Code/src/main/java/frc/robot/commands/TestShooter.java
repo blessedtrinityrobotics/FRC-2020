@@ -8,48 +8,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-//import frc.robot.Constants;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Intake;
+import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.subsystems.Shooter;
 
-public class IntakeProcedure extends CommandBase {
-  private final Intake intake;
-  private final Conveyor conveyor;
- 
-  
-
-
-  public IntakeProcedure(Intake subsystem1, Conveyor subsystem2) {
-    intake = subsystem1;  
-    conveyor = subsystem2;
-    addRequirements(conveyor, intake);
-    
+public class TestShooter extends CommandBase {
+  private Shooter shooter;
+  private double leftStickY;
+  public TestShooter(Shooter subsystem) {
+    shooter = subsystem;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    conveyor.initIntake();
-    conveyor.LEDGreen();
-    conveyor.setTime();
-    conveyor.startTime(); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.intakeDown(0.75);
-    //conveyor.conveyorIntakeRun();
-    conveyor.runWithSensor();
-    
+    leftStickY = Robot.m_robotContainer.getOperatorRawAxis(Constants.leftStickY);
+
+    shooter.setMotorSpeed(leftStickY);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //Robot.m_robotContainer.intake.intakeUp();
-    conveyor.rightActivate(0);
+    shooter.setMotorSpeed(0);
   }
 
   // Returns true when the command should end.

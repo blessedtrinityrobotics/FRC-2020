@@ -199,7 +199,7 @@ public class Conveyor extends SubsystemBase {
                 }
                 rightActivate(0.375);
             } else {
-                if(time.get() > stopTime + 0.125){
+                if(time.get() > stopTime + 0.25){
                     rightActivate(0);
                     i = 0;
                 }

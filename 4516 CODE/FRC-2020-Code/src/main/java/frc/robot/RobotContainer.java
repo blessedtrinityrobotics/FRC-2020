@@ -20,11 +20,13 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AlignRobotCenter;
 import frc.robot.commands.CheckForValidTarget;
+import frc.robot.commands.ConveyorFeed;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EmptyIntake;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
 import frc.robot.commands.ShootingS;
+import frc.robot.commands.TestShooter;
 import frc.robot.commands.ToggleLimelight;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
@@ -95,7 +97,7 @@ public class RobotContainer {
     
     autoChooser.addOption("Drive Off Left", "leftDrive");
     autoChooser.addOption("Shoot Right Drive", "RshootDrive");
-    autoChooser.addOption("Drive Middle Shoot", "DriveMShoot");
+    //autoChooser.addOption("Drive Middle Shoot", "DriveMShoot");
     autoChooser.addOption("Drive Off Right", "rightDrive");
     autoChooser.setDefaultOption("Drive Off Forward", "driveOff");
     //autoChooser.addOption("David Drive", "davieDrive");
@@ -116,7 +118,9 @@ public class RobotContainer {
     bButtonOperator.whenPressed(new IntakeUp(intake)); // Intake up and stop intake procedure
     aButtonDriver.whileHeld(new AlignRobotCenter(drivetrain, limelight)); // Align to target
     bButtonDriver.whenPressed(new ToggleLimelight(limelight)); // Turn on/off limelight
-    xButtonOperator.whileHeld(new EmptyIntake(conveyor, intake)); // Reverse intake
+    //leftBumperButtonOperator.whileHeld(new EmptyIntake(conveyor, intake)); // Reverse intake
+    yButtonOperator.whileHeld(new TestShooter(shooter));
+    xButtonOperator.whileHeld(new ConveyorFeed(conveyor));
     
 
     //Shooting Commands 
@@ -137,8 +141,7 @@ public class RobotContainer {
     } else if(autoChooser.getSelected().equals("RshootDrive")){
       // robot on right side and shoot then drive off
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
-      Command shoot = new ShootingS();
-      return shoot.andThen(ramsete);
+      return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
     } else {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
