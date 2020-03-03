@@ -20,6 +20,7 @@ public class Limelight extends SubsystemBase {
   private double drive_cmd = 0;
   private double STEER_DERIVATIVE;
   private double STEER_ERROR_PRIOR;
+  private double STEER_INTEGRAL;
   private boolean isFinished = false;
 
   public Limelight() {
@@ -37,9 +38,10 @@ public class Limelight extends SubsystemBase {
    * based on the tracking data from a limelight camera.
   */
   public void approachTargetWithVision(double xTarget) {
-    final double STEER_P = 0.035;                    
+    final double STEER_P = 0.025;                    
     final double DRIVE_P = 0.0;    
-    final double STEER_D = 0.01;                 
+    final double STEER_D = 0.005;   
+    final double STEER_I = 0.015;              
     final double targetDistance = 132;  // Inches to target       
     final double maxDrive = 0.75;        // Simple speed limit so we don't drive too fast
     final double xError;
@@ -54,8 +56,10 @@ public class Limelight extends SubsystemBase {
     xError = xTarget - tx;
     distance = (1.55)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
     SmartDashboard.putNumber("Distance", distance);
+    SmartDashboard.putNumber("TY", ty);
     distanceError = (targetDistance - distance);
     STEER_DERIVATIVE = (xError - STEER_ERROR_PRIOR)/0.02;
+    STEER_INTEGRAL = STEER_INTEGRAL + (xError*0.02);
     
     if (tv < 1.0) {
       validTarget = false;
@@ -64,7 +68,7 @@ public class Limelight extends SubsystemBase {
     } else {
       validTarget = true;
       // Start with proportional steering
-      steer_cmd = (xError * STEER_P) + (STEER_DERIVATIVE * STEER_D);
+      steer_cmd = (xError * STEER_P) + (STEER_DERIVATIVE * STEER_D) + (STEER_INTEGRAL * STEER_I);
       //SmartDashboard.putNumber("Steer Command", steer_cmd);
       // try to drive forward until the target area reaches our desired area
       //drive_cmd = (distanceError * DRIVE_P);
@@ -73,7 +77,7 @@ public class Limelight extends SubsystemBase {
         drive_cmd = maxDrive;
       }
     }
-    Robot.m_robotContainer.drivetrain.tankDrive(-steer_cmd, steer_cmd);
+    Robot.m_robotContainer.drivetrain.tankDrive(steer_cmd, -steer_cmd);
 
     STEER_ERROR_PRIOR = xError;
 
@@ -94,6 +98,8 @@ public class Limelight extends SubsystemBase {
   public boolean isFinished(){
     return isFinished;
   }
+
+  
 
   /**
    * 
@@ -130,6 +136,7 @@ public class Limelight extends SubsystemBase {
    * Clear vision tracking variables
    */
   public void clearVars(){
+    STEER_INTEGRAL = 0;
     STEER_DERIVATIVE = 0;
   }
 

@@ -64,7 +64,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void LEDGreen(){
-        SmartDashboard.putBoolean("Intake Complete?", true);
+        //SmartDashboard.putBoolean("Intake Complete?", true);
         ledMotor.set(Constants.green);
     }
 
@@ -88,19 +88,18 @@ public class Conveyor extends SubsystemBase {
 
     public void conveyorFeed(double speed){
         rightSideMotor.set(ControlMode.PercentOutput, (speed));
-        //leftSideMotor.set(ControlMode.PercentOutput, (speed));
-        centerMotor.set(ControlMode.PercentOutput, (-speed/2));
+        leftSideMotor.set(ControlMode.PercentOutput, (speed));
+        //centerMotor.set(ControlMode.PercentOutput, (-speed/2));
 
     }
 
    
 
-    public void countBalls(TimeOfFlight sensor, int ballCount){
-        if(sensor.getRange() < 100 && flag){
-            genericCount++;
+    public void countBalls(TimeOfFlight sensor){
+        if(sensor.getRange() < 150 && flag){
             flag = false;
-            ballCount = genericCount;
-        } else if(sensor.getRange() > 100 ){
+            ballsCount++;
+        } else if(sensor.getRange() > 150 ){
             flag = true;
         }
     }
@@ -121,7 +120,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void conveyorIntakeRun(){
-        countBalls(checkPointOne, ballsCount); // count balls everytime loop runs
+        countBalls(checkPointOne); // count balls everytime loop runs
         if(ballsCount <= 2){ // Enter loop b/w 0 balls and 2 balls
             LEDRed(); // TURN LED RED
             if(isBallIn(checkPointRight)){ // Check if there is a ball right under shooter
@@ -180,7 +179,7 @@ public class Conveyor extends SubsystemBase {
 
  
     public boolean leftStatus(){
-        countBalls(checkPointLeft, leftBallCount);
+        countBalls(checkPointLeft);
         if(leftBallCount >= 3){
             return true; 
         }
@@ -190,20 +189,92 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void runWithSensor(){
-        if(isBallIn(checkPointLeft)){
-            rightActivate(0);
-        } else {
+       LEDGreen();
+
             if(isBallIn(checkPointOne)){
                 for(i = 0; i < 1; i++){
                     setTime();
                 }
-                rightActivate(0.375);
+                rightSideMotor.set(ControlMode.PercentOutput, (.375));
+                centerMotor.set(ControlMode.PercentOutput, (-0.375/2));
+                leftSideMotor.set(ControlMode.PercentOutput, 0.5);
             } else {
+                if(time.get() > stopTime + 0.125){
+                    rightActivate(0);
+                    i = 0;
+                }
+            }      
+    }
+
+    public void intake(){
+        LEDRed();
+        countBalls(checkPointOne);
+        SmartDashboard.putNumber("Balls count", ballsCount);
+         if(ballsCount == 1.0){ // first ball
+            // run right side
+            if(isBallIn(checkPointOne)){
+                for(i = 0; i < 1; i++){
+                    setTime();
+                }
+                leftSideMotor.set(ControlMode.PercentOutput, (.4));
+                centerMotor.set(ControlMode.PercentOutput, (-0.4/2));
+                rightSideMotor.set(ControlMode.PercentOutput, 0.375);
+            } else {
+                if(time.get() > stopTime + 0.2){
+                    rightActivate(0);
+                    i = 0;
+                }
+            }
+        } else if(ballsCount == 2) { // 2nd ball
+            // run left side 
+            if(isBallIn(checkPointOne)){
+                for(i = 0; i < 1; i++){
+                    setTime();
+                }
+                rightSideMotor.set(ControlMode.PercentOutput, (.425));
+                centerMotor.set(ControlMode.PercentOutput, (0.4/2));
+                leftSideMotor.set(ControlMode.PercentOutput, 0.5);
+            } else {
+                rightSideMotor.set(ControlMode.PercentOutput, 0);
+                if(time.get() > stopTime + 0.25){
+                    rightActivate(0);
+                    i = 0;
+                }   
+            }
+        } else if(ballsCount == 3){ // 3rd ball
+            // run right side again
+            if(isBallIn(checkPointOne)){
+                for(i = 0; i < 1; i++){
+                    setTime();
+                }
+                leftSideMotor.set(ControlMode.PercentOutput, (.45));
+                centerMotor.set(ControlMode.PercentOutput, (-0.45/2));
+                rightSideMotor.set(ControlMode.PercentOutput, 0.45);
+            } else {
+                leftSideMotor.set(ControlMode.PercentOutput, 0);
+                if(time.get() > stopTime + 0.275){
+                    rightActivate(0);
+                    i = 0;
+                }
+            }
+        } else if(ballsCount == 4) {
+            // run left side again
+            if(isBallIn(checkPointOne)){
+                for(i = 0; i < 1; i++){
+                    setTime();
+                }
+                leftSideMotor.set(ControlMode.PercentOutput, (.4));
+                centerMotor.set(ControlMode.PercentOutput, (0.4/2));
+                rightSideMotor.set(ControlMode.PercentOutput, 0.375);
+            } else {
+                rightSideMotor.set(ControlMode.PercentOutput, 0);
                 if(time.get() > stopTime + 0.25){
                     rightActivate(0);
                     i = 0;
                 }
-            }   
+            }
+        } else {
+            
         }
     }
 
@@ -226,7 +297,7 @@ public class Conveyor extends SubsystemBase {
     }
 
     public boolean rightStatus(){ // during shooter
-        countBalls(checkPointRight, rightBallCount);
+        countBalls(checkPointRight);
         if(rightBallCount >= 2){
             return true;
         }

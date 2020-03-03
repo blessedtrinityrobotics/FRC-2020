@@ -70,8 +70,8 @@ public class Shooter extends SubsystemBase {
   public void setMotorSpeed(double speed){
     shooter1Master.set(ControlMode.PercentOutput, speed);
     shooter1Slave.set(ControlMode.PercentOutput, -speed);
-    //shooter2Master.set(ControlMode.PercentOutput, speed);
-    //shooter2Slave.set(ControlMode.PercentOutput, -speed);
+    shooter2Master.set(ControlMode.PercentOutput, speed);
+    shooter2Slave.set(ControlMode.PercentOutput, -speed);
 
   }
 

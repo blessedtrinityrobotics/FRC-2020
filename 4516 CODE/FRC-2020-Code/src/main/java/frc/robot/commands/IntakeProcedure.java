@@ -33,6 +33,8 @@ public class IntakeProcedure extends CommandBase {
     conveyor.LEDGreen();
     conveyor.setTime();
     conveyor.startTime(); 
+    conveyor.resetBallCount();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,7 +42,7 @@ public class IntakeProcedure extends CommandBase {
   public void execute() {
     intake.intakeDown(0.75);
     //conveyor.conveyorIntakeRun();
-    conveyor.runWithSensor();
+    conveyor.intake();
     
 
   }
