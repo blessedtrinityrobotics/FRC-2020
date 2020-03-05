@@ -25,9 +25,9 @@ public class Shooter extends SubsystemBase {
     
     public Shooter() {
       shooter1Master.setInverted(true);
-      shooter1Slave.setInverted(true);
+      shooter1Slave.setInverted(false);
       shooter2Master.setInverted(false);
-      shooter2Slave.setInverted(false);
+      shooter2Slave.setInverted(true);
       shooter1Master.configOpenloopRamp(2);
       shooter1Slave.configOpenloopRamp(2);
       shooter2Master.configOpenloopRamp(2);
@@ -40,6 +40,20 @@ public class Shooter extends SubsystemBase {
       shooter2Master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
       shooter1Master.setSensorPhase(true);
       shooter2Master.setSensorPhase(true);
+      shooter1Master.enableCurrentLimit(true);
+      shooter1Master.configContinuousCurrentLimit(40);
+      shooter2Master.enableCurrentLimit(true);
+      shooter2Master.configContinuousCurrentLimit(40);
+      shooter1Master.selectProfileSlot(Constants.kSlot_Shooter, Constants.PID_PRIMARY); // Profile Slot for PID Values
+      shooter1Master.config_kP(Constants.kSlot_Shooter, Constants.kGains_Shooter.kP, Constants.kTimeoutMs); // P Value
+      shooter1Master.config_kI(Constants.kSlot_Shooter, Constants.kGains_Shooter.kI, Constants.kTimeoutMs); // I Value
+      shooter1Master.config_kD(Constants.kSlot_Shooter, Constants.kGains_Shooter.kD, Constants.kTimeoutMs); // D Value
+      shooter1Master.config_kF(Constants.kSlot_Shooter, Constants.kGains_Shooter.kF, Constants.kTimeoutMs); // F Value
+      shooter2Master.selectProfileSlot(Constants.kSlot_Shooter, Constants.PID_PRIMARY); // Profile Slot for PID Values
+      shooter2Master.config_kP(Constants.kSlot_Shooter, Constants.kGains_Shooter.kP, Constants.kTimeoutMs); // P Value
+      shooter2Master.config_kI(Constants.kSlot_Shooter, Constants.kGains_Shooter.kI, Constants.kTimeoutMs); // I Value
+      shooter2Master.config_kD(Constants.kSlot_Shooter, Constants.kGains_Shooter.kD, Constants.kTimeoutMs); // D Value
+      shooter2Master.config_kF(Constants.kSlot_Shooter, Constants.kGains_Shooter.kF, Constants.kTimeoutMs); // F Value
 
     }
   
@@ -56,7 +70,7 @@ public class Shooter extends SubsystemBase {
   public void shooterRPM(double deltaX){
     initVelocity = Math.sqrt( ( (-Constants.gravity * deltaX)/( ((Constants.outerPortHeightDelta * Math.cos(Math.toRadians(Constants.launchAngle)))/(deltaX)) - Math.sin(Math.toRadians(Constants.launchAngle)) ) )/( 2 * Math.cos( Math.toRadians(Constants.launchAngle)) ) );
     RPM = (60* initVelocity)/(2 * Math.PI * Constants.shooterRadius);
-    sensorVelocity = (Constants.CPR * RPM)/(600 * Constants.gearRatioShooter);
+    sensorVelocity = (Constants.CPR * RPM)/(60 * Constants.gearRatioShooter);
 
     // shooter1Master.set(ControlMode.Velocity, sensorVelocity, DemandType.Neutral, sensorVelocity);
     // shooter1Slave.follow(shooter1Master);
@@ -69,10 +83,17 @@ public class Shooter extends SubsystemBase {
 
   public void setMotorSpeed(double speed){
     shooter1Master.set(ControlMode.PercentOutput, speed);
-    shooter1Slave.set(ControlMode.PercentOutput, -speed);
+    shooter1Slave.set(ControlMode.PercentOutput, speed);
     shooter2Master.set(ControlMode.PercentOutput, speed);
-    shooter2Slave.set(ControlMode.PercentOutput, -speed);
+    shooter2Slave.set(ControlMode.PercentOutput, speed);
 
+  }
+
+  public void setSpeed(double speed){
+    shooter1Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
+    shooter1Slave.follow(shooter1Master);
+    shooter2Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
+    shooter2Slave.follow(shooter1Master);
   }
 
   

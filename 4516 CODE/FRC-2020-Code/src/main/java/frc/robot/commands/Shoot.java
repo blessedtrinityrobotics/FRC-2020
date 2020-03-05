@@ -29,10 +29,11 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
 
+    //
     distance = Robot.m_robotContainer.limelight.getDistance();
 
-    shooter.shooterRPM(distance);
-
+    //shooter.shooterRPM(distance);
+    shooter.setSpeed(22000);
 
   }
 

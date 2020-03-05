@@ -25,6 +25,7 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.EmptyIntake;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootingS;
 import frc.robot.commands.TestShooter;
 import frc.robot.commands.ToggleLimelight;
@@ -101,6 +102,7 @@ public class RobotContainer {
     autoChooser.addOption("Drive Off Right", "rightDrive");
     autoChooser.setDefaultOption("Drive Off Forward", "driveOff");
     //autoChooser.addOption("David Drive", "davieDrive");
+    autoChooser.addOption("Shoot", "shoot");
     Shuffleboard.getTab("Autonomous").add(autoChooser);
 
   }
@@ -119,9 +121,9 @@ public class RobotContainer {
     aButtonDriver.whileHeld(new AlignRobotCenter(drivetrain, limelight)); // Align to target
     bButtonDriver.whenPressed(new ToggleLimelight(limelight)); // Turn on/off limelight
     //leftBumperButtonOperator.whileHeld(new EmptyIntake(conveyor, intake)); // Reverse intake
-    yButtonOperator.whileHeld(new TestShooter(shooter));
+    //yButtonOperator.whileHeld(new TestShooter(shooter));
     xButtonOperator.whileHeld(new ConveyorFeed(conveyor));
-    
+    yButtonOperator.whileHeld(new Shoot(shooter));
 
     //Shooting Commands 
     //xButtonOperator.whenPressed(new ShootingS());
@@ -143,6 +145,8 @@ public class RobotContainer {
       // robot on right side and shoot then drive off
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+    } else if(autoChooser.getSelected().equals("shoot")){
+      return new Shoot(shooter);
     } else {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);

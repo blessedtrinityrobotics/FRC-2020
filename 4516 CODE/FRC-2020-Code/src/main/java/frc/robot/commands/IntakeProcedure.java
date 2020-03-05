@@ -43,6 +43,7 @@ public class IntakeProcedure extends CommandBase {
     intake.intakeDown(0.75);
     //conveyor.conveyorIntakeRun();
     conveyor.intake();
+     conveyor.printTOFValues();
     
 
   }

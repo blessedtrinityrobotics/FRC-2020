@@ -69,7 +69,7 @@ public final class Constants {
   //End of XboxController Ports
 
   //Constants
-    public static final int operatingVoltage          = 11;
+    public static final int operatingVoltage          = 10;
     public static final int wheelDiameter             = 6;    // Wheel Diameter In Inches
     public static final double wheelDiameterMeters    = wheelDiameter/39.37;  // Wheel diameter in Meters
     public static final double gearRatio              = 9.97; // Gear Ratio
@@ -168,8 +168,10 @@ public static final double rightShooterXDistance = -1;     // // Shooter limelig
      * kF: 1023 represents output value to Talon at 100%, 6800 represents Velocity units at 100% output
      * Not all set of Gains are used in this project and may be removed as desired.
      * 
-   * 	                                    	          kP   kI   kD   kF   Iz   PeakOut */
-  public final static Gains kGains_Drive = new Gains( 0.0, 0.0, 0.0, 0.0, 100, 0.50 );
+   * 	                                    	            kP   kI   kD   kF   Iz   PeakOut */
+  public final static Gains kGains_Drive   = new Gains( 0.0, 0.0, 0.0, 0.0, 100, 0.50 );
+  public final static Gains kGains_Shooter = new Gains( 0.07, 0.0, 0.0, 0.05115, 100, 0.50 );
+ 
 
 
 
@@ -183,6 +185,7 @@ public static final double rightShooterXDistance = -1;     // // Shooter limelig
   public final static int PID_TURN    = 1;
   /* ---- Named slots, used to clarify code ---- */
   public final static int kSlot_Drive = 0;
+  public final static int kSlot_Shooter = 0;
 
 
 

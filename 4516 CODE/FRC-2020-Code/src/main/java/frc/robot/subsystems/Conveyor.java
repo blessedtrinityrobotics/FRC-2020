@@ -96,10 +96,10 @@ public class Conveyor extends SubsystemBase {
    
 
     public void countBalls(TimeOfFlight sensor){
-        if(sensor.getRange() < 150 && flag){
+        if(sensor.getRange() < 100 && flag){
             flag = false;
             ballsCount++;
-        } else if(sensor.getRange() > 150 ){
+        } else if(sensor.getRange() > 100 ){
             flag = true;
         }
     }
@@ -112,7 +112,7 @@ public class Conveyor extends SubsystemBase {
         
    
     public boolean isBallIn (TimeOfFlight sensor){
-        if(sensor.getRange() < 150 ){
+        if(sensor.getRange() < 100 ){
             return true;
         } else {
             return false;
@@ -170,11 +170,9 @@ public class Conveyor extends SubsystemBase {
     }
 
     public void printTOFValues(){
-        SmartDashboard.putBoolean("Time Of Flight Value Right Side ", isBallIn(checkPointRight));
         
-        SmartDashboard.putBoolean("Time Of Flight Value Left Side ", isBallIn(checkPointLeft));
         
-        SmartDashboard.putBoolean("Time Of Flight Value Intake Side ",isBallIn(checkPointOne));
+        SmartDashboard.putNumber("Time Of Flight Value Intake Side ", checkPointOne.getRange());
     }
 
  
@@ -210,6 +208,7 @@ public class Conveyor extends SubsystemBase {
         LEDRed();
         countBalls(checkPointOne);
         SmartDashboard.putNumber("Balls count", ballsCount);
+        System.out.println("Check point one: " + checkPointOne.getRange());
          if(ballsCount == 1.0){ // first ball
             // run right side
             if(isBallIn(checkPointOne)){
