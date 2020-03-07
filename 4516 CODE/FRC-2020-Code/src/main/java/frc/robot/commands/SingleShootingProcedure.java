@@ -20,6 +20,6 @@ public class SingleShootingProcedure extends ParallelCommandGroup {
   public SingleShootingProcedure() {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
-    super(new AlignRobotCenter(Robot.m_robotContainer.drivetrain, Robot.m_robotContainer.limelight) ,new ConveyorFeed(Robot.m_robotContainer.conveyor), new Shoot(Robot.m_robotContainer.shooter));
+    super(/*new AlignRobotCenter(Robot.m_robotContainer.drivetrain, Robot.m_robotContainer.limelight) ,*/ new ConveyorFeed(Robot.m_robotContainer.conveyor), new Shoot(Robot.m_robotContainer.shooter));
   }
 }

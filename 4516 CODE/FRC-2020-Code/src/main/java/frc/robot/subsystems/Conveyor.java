@@ -35,6 +35,7 @@ public class Conveyor extends SubsystemBase {
     private double stopTime         = 0;
     private int i                   = 0;
     private double waitTime         = 0;
+    private boolean ready           = false;
 
 
     public Conveyor() {
@@ -59,7 +60,7 @@ public class Conveyor extends SubsystemBase {
 
     
     public void LEDRed(){
-        SmartDashboard.putBoolean("Intake Complete?", false);
+        //SmartDashboard.putBoolean("Intake Complete?", false);
         ledMotor.set(Constants.red );
     }
 
@@ -96,10 +97,10 @@ public class Conveyor extends SubsystemBase {
    
 
     public void countBalls(TimeOfFlight sensor){
-        if(sensor.getRange() < 100 && flag){
+        if(sensor.getRange() < 150 && flag){
             flag = false;
             ballsCount++;
-        } else if(sensor.getRange() > 100 ){
+        } else if(sensor.getRange() > 150 ){
             flag = true;
         }
     }
@@ -119,59 +120,8 @@ public class Conveyor extends SubsystemBase {
         }
     }
 
-    public void conveyorIntakeRun(){
-        countBalls(checkPointOne); // count balls everytime loop runs
-        if(ballsCount <= 2){ // Enter loop b/w 0 balls and 2 balls
-            LEDRed(); // TURN LED RED
-            if(isBallIn(checkPointRight)){ // Check if there is a ball right under shooter
-                rightActivate(0);
-                s = true; 
-            } else { // No ball under shooter -> continue
-                if(isBallIn(checkPointOne)){
-                    for(i = 0; i < 1; i++){
-                        setTime();
-                    }
-                    rightActivate(0.375);
-                } else {
-                    if(time.get() > stopTime + 0.1875){
-                        rightActivate(0);
-                        i = 0;
-                    }
-                } 
-            }
-        } else { 
-            s = true; // Set flag variable to true after 2 balls have entered
-        }
 
-        if(s && ballsCount <= 5){ // Flag set to true -> Switch conveyor sides
-            if(isBallIn(checkPointLeft)){ // Check if there is a ball right under shooter
-                leftActivate(0);
-                s = true; 
-                LEDGreen(); // TURN LED GREEN - INTAKE FINISHED
-            } else { // No ball under shooter -> continue
-                if(isBallIn(checkPointOne)){
-                    for(i = 0; i < 1; i++){
-                        setTime();
-                    }
-                    leftActivate(0.375);
-                } else {
-                    if(time.get() > stopTime + 0.1875){
-                        leftActivate(0);
-                        i = 0;
-                    }
-                } 
-            }
-        } else { // Intake finished -> reset all variables
-            s = false;
-            isFinished = true;
-            resetBallCount();
-        }
-        
-    }
-
-    public void printTOFValues(){
-        
-        
+    public void printTOFValues(){   
         SmartDashboard.putNumber("Time Of Flight Value Intake Side ", checkPointOne.getRange());
     }
 
@@ -208,7 +158,7 @@ public class Conveyor extends SubsystemBase {
         LEDRed();
         countBalls(checkPointOne);
         SmartDashboard.putNumber("Balls count", ballsCount);
-        System.out.println("Check point one: " + checkPointOne.getRange());
+        //SmartDashboard.putNumber("intake sensor", checkPointOne.getRange());
          if(ballsCount == 1.0){ // first ball
             // run right side
             if(isBallIn(checkPointOne)){
@@ -277,6 +227,33 @@ public class Conveyor extends SubsystemBase {
         }
     }
 
+    public void shooterFeed(){
+        for(i = 0; i < 1; i++){
+           // System.out.println("set time");
+        }
+       // SmartDashboard.putBoolean("Ready?", ready);
+        if(time.get() >= stopTime + 3 && !ready) {
+            i = 0;
+            ready = true;
+            //System.out.println("ready!");
+            
+        }
+
+        if(ready){
+    
+            if(time.get() > stopTime + 6) {
+                i = 0;
+                conveyorFeed(0);
+                isFinished = true;
+                ready = false;
+            } else {
+                conveyorFeed(0.5);
+                
+            }
+     
+        }
+    }
+
     public double getTime(){
         return time.get();
     }
@@ -295,6 +272,14 @@ public class Conveyor extends SubsystemBase {
         return waitTime;
     }
 
+    public void decrementBallCount(){
+        ballsCount--;
+    }
+
+    public void incrementBallCount(){
+        ballsCount++;
+    }
+
     public boolean rightStatus(){ // during shooter
         countBalls(checkPointRight);
         if(rightBallCount >= 2){
@@ -304,6 +289,8 @@ public class Conveyor extends SubsystemBase {
             return false;
         }
     }
+
+    
 
     public void conveyorStop(){
         leftActivate(0);

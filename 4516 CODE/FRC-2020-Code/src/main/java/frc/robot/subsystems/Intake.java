@@ -23,10 +23,10 @@ public class Intake extends SubsystemBase {
     // Starts Intake Motors
   private static VictorSPX leftIntake   = new VictorSPX(Constants.leftIntakePort);
   private static VictorSPX rightIntake  = new VictorSPX(Constants.rightIntakePort);
- // private DoubleSolenoid intakeSolenoid =  new DoubleSolenoid(Constants.solenoidChlTwo,Constants.solenoidChlOne);
+  private DoubleSolenoid intakeSolenoid =  new DoubleSolenoid(Constants.solenoidChlTwo,Constants.solenoidChlOne);
 
   public Intake() {
-    //intakeSolenoid.clearAllPCMStickyFaults();
+    intakeSolenoid.clearAllPCMStickyFaults();
     leftIntake.setInverted(true);
     rightIntake.setInverted(false);
     leftIntake.setNeutralMode(NeutralMode.Brake);
@@ -34,13 +34,13 @@ public class Intake extends SubsystemBase {
   }
 
     public void intakeUp(){
-     // intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+      intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
       setIntakeMotors(0);
     }
 
 
     public void intakeDown(double speed){
-     // intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+      intakeSolenoid.set(DoubleSolenoid.Value.kForward);
       setIntakeMotors(speed);
     }
 

@@ -29,7 +29,7 @@ public class EmptyIntake extends CommandBase {
   @Override
   public void execute() {
     intake.setIntakeMotors(-0.5);
-    //conveyor.rightActivate(-0.25);
+    conveyor.conveyorFeed(-0.25);
     
   }
 
@@ -37,6 +37,7 @@ public class EmptyIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     intake.setIntakeMotors(0);
+    conveyor.conveyorFeed(0);
   }
 
   // Returns true when the command should end.

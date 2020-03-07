@@ -19,16 +19,21 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AlignRobotCenter;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.CheckForValidTarget;
 import frc.robot.commands.ConveyorFeed;
+import frc.robot.commands.ConveyorReverse;
+import frc.robot.commands.DecrementCount;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EmptyIntake;
+import frc.robot.commands.IncrementCount;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootingS;
 import frc.robot.commands.TestShooter;
 import frc.robot.commands.ToggleLimelight;
+import frc.robot.commands.resetBalls;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Intake;
@@ -120,10 +125,13 @@ public class RobotContainer {
     bButtonOperator.whenPressed(new IntakeUp(intake)); // Intake up and stop intake procedure
     aButtonDriver.whileHeld(new AlignRobotCenter(drivetrain, limelight)); // Align to target
     bButtonDriver.whenPressed(new ToggleLimelight(limelight)); // Turn on/off limelight
-    //leftBumperButtonOperator.whileHeld(new EmptyIntake(conveyor, intake)); // Reverse intake
-    //yButtonOperator.whileHeld(new TestShooter(shooter));
-    xButtonOperator.whileHeld(new ConveyorFeed(conveyor));
-    yButtonOperator.whileHeld(new Shoot(shooter));
+    xButtonOperator.whileHeld(new ConveyorFeed(conveyor)); // Feed conveyor to shoot
+    yButtonOperator.whileHeld(new Shoot(shooter)); // Shoot balls when robot is on white line
+    leftBumperButtonOperator.whenPressed(new DecrementCount(conveyor)); // Decrement Ball Count
+    rightBumperButtonOperator.whenPressed(new IncrementCount(conveyor)); // Increment Ball count
+    leftStickButtonOperator.whileHeld(new ConveyorReverse(conveyor));
+    rightStickButtonOperator.whenPressed(new resetBalls(conveyor));
+    xButtonDriver.whileHeld(new EmptyIntake(conveyor, intake));
 
     //Shooting Commands 
     //xButtonOperator.whenPressed(new ShootingS());
@@ -146,7 +154,8 @@ public class RobotContainer {
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
     } else if(autoChooser.getSelected().equals("shoot")){
-      return new Shoot(shooter);
+      Command ramsete = generateRamseteCommand(Trajectories.driveOff);
+      return new AutoShoot(shooter, conveyor).andThen(ramsete).andThen(() -> drivetrain.tankDrive(0, 0));
     } else {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);

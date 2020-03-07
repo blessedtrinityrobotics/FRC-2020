@@ -20,18 +20,14 @@ public class ConveyorFeed extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    conveyor.startTime(); 
-    conveyor.setTime();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(conveyor.getTime() > conveyor.getWaitTime() + 1 ){
-      conveyor.conveyorFeed(0);
-    } else {
+
       conveyor.conveyorFeed(0.75);
-    }
   }
   
 

@@ -56,7 +56,7 @@ public class Limelight extends SubsystemBase {
     xError = xTarget - tx;
     distance = (1.55)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
     SmartDashboard.putNumber("Distance", distance);
-    SmartDashboard.putNumber("TY", ty);
+    //SmartDashboard.putNumber("TY", ty);
     distanceError = (targetDistance - distance);
     STEER_DERIVATIVE = (xError - STEER_ERROR_PRIOR)/0.02;
     STEER_INTEGRAL = STEER_INTEGRAL + (xError*0.02);
