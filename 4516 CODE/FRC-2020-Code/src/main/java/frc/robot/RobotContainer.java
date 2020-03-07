@@ -23,15 +23,13 @@ import frc.robot.commands.AutoShoot;
 import frc.robot.commands.CheckForValidTarget;
 import frc.robot.commands.ConveyorFeed;
 import frc.robot.commands.ConveyorReverse;
-import frc.robot.commands.DecrementCount;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EmptyIntake;
-import frc.robot.commands.IncrementCount;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
+import frc.robot.commands.RunLeftSideSensor;
+import frc.robot.commands.RunRightSideSensor;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.ShootingS;
-import frc.robot.commands.TestShooter;
 import frc.robot.commands.ToggleLimelight;
 import frc.robot.commands.resetBalls;
 import frc.robot.subsystems.Conveyor;
@@ -121,17 +119,23 @@ public class RobotContainer {
   private void configureButtonBindings() {
         
     //Intake Commands 
-    aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor)); // Intake down and start intake procedure
-    bButtonOperator.whenPressed(new IntakeUp(intake)); // Intake up and stop intake procedure
+    //aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor)); // Intake down and start intake procedure
     aButtonDriver.whileHeld(new AlignRobotCenter(drivetrain, limelight)); // Align to target
     bButtonDriver.whenPressed(new ToggleLimelight(limelight)); // Turn on/off limelight
+    
+    //leftStickButtonOperator.whileHeld(new ConveyorReverse(conveyor));
+    //rightStickButtonOperator.whenPressed(new resetBalls(conveyor));
+
+    leftBumperButtonOperator.whileHeld(new RunLeftSideSensor(intake, conveyor));
+    rightBumperButtonOperator.whileHeld(new RunRightSideSensor(intake, conveyor));
+    bButtonOperator.whenPressed(new IntakeUp(intake)); // Intake up and stop intake procedure
+    aButtonOperator.whileHeld(new EmptyIntake(conveyor, intake));
     xButtonOperator.whileHeld(new ConveyorFeed(conveyor)); // Feed conveyor to shoot
     yButtonOperator.whileHeld(new Shoot(shooter)); // Shoot balls when robot is on white line
-    leftBumperButtonOperator.whenPressed(new DecrementCount(conveyor)); // Decrement Ball Count
-    rightBumperButtonOperator.whenPressed(new IncrementCount(conveyor)); // Increment Ball count
     leftStickButtonOperator.whileHeld(new ConveyorReverse(conveyor));
-    rightStickButtonOperator.whenPressed(new resetBalls(conveyor));
-    xButtonDriver.whileHeld(new EmptyIntake(conveyor, intake));
+
+
+
 
     //Shooting Commands 
     //xButtonOperator.whenPressed(new ShootingS());

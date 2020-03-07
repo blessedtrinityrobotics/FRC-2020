@@ -9,37 +9,43 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Intake;
 
-public class DecrementCount extends CommandBase {
+public class RunLeftSideSensor extends CommandBase {
   private Conveyor conveyor;
-  private boolean done = false;
-  public DecrementCount(Conveyor subsystem) {
+  private Intake intake;
+  public RunLeftSideSensor(Intake subIntake, Conveyor subConveyor) {
+    intake = subIntake;
+    conveyor = subConveyor;
+    addRequirements(intake, conveyor);
     // Use addRequirements() here to declare subsystem dependencies.
-    conveyor = subsystem;
-    addRequirements(conveyor);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    done = false;
-    conveyor.decrementBallCount();
+    conveyor.startTime(); 
+    conveyor.setTime();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    done = true;
+    intake.intakeDown(0.75);
+    conveyor.leftWithSensor();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intake.setIntakeMotors(0);
+    conveyor.conveyorFeed(0);
+    conveyor.incrementBallCount();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return done;
+    return false;
   }
 }

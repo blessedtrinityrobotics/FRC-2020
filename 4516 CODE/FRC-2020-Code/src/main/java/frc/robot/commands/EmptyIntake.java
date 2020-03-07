@@ -28,6 +28,7 @@ public class EmptyIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    intake.lowerIntake();
     intake.setIntakeMotors(-0.5);
     conveyor.conveyorFeed(-0.25);
     

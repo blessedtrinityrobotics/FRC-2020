@@ -8,45 +8,44 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.subsystems.Drivebase;
-import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Intake;
 
-public class AlignRight extends CommandBase {
-  private final Drivebase drivebase;
-  private final Limelight limelight; 
-  /**
-   * Creates a new AlignRight.
-   */
-  public AlignRight(Drivebase subsystem, Limelight limeLightSub1) {
+public class RunRightSideSensor extends CommandBase {
+  private Conveyor conveyor;
+  private Intake intake;
+  public RunRightSideSensor(Intake subIntake, Conveyor subConveyor) {
+    intake = subIntake;
+    conveyor = subConveyor;
+    addRequirements(intake, conveyor);
     // Use addRequirements() here to declare subsystem dependencies.
-    drivebase = subsystem;
-    limelight = limeLightSub1;
-    addRequirements(drivebase, limelight);
-
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    conveyor.startTime(); 
+    conveyor.setTime();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.m_robotContainer.limelight.approachTargetWithVision(Constants.rightShooterXDistance);
+    intake.intakeDown(0.75);
+    conveyor.rightWithSensor();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.m_robotContainer.drivetrain.tankDrive(0, 0);
+    intake.setIntakeMotors(0);
+    conveyor.conveyorFeed(0);
+    conveyor.incrementBallCount();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Robot.m_robotContainer.limelight.isFinished();
+    return false;
   }
 }

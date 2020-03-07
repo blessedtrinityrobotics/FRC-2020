@@ -227,6 +227,39 @@ public class Conveyor extends SubsystemBase {
         }
     }
 
+    public void leftWithSensor(){
+        if(isBallIn(checkPointOne)){
+            for(i = 0; i < 1; i++){
+                setTime();
+            }
+            leftSideMotor.set(ControlMode.PercentOutput, (.4));
+            centerMotor.set(ControlMode.PercentOutput, (0.4/2));
+            rightSideMotor.set(ControlMode.PercentOutput, 0.375);
+        } else {
+            rightSideMotor.set(ControlMode.PercentOutput, 0);
+            if(time.get() > stopTime + 0.25){
+                rightActivate(0);
+                i = 0;
+            }
+        }
+    }
+
+    public void rightWithSensor(){
+        if(isBallIn(checkPointOne)){
+            for(i = 0; i < 1; i++){
+                setTime();
+            }
+            leftSideMotor.set(ControlMode.PercentOutput, (.4));
+            centerMotor.set(ControlMode.PercentOutput, (-0.4/2));
+            rightSideMotor.set(ControlMode.PercentOutput, 0.375);
+        } else {
+            if(time.get() > stopTime + 0.2){
+                rightActivate(0);
+                i = 0;
+            }
+        }
+    }
+
     public void shooterFeed(){
         for(i = 0; i < 1; i++){
            // System.out.println("set time");
