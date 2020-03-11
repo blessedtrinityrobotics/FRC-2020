@@ -77,7 +77,7 @@ public class Drive extends CommandBase {
       double leftOutput = -triggerValue1 + turnValue1;
       double rightOutput = -triggerValue1 - turnValue1;
       drivetrain.tankDrive(leftOutput, rightOutput );
-      SmartDashboard.putNumber("Forward power", triggerValue1);
+      //SmartDashboard.putNumber("Forward power", triggerValue1);
 
       //drivetrain.tankDrive(leftStickY, rightStickY);
       /*

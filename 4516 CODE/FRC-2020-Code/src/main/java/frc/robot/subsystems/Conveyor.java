@@ -20,6 +20,7 @@ public class Conveyor extends SubsystemBase {
     private static TalonSRX leftSideMotor       = new TalonSRX(Constants.leftSideMotorPort);
     private static VictorSPX rightSideMotor     = new VictorSPX(Constants.rightSideMotorPort);
     private static VictorSPX centerMotor        = new VictorSPX(Constants.centerMotorPort);
+    private static VictorSPX feederMotor        = new VictorSPX(Constants.shooterFeedMotorPort);
     private static TimeOfFlight checkPointOne   = new TimeOfFlight(Constants.checkPointOnePort);
     private static TimeOfFlight checkPointRight = new TimeOfFlight(Constants.checkPointRightPort);
     private static TimeOfFlight checkPointLeft  = new TimeOfFlight(Constants.checkPointLeftPort);
@@ -42,14 +43,15 @@ public class Conveyor extends SubsystemBase {
         leftSideMotor.setNeutralMode(NeutralMode.Brake);
         rightSideMotor.setNeutralMode(NeutralMode.Brake);
         centerMotor.setNeutralMode(NeutralMode.Brake);
+        feederMotor.setNeutralMode(NeutralMode.Brake);
+        feederMotor.setInverted(false);
         leftSideMotor.setInverted(false);
         rightSideMotor.setInverted(true);
-        leftSideMotor.setNeutralMode(NeutralMode.Brake);
-        rightSideMotor.setNeutralMode(NeutralMode.Brake);
-        centerMotor.setNeutralMode(NeutralMode.Brake);
+        centerMotor.setInverted(false);
         checkPointOne.setRangingMode(RangingMode.Short, 24);
         checkPointRight.setRangingMode(RangingMode.Short, 24);
         checkPointLeft.setRangingMode(RangingMode.Short, 24);
+
         time = new Timer();
     }
   
@@ -90,8 +92,18 @@ public class Conveyor extends SubsystemBase {
     public void conveyorFeed(double speed){
         rightSideMotor.set(ControlMode.PercentOutput, (speed));
         leftSideMotor.set(ControlMode.PercentOutput, (speed));
+        feederMotor.set(ControlMode.PercentOutput, speed);
         //centerMotor.set(ControlMode.PercentOutput, (-speed/2));
 
+    }
+
+    public void conveyorShooterFeed(double speed){
+        feederMotor.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void conveyorSideFeed(double left, double right){
+        rightSideMotor.set(ControlMode.PercentOutput, (right));
+        leftSideMotor.set(ControlMode.PercentOutput, (left));
     }
 
    

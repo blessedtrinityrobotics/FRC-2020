@@ -38,6 +38,7 @@ public final class Constants {
     public static final int leftSideMotorPort        = 3;
     public static final int rightSideMotorPort       = 14;
     public static final int centerMotorPort          = 15;
+    public static final int shooterFeedMotorPort     = 11;
     // Shooter Motors
     public static final int shooter1MasterPort       = 6; 
     public static final int shooter1SlavePort        = 12;

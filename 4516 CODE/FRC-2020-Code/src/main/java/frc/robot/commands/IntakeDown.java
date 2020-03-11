@@ -8,36 +8,39 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Intake;
 
-public class ConveyorReverse extends CommandBase {
-  private final Conveyor conveyor; 
-  public ConveyorReverse(Conveyor subsystem2) {
-    conveyor = subsystem2;
-    addRequirements(conveyor);
+public class IntakeDown extends CommandBase {
+  private Intake intake;
+  private boolean done = false;
+  public IntakeDown(Intake subsystem) {
+    intake = subsystem;
+    addRequirements(intake);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    done = false;
+    intake.lowerIntake();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    conveyor.conveyorSideFeed(-0.75, -0.5);
-    
+    done = true;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    conveyor.leftActivate(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return done;
   }
 }

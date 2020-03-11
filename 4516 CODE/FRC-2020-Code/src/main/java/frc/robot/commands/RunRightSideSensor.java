@@ -40,7 +40,7 @@ public class RunRightSideSensor extends CommandBase {
   public void end(boolean interrupted) {
     intake.setIntakeMotors(0);
     conveyor.conveyorFeed(0);
-    conveyor.incrementBallCount();
+    conveyor.rightActivate(0);
   }
 
   // Returns true when the command should end.

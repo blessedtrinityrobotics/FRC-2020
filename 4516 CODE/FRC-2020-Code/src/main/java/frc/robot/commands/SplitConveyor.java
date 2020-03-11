@@ -10,11 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 
-public class ConveyorReverse extends CommandBase {
-  private final Conveyor conveyor; 
-  public ConveyorReverse(Conveyor subsystem2) {
-    conveyor = subsystem2;
+public class SplitConveyor extends CommandBase {
+  private Conveyor conveyor;
+  public SplitConveyor(Conveyor subsystem) {
+    conveyor = subsystem;
     addRequirements(conveyor);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -25,14 +26,15 @@ public class ConveyorReverse extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    conveyor.conveyorSideFeed(-0.75, -0.5);
-    
+    conveyor.conveyorShooterFeed(0.25);
+    conveyor.conveyorSideFeed(-0.25, -0.25);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    conveyor.leftActivate(0);
+    conveyor.conveyorFeed(0);
+    conveyor.rightActivate(0);
   }
 
   // Returns true when the command should end.

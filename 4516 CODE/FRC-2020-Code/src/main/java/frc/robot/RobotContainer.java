@@ -25,11 +25,14 @@ import frc.robot.commands.ConveyorFeed;
 import frc.robot.commands.ConveyorReverse;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EmptyIntake;
+import frc.robot.commands.IntakeDown;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
 import frc.robot.commands.RunLeftSideSensor;
 import frc.robot.commands.RunRightSideSensor;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.ShooterFeedReverse;
+import frc.robot.commands.SplitConveyor;
 import frc.robot.commands.ToggleLimelight;
 import frc.robot.commands.resetBalls;
 import frc.robot.subsystems.Conveyor;
@@ -133,7 +136,9 @@ public class RobotContainer {
     xButtonOperator.whileHeld(new ConveyorFeed(conveyor)); // Feed conveyor to shoot
     yButtonOperator.whileHeld(new Shoot(shooter)); // Shoot balls when robot is on white line
     leftStickButtonOperator.whileHeld(new ConveyorReverse(conveyor));
-
+    rightStickButtonOperator.whenPressed(new IntakeDown(intake));
+    backButtonOperator.whileHeld(new ShooterFeedReverse(conveyor, 0.5));
+    startButtonOperator.whileHeld(new SplitConveyor(conveyor));
 
 
 

@@ -27,7 +27,7 @@ public class Shooter extends SubsystemBase {
       shooter1Master.setInverted(true);
       shooter1Slave.setInverted(false);
       shooter2Master.setInverted(false);
-      shooter2Slave.setInverted(true);
+      shooter2Slave.setInverted(false);
       shooter1Master.configOpenloopRamp(2);
       shooter1Slave.configOpenloopRamp(2);
       shooter2Master.configOpenloopRamp(2);
