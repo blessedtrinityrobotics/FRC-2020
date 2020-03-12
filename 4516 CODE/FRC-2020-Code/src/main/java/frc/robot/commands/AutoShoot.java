@@ -25,6 +25,7 @@ public class AutoShoot extends CommandBase {
 
     conveyor.startTime(); 
     conveyor.setTime();
+    
   
   }
 

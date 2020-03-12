@@ -94,6 +94,7 @@ public class Shooter extends SubsystemBase {
     shooter1Slave.follow(shooter1Master);
     shooter2Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
     shooter2Slave.follow(shooter1Master);
+    SmartDashboard.putNumber("Shooter speed", shooter1Master.getSelectedSensorVelocity());
   }
 
   

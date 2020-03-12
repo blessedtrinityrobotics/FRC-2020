@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
  */
 public final class Constants {
 
+
   // Motor Ports
     // Left Drive Train GB Motors
     public static final int  leftMasterMotorPort     = 5;
@@ -171,7 +172,7 @@ public static final double rightShooterXDistance = -1;     // // Shooter limelig
      * 
    * 	                                    	            kP   kI   kD   kF   Iz   PeakOut */
   public final static Gains kGains_Drive   = new Gains( 0.0, 0.0, 0.0, 0.0, 100, 0.50 );
-  public final static Gains kGains_Shooter = new Gains( 0.07, 0.0, 0.0, 0.05115, 100, 0.50 );
+  public final static Gains kGains_Shooter = new Gains( 0.25, 0.0, 0.05, 0.075, 100, 0.50 );
  
 
 
