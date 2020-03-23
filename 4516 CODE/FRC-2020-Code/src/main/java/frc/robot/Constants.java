@@ -49,8 +49,8 @@ public final class Constants {
 
   // Time of Flight Sensor Ports
     public static final int checkPointOnePort        = 16;
-    public static final int checkPointRightPort      = 18;
-    public static final int checkPointLeftPort       = 17;
+    public static final int checkPointRightPort      = 17;
+    public static final int checkPointLeftPort       = 18;
   // End of ToF Sensor Ports
 
 

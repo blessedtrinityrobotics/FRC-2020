@@ -37,6 +37,8 @@ public class Conveyor extends SubsystemBase {
     private int i                   = 0;
     private double waitTime         = 0;
     private boolean ready           = false;
+    private boolean stage1          = false;
+    private boolean done            = false;
 
 
     public Conveyor() {
@@ -48,7 +50,7 @@ public class Conveyor extends SubsystemBase {
         leftSideMotor.setInverted(false);
         rightSideMotor.setInverted(true);
         centerMotor.setInverted(false);
-        checkPointOne.setRangingMode(RangingMode.Short, 24);
+        checkPointOne.setRangingMode(RangingMode.Medium, 50);
         checkPointRight.setRangingMode(RangingMode.Short, 24);
         checkPointLeft.setRangingMode(RangingMode.Short, 24);
 
@@ -108,14 +110,14 @@ public class Conveyor extends SubsystemBase {
 
    
 
-    public void countBalls(TimeOfFlight sensor){
-        if(sensor.getRange() < 150 && flag){
-            flag = false;
-            ballsCount++;
-        } else if(sensor.getRange() > 150 ){
-            flag = true;
-        }
-    }
+    // public void countBalls(TimeOfFlight sensor){
+    //     if(sensor.getRange() < 150 && flag){
+    //         flag = false;
+    //         ballsCount++;
+    //     } else if(sensor.getRange() > 150 ){
+    //         flag = true;
+    //     }
+    // }
 
 
 
@@ -125,7 +127,13 @@ public class Conveyor extends SubsystemBase {
         
    
     public boolean isBallIn (TimeOfFlight sensor){
-        if(sensor.getRange() < 100 ){
+        double maxValue = 0;
+        if(sensor == checkPointRight || sensor == checkPointLeft){
+            maxValue = 100;
+        } else {
+            maxValue = 90;
+        }
+        if(sensor.getRange() < maxValue && sensor.getRange() > 25 ){
             return true;
         } else {
             return false;
@@ -134,41 +142,83 @@ public class Conveyor extends SubsystemBase {
 
 
     public void printTOFValues(){   
+        SmartDashboard.putNumber("Time Of Flight Value Right Side ", checkPointRight.getRange());
         SmartDashboard.putNumber("Time Of Flight Value Intake Side ", checkPointOne.getRange());
+        //SmartDashboard.putBoolean("Stage 1 ", stage1);
     }
 
- 
-    public boolean leftStatus(){
-        countBalls(checkPointLeft);
-        if(leftBallCount >= 3){
-            return true; 
-        }
-        else {
-            return false; 
-        }
+    /**
+     * 
+     * @param centerSpeed Speed for center motor - left: negative; right: positive
+     * @param leftSpeed Speed for left conveyor - in: positive; out: negative
+     * @param rightSpeed Speed for right conveyor - in: positive; out: negative
+     * @param feedSpeed Speed for feeder motor in conveyor - feed in: positive; feed out: negative
+     */
+    public void setConveyorMotors(double centerSpeed, double leftSpeed, double rightSpeed, double feedSpeed){
+        rightSideMotor.set(ControlMode.PercentOutput, rightSpeed);
+        leftSideMotor.set(ControlMode.PercentOutput, leftSpeed);
+        centerMotor.set(ControlMode.PercentOutput, centerSpeed);
+        feederMotor.set(ControlMode.PercentOutput, feedSpeed);
     }
 
-    public void runWithSensor(){
-       LEDGreen();
 
-            if(isBallIn(checkPointOne)){
+    public void splitConveyorProcedure(){
+        //SmartDashboard.putString("State", "Waiting for ball");
+        //SmartDashboard.putNumber("Balls Count", ballsCount);
+        if(isBallIn(checkPointOne)){
+            stage1 = true;
+            //SmartDashboard.putString("State", "In first sensor");  
+        } else {
+            //SmartDashboard.putString("State", "Left first sensor");  
+        }
+        if(stage1){
+            setConveyorMotors(-0.5, 0.5, 0.5, 0);
+            if(isBallIn(checkPointRight)){
+                
+                //SmartDashboard.putString("State", "Under 2nd sensor");
+                //SmartDashboard.putBoolean("Stage 1", false);
+                //SmartDashboard.putBoolean("Stage 2", true);
                 for(i = 0; i < 1; i++){
-                    setTime();
-                }
-                rightSideMotor.set(ControlMode.PercentOutput, (.375));
-                centerMotor.set(ControlMode.PercentOutput, (-0.375/2));
-                leftSideMotor.set(ControlMode.PercentOutput, 0.5);
-            } else {
+                   
+                    if(!flag){
+                        flag = true;
+                        setTime();
+                        
+                    }
+                    
+                } 
+
                 if(time.get() > stopTime + 0.125){
-                    rightActivate(0);
+                    //SmartDashboard.putString("State", "End");
+                    setConveyorMotors(0, 0, 0, 0);
                     i = 0;
+                    ballsCount++;
+                    //System.out.println("incremented ball count once");
+                    stage1 = false;
+                } else {
+                    //SmartDashboard.putString("State", "running motors");
+                    //setConveyorMotors(-0.5, 0.5, 0.5, 0.1); 
                 }
-            }      
+                
+            } else {
+                
+            }
+        } else {
+            setConveyorMotors(0, 0, 0, 0);
+            done = true;
+            //flag = true;
+            SmartDashboard.putNumber("Balls Count", ballsCount);
+        }
     }
+
+    public boolean doneBoolean(){
+        return done;
+    }
+
 
     public void intake(){
         LEDRed();
-        countBalls(checkPointOne);
+        //countBalls(checkPointOne);
         SmartDashboard.putNumber("Balls count", ballsCount);
         //SmartDashboard.putNumber("intake sensor", checkPointOne.getRange());
          if(ballsCount == 1.0){ // first ball
@@ -325,17 +375,7 @@ public class Conveyor extends SubsystemBase {
         ballsCount++;
     }
 
-    public boolean rightStatus(){ // during shooter
-        countBalls(checkPointRight);
-        if(rightBallCount >= 2){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    
+       
 
     public void conveyorStop(){
         leftActivate(0);
