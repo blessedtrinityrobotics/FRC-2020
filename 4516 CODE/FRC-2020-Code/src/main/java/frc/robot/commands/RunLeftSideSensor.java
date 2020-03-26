@@ -24,28 +24,25 @@ public class RunLeftSideSensor extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    conveyor.startTime(); 
-    conveyor.setTime();
+    conveyor.startTime();
+    //conveyor.resetI();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.intakeDown(0.75);
-    conveyor.leftWithSensor();
+    conveyor.conveyorFeedTime();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setIntakeMotors(0);
-    conveyor.conveyorFeed(0);
-    conveyor.rightActivate(0);
+    //conveyor.setConveyorMotors(0, 0, 0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return conveyor.doneBoolean();
   }
 }

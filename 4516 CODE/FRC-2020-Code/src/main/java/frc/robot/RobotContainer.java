@@ -129,7 +129,7 @@ public class RobotContainer {
     //leftStickButtonOperator.whileHeld(new ConveyorReverse(conveyor));
     //rightStickButtonOperator.whenPressed(new resetBalls(conveyor));
 
-    leftBumperButtonOperator.whileHeld(new RunLeftSideSensor(intake, conveyor));
+    leftBumperButtonOperator.whenPressed(new RunLeftSideSensor(intake, conveyor));
     rightBumperButtonOperator.whenPressed(new RunRightSideSensor(intake, conveyor));
     bButtonOperator.whenPressed(new IntakeUp(intake)); // Intake up and stop intake procedure
     aButtonOperator.whileHeld(new EmptyIntake(conveyor, intake));

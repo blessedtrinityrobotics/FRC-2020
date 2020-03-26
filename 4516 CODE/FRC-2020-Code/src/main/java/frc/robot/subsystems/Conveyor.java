@@ -29,12 +29,13 @@ public class Conveyor extends SubsystemBase {
     private int ballsCount          = 0;
     private int rightBallCount      = 0;
     private int leftBallCount       = 0; 
-    private boolean flag            = true;
+    private boolean flag            = false;
     private boolean s               = false; 
     private boolean isFinished      = false;
     private Timer time;
     private double stopTime         = 0;
     private int i                   = 0;
+    private int j                   = 0;
     private double waitTime         = 0;
     private boolean ready           = false;
     private boolean stage1          = false;
@@ -121,8 +122,12 @@ public class Conveyor extends SubsystemBase {
 
 
 
-    public int getBallCount(int ballCount){
-        return ballCount;
+    public int getBallCount(){
+        return ballsCount;
+    }
+
+    public void setBallCount(int n){
+        ballsCount = n;
     }
         
    
@@ -162,7 +167,19 @@ public class Conveyor extends SubsystemBase {
     }
 
 
-    public void splitConveyorProcedure(){
+    /**
+     * @param leftSide Run left side of onveyor: true, else run right
+     */
+    public void engageConveyor(boolean leftSide){
+        TimeOfFlight sensor;
+        double direction = 0;
+        if(leftSide){
+            sensor = checkPointLeft;
+            direction = 1.0;
+        } else {
+            direction = -1.0;
+            sensor = checkPointRight;
+        }
         //SmartDashboard.putString("State", "Waiting for ball");
         //SmartDashboard.putNumber("Balls Count", ballsCount);
         if(isBallIn(checkPointOne)){
@@ -172,43 +189,54 @@ public class Conveyor extends SubsystemBase {
             //SmartDashboard.putString("State", "Left first sensor");  
         }
         if(stage1){
-            setConveyorMotors(-0.5, 0.5, 0.5, 0);
-            if(isBallIn(checkPointRight)){
+            setConveyorMotors(direction * 0.5, 0.5, 0.5, 0);
+            if(isBallIn(sensor)){
                 
                 //SmartDashboard.putString("State", "Under 2nd sensor");
                 //SmartDashboard.putBoolean("Stage 1", false);
                 //SmartDashboard.putBoolean("Stage 2", true);
                 for(i = 0; i < 1; i++){
-                   
-                    if(!flag){
-                        flag = true;
-                        setTime();
-                        
-                    }
-                    
+                    ballsCount = ballsCount + 1;    
                 } 
 
-                if(time.get() > stopTime + 0.125){
-                    //SmartDashboard.putString("State", "End");
-                    setConveyorMotors(0, 0, 0, 0);
-                    i = 0;
-                    ballsCount++;
-                    //System.out.println("incremented ball count once");
-                    stage1 = false;
-                } else {
-                    //SmartDashboard.putString("State", "running motors");
-                    //setConveyorMotors(-0.5, 0.5, 0.5, 0.1); 
-                }
-                
+                stage1 = false; 
+
             } else {
                 
             }
         } else {
             setConveyorMotors(0, 0, 0, 0);
-            done = true;
-            //flag = true;
-            SmartDashboard.putNumber("Balls Count", ballsCount);
+            
+            //done = true;
+            flag = false;
+            i = 0;
+            //SmartDashboard.putNumber("Balls Count", ballsCount);
         }
+    }
+
+    public void conveyorFeedTime(){
+        while(j < 1 && !done){
+            setTime();
+            //System.out.println("set time once @ " + stopTime);
+            j++;
+        }
+
+        if(time.get() > stopTime + .125){
+            setConveyorMotors(0, 0, 0, 0);
+            //System.out.println("time elapsed.");
+            j = 0;
+            done = true;
+            //System.out.println(doneBoolean());
+        } else {
+            done = false;
+            //System.out.println("time waiting: " + time.get() );
+            setConveyorMotors(0, 0, 0, 0.5);
+        }
+
+    }
+
+    public void resetI(){
+        i = 0;
     }
 
     public boolean doneBoolean(){

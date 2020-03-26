@@ -28,10 +28,10 @@ public class Shooter extends SubsystemBase {
       shooter1Slave.setInverted(false);
       shooter2Master.setInverted(false);
       shooter2Slave.setInverted(false);
-      shooter1Master.configOpenloopRamp(2);
-      shooter1Slave.configOpenloopRamp(2);
-      shooter2Master.configOpenloopRamp(2);
-      shooter2Slave.configOpenloopRamp(2);
+      shooter1Master.configOpenloopRamp(1);
+      shooter1Slave.configOpenloopRamp(1);
+      shooter2Master.configOpenloopRamp(1);
+      shooter2Slave.configOpenloopRamp(1);
       shooter1Master.setNeutralMode(NeutralMode.Coast);
       shooter1Slave.setNeutralMode(NeutralMode.Coast);
       shooter2Master.setNeutralMode(NeutralMode.Coast);
