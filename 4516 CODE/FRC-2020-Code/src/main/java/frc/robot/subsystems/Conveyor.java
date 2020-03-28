@@ -96,7 +96,7 @@ public class Conveyor extends SubsystemBase {
         rightSideMotor.set(ControlMode.PercentOutput, (speed));
         leftSideMotor.set(ControlMode.PercentOutput, (speed));
         feederMotor.set(ControlMode.PercentOutput, speed);
-        //centerMotor.set(ControlMode.PercentOutput, (-speed/2));
+        centerMotor.set(ControlMode.PercentOutput, (speed/4));
 
     }
 
@@ -128,6 +128,7 @@ public class Conveyor extends SubsystemBase {
 
     public void setBallCount(int n){
         ballsCount = n;
+        stage1 = false;
     }
         
    
@@ -170,7 +171,7 @@ public class Conveyor extends SubsystemBase {
     /**
      * @param leftSide Run left side of onveyor: true, else run right
      */
-    public void engageConveyor(boolean leftSide){
+    public void engageConveyor(boolean leftSide, double speed){
         TimeOfFlight sensor;
         double direction = 0;
         if(leftSide){
@@ -189,7 +190,7 @@ public class Conveyor extends SubsystemBase {
             //SmartDashboard.putString("State", "Left first sensor");  
         }
         if(stage1){
-            setConveyorMotors(direction * 0.5, 0.5, 0.5, 0);
+            setConveyorMotors(direction * 0.5, speed, speed, 0);
             if(isBallIn(sensor)){
                 
                 //SmartDashboard.putString("State", "Under 2nd sensor");
@@ -221,16 +222,17 @@ public class Conveyor extends SubsystemBase {
             j++;
         }
 
-        if(time.get() > stopTime + .125){
+        if(time.get() > stopTime + .1875){
             setConveyorMotors(0, 0, 0, 0);
             //System.out.println("time elapsed.");
             j = 0;
             done = true;
             //System.out.println(doneBoolean());
         } else {
+            setConveyorMotors(0, 0, 0, 0.5);
             done = false;
             //System.out.println("time waiting: " + time.get() );
-            setConveyorMotors(0, 0, 0, 0.5);
+            
         }
 
     }

@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -28,10 +27,10 @@ import frc.robot.commands.EmptyIntake;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
-import frc.robot.commands.RunLeftSideSensor;
-import frc.robot.commands.RunRightSideSensor;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShooterFeedReverse;
+import frc.robot.commands.SortConveyor;
+import frc.robot.commands.SpinIntake;
 import frc.robot.commands.SplitConveyor;
 import frc.robot.commands.ToggleLimelight;
 import frc.robot.commands.resetBalls;
@@ -129,8 +128,8 @@ public class RobotContainer {
     //leftStickButtonOperator.whileHeld(new ConveyorReverse(conveyor));
     //rightStickButtonOperator.whenPressed(new resetBalls(conveyor));
 
-    leftBumperButtonOperator.whenPressed(new RunLeftSideSensor(intake, conveyor));
-    rightBumperButtonOperator.whenPressed(new RunRightSideSensor(intake, conveyor));
+    leftBumperButtonOperator.whileHeld(new SpinIntake(intake));
+    rightBumperButtonOperator.whenPressed(new SortConveyor(conveyor));
     bButtonOperator.whenPressed(new IntakeUp(intake)); // Intake up and stop intake procedure
     aButtonOperator.whileHeld(new EmptyIntake(conveyor, intake));
     xButtonOperator.whileHeld(new ConveyorFeed(conveyor)); // Feed conveyor to shoot

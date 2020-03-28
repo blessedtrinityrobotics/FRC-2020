@@ -28,10 +28,6 @@ public class Shooter extends SubsystemBase {
       shooter1Slave.setInverted(false);
       shooter2Master.setInverted(false);
       shooter2Slave.setInverted(false);
-      shooter1Master.configOpenloopRamp(1);
-      shooter1Slave.configOpenloopRamp(1);
-      shooter2Master.configOpenloopRamp(1);
-      shooter2Slave.configOpenloopRamp(1);
       shooter1Master.setNeutralMode(NeutralMode.Coast);
       shooter1Slave.setNeutralMode(NeutralMode.Coast);
       shooter2Master.setNeutralMode(NeutralMode.Coast);
@@ -49,6 +45,7 @@ public class Shooter extends SubsystemBase {
       shooter1Master.config_kI(Constants.kSlot_Shooter, Constants.kGains_Shooter.kI, Constants.kTimeoutMs); // I Value
       shooter1Master.config_kD(Constants.kSlot_Shooter, Constants.kGains_Shooter.kD, Constants.kTimeoutMs); // D Value
       shooter1Master.config_kF(Constants.kSlot_Shooter, Constants.kGains_Shooter.kF, Constants.kTimeoutMs); // F Value
+
       shooter2Master.selectProfileSlot(Constants.kSlot_Shooter, Constants.PID_PRIMARY); // Profile Slot for PID Values
       shooter2Master.config_kP(Constants.kSlot_Shooter, Constants.kGains_Shooter.kP, Constants.kTimeoutMs); // P Value
       shooter2Master.config_kI(Constants.kSlot_Shooter, Constants.kGains_Shooter.kI, Constants.kTimeoutMs); // I Value
@@ -90,10 +87,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setSpeed(double speed){
+    //double ff = Constants.shooterFF.calculate(speed)/12;
     shooter1Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
     shooter1Slave.follow(shooter1Master);
-    shooter2Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
-    shooter2Slave.follow(shooter1Master);
+    //shooter2Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
+    //shooter2Slave.follow(shooter1Master);
     SmartDashboard.putNumber("Shooter speed", shooter1Master.getSelectedSensorVelocity());
   }
 

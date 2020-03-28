@@ -165,17 +165,26 @@ public static final double rightShooterXDistance = -1;     // // Shooter limelig
 
 
 
+
+
+
+  // Shooter Constants
+  public static final double shooterkS = 0.576;
+  public static final double shooterkA = 0.163;
+  public static final double shooterkV = 0.0589;
+  public static final double shooterkP = 1.06;
+
+  public static final SimpleMotorFeedforward shooterFF = new SimpleMotorFeedforward(shooterkS, shooterkV, shooterkA);
+
   /**
    * PID Gains may have to be adjusted based on the responsiveness of control loop.
      * kF: 1023 represents output value to Talon at 100%, 6800 represents Velocity units at 100% output
      * Not all set of Gains are used in this project and may be removed as desired.
      * 
-   * 	                                    	            kP   kI   kD   kF   Iz   PeakOut */
-  public final static Gains kGains_Drive   = new Gains( 0.0, 0.0, 0.0, 0.0, 100, 0.50 );
+   * 	                                    	            kP         kI   kD   kF   Iz   PeakOut */
+  public final static Gains kGains_Drive   = new Gains( 0.0,       0.0, 0.0, 0.0, 100, 0.50 );
   public final static Gains kGains_Shooter = new Gains( 0.25, 0.0, 0.05, 0.075, 100, 0.50 );
  
-
-
 
 
   /** ---- Flat constants, you should not need to change these ---- */
