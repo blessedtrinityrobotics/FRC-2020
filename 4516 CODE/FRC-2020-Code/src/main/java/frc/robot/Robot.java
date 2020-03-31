@@ -76,7 +76,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.drivetrain.disableSafety();
-    m_robotContainer.drivetrain.resetYaw(0);
     m_robotContainer.drivetrain.resetDrivetrain();
     m_autonomousCommand = m_robotContainer.getAutomousCommand();
 

@@ -90,8 +90,8 @@ public class Shooter extends SubsystemBase {
     //double ff = Constants.shooterFF.calculate(speed)/12;
     shooter1Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
     shooter1Slave.follow(shooter1Master);
-    //shooter2Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
-    //shooter2Slave.follow(shooter1Master);
+    shooter2Master.set(ControlMode.Velocity, speed, DemandType.Neutral, speed);
+    shooter2Slave.follow(shooter1Master);
     SmartDashboard.putNumber("Shooter speed", shooter1Master.getSelectedSensorVelocity());
   }
 

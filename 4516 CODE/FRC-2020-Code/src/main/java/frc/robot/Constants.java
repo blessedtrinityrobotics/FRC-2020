@@ -142,10 +142,17 @@ public final class Constants {
                              kMaxAccelerationMetersPerSecondSquared)
             .setKinematics(kDriveKinematics)
             .addConstraint(autoVoltageConstraint);
+
+  public static final TrajectoryConfig reverseConfig = 
+            new TrajectoryConfig(kMaxSpeedMetersPerSecond/2, 
+                                 kMaxAccelerationMetersPerSecondSquared/2)
+                .setKinematics(kDriveKinematics)
+                .addConstraint(autoVoltageConstraint)
+                .setReversed(true);
             
   public static final TrajectoryConfig slowConfig = 
-        new TrajectoryConfig(kMaxSpeedMetersPerSecond, 
-                             kMaxAccelerationMetersPerSecondSquared)
+        new TrajectoryConfig(kMaxSpeedMetersPerSecond/2, 
+                             kMaxAccelerationMetersPerSecondSquared/2)
                             .setKinematics(kDriveKinematics)
                             .addConstraint(autoVoltageConstraint);
   

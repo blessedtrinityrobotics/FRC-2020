@@ -27,6 +27,7 @@ import frc.robot.commands.EmptyIntake;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
+import frc.robot.commands.ResetPose;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShooterFeedReverse;
 import frc.robot.commands.SortConveyor;
@@ -124,6 +125,7 @@ public class RobotContainer {
     //aButtonOperator.whenPressed(new IntakeProcedure(intake,conveyor)); // Intake down and start intake procedure
     aButtonDriver.whileHeld(new AlignRobotCenter(drivetrain, limelight)); // Align to target
     bButtonDriver.whenPressed(new ToggleLimelight(limelight)); // Turn on/off limelight
+    yButtonDriver.whenPressed(new ResetPose(drivetrain));
     
     //leftStickButtonOperator.whileHeld(new ConveyorReverse(conveyor));
     //rightStickButtonOperator.whenPressed(new resetBalls(conveyor));
@@ -167,7 +169,12 @@ public class RobotContainer {
     } else {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
-      return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+      Command ramseteReverse = generateRamseteCommand(Trajectories.driveBack);
+      Command intakeBalls = new SpinIntake(intake);
+      Command sortConveyor = new SortConveyor(conveyor).alongWith(intakeBalls);
+      Command stopIntake = new IntakeUp(intake);
+      Command shoot = new AutoShoot(shooter, conveyor);
+      return ramsete.alongWith(sortConveyor).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(shoot);
     }  
   }
 

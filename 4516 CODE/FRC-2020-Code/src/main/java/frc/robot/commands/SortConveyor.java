@@ -38,8 +38,10 @@ public class SortConveyor extends CommandBase {
     SmartDashboard.putNumber("Ball Count", conveyor.getBallCount());
     if(ballCount == 4){
       complete = true;
+      conveyor.setDone(complete);
     } else {
       complete = false;
+      conveyor.setDone(complete);
     }
     SmartDashboard.putBoolean("Intake Complete?", complete);
     
@@ -76,6 +78,6 @@ public class SortConveyor extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return complete;
   }
 }

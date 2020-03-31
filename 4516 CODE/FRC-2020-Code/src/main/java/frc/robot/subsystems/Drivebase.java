@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -100,10 +102,12 @@ public class Drivebase extends SubsystemBase {
   @Override
   public void periodic() {
     driveOdometry.update(Rotation2d.fromDegrees(getYaw()), getWheelDistanceMeters(-leftMasterMotor.getSelectedSensorPosition()), getWheelDistanceMeters(rightMasterMotor.getSelectedSensorPosition()));
-    //System.out.println(driveOdometry.getPoseMeters().toString());
+    System.out.println(driveOdometry.getPoseMeters().toString());
   }
 
-
+  public void printPose(){
+    System.out.println(driveOdometry.getPoseMeters().toString());
+  }
   /**
    * 
    * @return The Pose
@@ -114,12 +118,15 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void resetDrivetrain(){
-    resetYaw(0);
+    //resetYaw(0);
     leftMasterMotor.setSelectedSensorPosition(0);
     rightMasterMotor.setSelectedSensorPosition(0);
     rightDistance = 0;
     leftDistance = 0;
+    driveOdometry.resetPosition(new Pose2d(), new Rotation2d(getYaw()));
   }
+
+  
  
 
   /**

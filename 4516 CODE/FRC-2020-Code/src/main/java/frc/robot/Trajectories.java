@@ -17,10 +17,18 @@ public class Trajectories {
 
     public static final Trajectory driveOff = TrajectoryGenerator.generateTrajectory(
         new Pose2d(0, 0, new Rotation2d(0)) , 
-        List.of(), 
+        List.of(
+        ), 
         new Pose2d(2, 0, new Rotation2d(0)), 
-        Constants.defaultConfig
+        Constants.slowConfig
     );
+
+    public static final Trajectory driveBack = TrajectoryGenerator.generateTrajectory (
+        new Pose2d(Robot.m_robotContainer.drivetrain.getPose().getTranslation().getX(), 0, new Rotation2d(0)), 
+        List.of(), 
+        new Pose2d(-0.25, 0, new Rotation2d(0)), 
+        Constants.reverseConfig
+        );
 
 
     public static final Trajectory driveLeft = TrajectoryGenerator.generateTrajectory(

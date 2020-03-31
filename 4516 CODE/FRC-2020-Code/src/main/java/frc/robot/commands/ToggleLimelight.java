@@ -13,7 +13,7 @@ import frc.robot.subsystems.Limelight;
 
 public class ToggleLimelight extends CommandBase {
   private final Limelight limelight;
-  private boolean toggle = true; 
+  private boolean done = false;
 
   public ToggleLimelight(Limelight subsystem) {
     limelight = subsystem;
@@ -23,12 +23,15 @@ public class ToggleLimelight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.m_robotContainer.limelight.toggleVision();
+    done = false;
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.m_robotContainer.limelight.toggleVision();
+    done = true;
   }
 
   // Called once the command ends or is interrupted.
@@ -39,11 +42,6 @@ public class ToggleLimelight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Robot.m_robotContainer.limelight.LEDStatus() !=toggle) {
-      toggle = !toggle; 
-      return true;
-    } else {
-      return false;
-    }
+    return done;
   }
 }

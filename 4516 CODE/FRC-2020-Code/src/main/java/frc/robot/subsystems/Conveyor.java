@@ -40,6 +40,7 @@ public class Conveyor extends SubsystemBase {
     private boolean ready           = false;
     private boolean stage1          = false;
     private boolean done            = false;
+    private boolean complete        = false;
 
 
     public Conveyor() {
@@ -237,12 +238,20 @@ public class Conveyor extends SubsystemBase {
 
     }
 
+    public void setDone(boolean done){
+        complete = done;
+    }
+
     public void resetI(){
         i = 0;
     }
 
     public boolean doneBoolean(){
         return done;
+    }
+
+    public boolean complete(){
+        return complete;
     }
 
 
