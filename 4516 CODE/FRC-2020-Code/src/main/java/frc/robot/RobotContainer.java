@@ -34,6 +34,7 @@ import frc.robot.commands.SortConveyor;
 import frc.robot.commands.SpinIntake;
 import frc.robot.commands.SplitConveyor;
 import frc.robot.commands.ToggleLimelight;
+import frc.robot.commands.UnJam;
 import frc.robot.commands.resetBalls;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivebase;
@@ -126,6 +127,7 @@ public class RobotContainer {
     aButtonDriver.whileHeld(new AlignRobotCenter(drivetrain, limelight)); // Align to target
     bButtonDriver.whenPressed(new ToggleLimelight(limelight)); // Turn on/off limelight
     yButtonDriver.whenPressed(new ResetPose(drivetrain));
+    xButtonDriver.whenPressed(new UnJam(conveyor));
     
     //leftStickButtonOperator.whileHeld(new ConveyorReverse(conveyor));
     //rightStickButtonOperator.whenPressed(new resetBalls(conveyor));
@@ -166,15 +168,16 @@ public class RobotContainer {
     } else if(autoChooser.getSelected().equals("shoot")){
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       return new AutoShoot(shooter, conveyor).andThen(ramsete).andThen(() -> drivetrain.tankDrive(0, 0));
-    } else {
+    }  else {
       // drive off the line
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
       Command ramseteReverse = generateRamseteCommand(Trajectories.driveBack);
       Command intakeBalls = new SpinIntake(intake);
       Command sortConveyor = new SortConveyor(conveyor).alongWith(intakeBalls);
       Command stopIntake = new IntakeUp(intake);
+      Command unjam = new UnJam(conveyor);
       Command shoot = new AutoShoot(shooter, conveyor);
-      return ramsete.alongWith(sortConveyor).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(shoot);
+      return ramsete.alongWith(sortConveyor).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(unjam);
     }  
   }
 

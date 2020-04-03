@@ -26,7 +26,7 @@ public class Trajectories {
     public static final Trajectory driveBack = TrajectoryGenerator.generateTrajectory (
         new Pose2d(Robot.m_robotContainer.drivetrain.getPose().getTranslation().getX(), 0, new Rotation2d(0)), 
         List.of(), 
-        new Pose2d(-0.25, 0, new Rotation2d(0)), 
+        new Pose2d(-1, 0, new Rotation2d(0)), 
         Constants.reverseConfig
         );
 

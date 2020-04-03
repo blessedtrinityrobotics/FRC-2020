@@ -41,6 +41,8 @@ public class Conveyor extends SubsystemBase {
     private boolean stage1          = false;
     private boolean done            = false;
     private boolean complete        = false;
+    private double q                = 1;
+    private boolean unjam           = false;
 
 
     public Conveyor() {
@@ -238,6 +240,39 @@ public class Conveyor extends SubsystemBase {
 
     }
 
+    public void unJam(){
+        double direction = 0;
+        while(q <= 3 && !unjam){
+           if ( q%2 == 0 ){
+                direction = 1;
+           } else {
+               direction = -1;
+           }
+            if(time.get() > stopTime + 0.125) {
+                setTime();
+                q++;
+                //setConveyorMotors(direction * 0.5, direction * 0.5,  direction * 0.5,  direction * 0.5);
+            } else {
+                setConveyorMotors(0, direction * 0.9,  direction * 0.75,  direction * 0.125);
+            }
+        }
+
+        if(q > 3){
+            unjam = true;
+            setConveyorMotors(0, 0, 0, 0);
+            q = 0;
+        }
+        
+    }
+
+    public boolean isJammed(){
+        return unjam;
+    }
+
+    public void setJammed(boolean jam){
+        unjam = jam;
+    }
+
     public void setDone(boolean done){
         complete = done;
     }
@@ -255,111 +290,7 @@ public class Conveyor extends SubsystemBase {
     }
 
 
-    public void intake(){
-        LEDRed();
-        //countBalls(checkPointOne);
-        SmartDashboard.putNumber("Balls count", ballsCount);
-        //SmartDashboard.putNumber("intake sensor", checkPointOne.getRange());
-         if(ballsCount == 1.0){ // first ball
-            // run right side
-            if(isBallIn(checkPointOne)){
-                for(i = 0; i < 1; i++){
-                    setTime();
-                }
-                leftSideMotor.set(ControlMode.PercentOutput, (.4));
-                centerMotor.set(ControlMode.PercentOutput, (-0.4/2));
-                rightSideMotor.set(ControlMode.PercentOutput, 0.375);
-            } else {
-                if(time.get() > stopTime + 0.2){
-                    rightActivate(0);
-                    i = 0;
-                }
-            }
-        } else if(ballsCount == 2) { // 2nd ball
-            // run left side 
-            if(isBallIn(checkPointOne)){
-                for(i = 0; i < 1; i++){
-                    setTime();
-                }
-                rightSideMotor.set(ControlMode.PercentOutput, (.425));
-                centerMotor.set(ControlMode.PercentOutput, (0.4/2));
-                leftSideMotor.set(ControlMode.PercentOutput, 0.5);
-            } else {
-                rightSideMotor.set(ControlMode.PercentOutput, 0);
-                if(time.get() > stopTime + 0.25){
-                    rightActivate(0);
-                    i = 0;
-                }   
-            }
-        } else if(ballsCount == 3){ // 3rd ball
-            // run right side again
-            if(isBallIn(checkPointOne)){
-                for(i = 0; i < 1; i++){
-                    setTime();
-                }
-                leftSideMotor.set(ControlMode.PercentOutput, (.45));
-                centerMotor.set(ControlMode.PercentOutput, (-0.45/2));
-                rightSideMotor.set(ControlMode.PercentOutput, 0.45);
-            } else {
-                leftSideMotor.set(ControlMode.PercentOutput, 0);
-                if(time.get() > stopTime + 0.275){
-                    rightActivate(0);
-                    i = 0;
-                }
-            }
-        } else if(ballsCount == 4) {
-            // run left side again
-            if(isBallIn(checkPointOne)){
-                for(i = 0; i < 1; i++){
-                    setTime();
-                }
-                leftSideMotor.set(ControlMode.PercentOutput, (.4));
-                centerMotor.set(ControlMode.PercentOutput, (0.4/2));
-                rightSideMotor.set(ControlMode.PercentOutput, 0.375);
-            } else {
-                rightSideMotor.set(ControlMode.PercentOutput, 0);
-                if(time.get() > stopTime + 0.25){
-                    rightActivate(0);
-                    i = 0;
-                }
-            }
-        } else {
-            
-        }
-    }
-
-    public void leftWithSensor(){
-        if(isBallIn(checkPointOne)){
-            for(i = 0; i < 1; i++){
-                setTime();
-            }
-            leftSideMotor.set(ControlMode.PercentOutput, (.4));
-            centerMotor.set(ControlMode.PercentOutput, (0.4/2));
-            rightSideMotor.set(ControlMode.PercentOutput, 0.375);
-        } else {
-            rightSideMotor.set(ControlMode.PercentOutput, 0);
-            if(time.get() > stopTime + 0.25){
-                rightActivate(0);
-                i = 0;
-            }
-        }
-    }
-
-    public void rightWithSensor(){
-        if(isBallIn(checkPointOne)){
-            for(i = 0; i < 1; i++){
-                setTime();
-            }
-            leftSideMotor.set(ControlMode.PercentOutput, (.4));
-            centerMotor.set(ControlMode.PercentOutput, (-0.4/2));
-            rightSideMotor.set(ControlMode.PercentOutput, 0.375);
-        } else {
-            if(time.get() > stopTime + 0.2){
-                rightActivate(0);
-                i = 0;
-            }
-        }
-    }
+    
 
     public void shooterFeed(){
         for(i = 0; i < 1; i++){
