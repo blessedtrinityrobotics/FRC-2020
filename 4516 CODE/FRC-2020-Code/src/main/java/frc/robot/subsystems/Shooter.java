@@ -67,12 +67,13 @@ public class Shooter extends SubsystemBase {
   public void shooterRPM(double deltaX){
     initVelocity = Math.sqrt( ( (-Constants.gravity * deltaX)/( ((Constants.outerPortHeightDelta * Math.cos(Math.toRadians(Constants.launchAngle)))/(deltaX)) - Math.sin(Math.toRadians(Constants.launchAngle)) ) )/( 2 * Math.cos( Math.toRadians(Constants.launchAngle)) ) );
     RPM = (60* initVelocity)/(2 * Math.PI * Constants.shooterRadius);
-    sensorVelocity = (Constants.CPR * RPM)/(60 * Constants.gearRatioShooter);
+    sensorVelocity = (Constants.CPR * RPM)/(60 * Constants.gearRatioShooter
+    );
 
-    // shooter1Master.set(ControlMode.Velocity, sensorVelocity, DemandType.Neutral, sensorVelocity);
-    // shooter1Slave.follow(shooter1Master);
-    // shooter2Master.set(ControlMode.Velocity, sensorVelocity, DemandType.Neutral, sensorVelocity);
-    // shooter2Slave.follow(shooter1Master);
+    shooter1Master.set(ControlMode.Velocity, sensorVelocity, DemandType.Neutral, sensorVelocity);
+    shooter1Slave.follow(shooter1Master);
+    shooter2Master.set(ControlMode.Velocity, sensorVelocity, DemandType.Neutral, sensorVelocity);
+    shooter2Slave.follow(shooter1Master);
     SmartDashboard.putNumber("Shooter Speed in m/s", initVelocity);
     SmartDashboard.putNumber("RPM", RPM);
     SmartDashboard.putNumber("Shooter Sensor Speed", sensorVelocity);

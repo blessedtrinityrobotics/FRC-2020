@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    m_robotContainer.drivetrain.setCoastMode();
   }
 
   @Override
@@ -77,6 +78,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_robotContainer.drivetrain.disableSafety();
     m_robotContainer.drivetrain.resetDrivetrain();
+    m_robotContainer.drivetrain.setBrakeMode();
     m_autonomousCommand = m_robotContainer.getAutomousCommand();
 
     if(m_autonomousCommand != null){
@@ -93,6 +95,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    m_robotContainer.drivetrain.setCoastMode();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

@@ -146,7 +146,7 @@ public class Limelight extends SubsystemBase {
 
   public double getDistance(){
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    double distance = (1.55)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
+    double distance = (1.219)/(Math.tan( Math.toRadians(ty + Constants.cameraAngle)));
 
     return distance;
   }

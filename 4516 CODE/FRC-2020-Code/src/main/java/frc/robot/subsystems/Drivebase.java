@@ -61,8 +61,8 @@ public class Drivebase extends SubsystemBase {
     leftMasterMotor.setSensorPhase(true); // Reverse Direction of encoder
     leftSlaveMotor.setSensorPhase(true);
     leftMasterMotor.configOpenloopRamp(1, Constants.kTimeoutMs); // % Ramp - 1 sec to full throtle
-    leftMasterMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
-    leftSlaveMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
+    leftMasterMotor.setNeutralMode(NeutralMode.Brake); // Neutral Mode - Coast
+    leftSlaveMotor.setNeutralMode(NeutralMode.Brake); // Neutral Mode - Coast
     leftMasterMotor.setInverted(true);
     leftSlaveMotor.setInverted(true);
     leftMasterMotor.configVoltageCompSaturation(Constants.operatingVoltage, Constants.kTimeoutMs);
@@ -83,8 +83,8 @@ public class Drivebase extends SubsystemBase {
     rightMasterMotor.setSensorPhase(true); // Do not Reverse Direction of encoder
     rightSlaveMotor.setSensorPhase(true);
     rightMasterMotor.configOpenloopRamp(1, Constants.kTimeoutMs); // % Ramp - 1 sec to full throtle
-    rightMasterMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
-    rightSlaveMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
+    rightMasterMotor.setNeutralMode(NeutralMode.Brake); // Neutral Mode - Coast
+    rightSlaveMotor.setNeutralMode(NeutralMode.Brake); // Neutral Mode - Coast
     rightMasterMotor.setInverted(true);
     rightSlaveMotor.setInverted(true);
     rightMasterMotor.configVoltageCompSaturation(Constants.operatingVoltage, Constants.kTimeoutMs);
@@ -98,6 +98,21 @@ public class Drivebase extends SubsystemBase {
     resetYaw(0);
     driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getYaw()));
   }
+
+  public void setCoastMode(){
+    leftMasterMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
+    leftSlaveMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
+    rightMasterMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
+    rightSlaveMotor.setNeutralMode(NeutralMode.Coast); // Neutral Mode - Coast
+  }
+
+  public void setBrakeMode(){
+    leftMasterMotor.setNeutralMode(NeutralMode.Brake); // Neutral Mode - Coast
+    leftSlaveMotor.setNeutralMode(NeutralMode.Brake); // Neutral Mode - Coast
+    rightMasterMotor.setNeutralMode(NeutralMode.Brake); // Neutral Mode - Coast
+    rightSlaveMotor.setNeutralMode(NeutralMode.Brake); // Neutral Mode - Coast
+  }
+
 
   @Override
   public void periodic() {
@@ -118,12 +133,12 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void resetDrivetrain(){
-    //resetYaw(0);
+    resetYaw(0);
     leftMasterMotor.setSelectedSensorPosition(0);
     rightMasterMotor.setSelectedSensorPosition(0);
     rightDistance = 0;
     leftDistance = 0;
-    driveOdometry.resetPosition(new Pose2d(), new Rotation2d(getYaw()));
+    driveOdometry.resetPosition(new Pose2d(), new Rotation2d(Math.toRadians(getYaw())));
   }
 
   

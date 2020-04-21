@@ -242,7 +242,7 @@ public class Conveyor extends SubsystemBase {
 
     public void unJam(){
         double direction = 0;
-        while(q <= 3 && !unjam){
+        while(q <= 9 && !unjam){
            if ( q%2 == 0 ){
                 direction = 1;
            } else {
@@ -253,11 +253,11 @@ public class Conveyor extends SubsystemBase {
                 q++;
                 //setConveyorMotors(direction * 0.5, direction * 0.5,  direction * 0.5,  direction * 0.5);
             } else {
-                setConveyorMotors(0, direction * 0.9,  direction * 0.75,  direction * 0.125);
+                setConveyorMotors(0, direction,  direction * 0.75,  direction * 0.075);
             }
         }
 
-        if(q > 3){
+        if(q > 9){
             unjam = true;
             setConveyorMotors(0, 0, 0, 0);
             q = 0;
@@ -297,7 +297,7 @@ public class Conveyor extends SubsystemBase {
            // System.out.println("set time");
         }
        // SmartDashboard.putBoolean("Ready?", ready);
-        if(time.get() >= stopTime + 3 && !ready) {
+        if(time.get() >= stopTime + 2 && !ready) {
             i = 0;
             ready = true;
             //System.out.println("ready!");
@@ -306,7 +306,7 @@ public class Conveyor extends SubsystemBase {
 
         if(ready){
     
-            if(time.get() > stopTime + 6) {
+            if(time.get() > stopTime + 4) {
                 i = 0;
                 conveyorFeed(0);
                 isFinished = true;

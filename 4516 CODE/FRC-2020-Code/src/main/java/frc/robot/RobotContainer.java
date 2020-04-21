@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AlignRobotCenter;
+import frc.robot.commands.AutoIntake;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.CheckForValidTarget;
 import frc.robot.commands.ConveyorFeed;
@@ -25,7 +26,6 @@ import frc.robot.commands.ConveyorReverse;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EmptyIntake;
 import frc.robot.commands.IntakeDown;
-import frc.robot.commands.IntakeProcedure;
 import frc.robot.commands.IntakeUp;
 import frc.robot.commands.ResetPose;
 import frc.robot.commands.Shoot;
@@ -110,6 +110,8 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Drive Off Forward", "driveOff");
     //autoChooser.addOption("David Drive", "davieDrive");
     autoChooser.addOption("Shoot", "shoot");
+    autoChooser.addOption("Drive Bak", "back");
+    autoChooser.addOption("6 Ball Trench Auto", "6trench");
     Shuffleboard.getTab("Autonomous").add(autoChooser);
 
   }
@@ -153,7 +155,7 @@ public class RobotContainer {
     
     if(autoChooser.getSelected().equals("rightDrive")){
       //Follow Trajectories 
-      Command ramsete = generateRamseteCommand(Trajectories.driveRight);
+      Command ramsete = generateRamseteCommand(Trajectories.driveL);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
 
     } else if(autoChooser.getSelected().equals("leftDrive")){
@@ -167,17 +169,25 @@ public class RobotContainer {
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
     } else if(autoChooser.getSelected().equals("shoot")){
       Command ramsete = generateRamseteCommand(Trajectories.driveOff);
-      return new AutoShoot(shooter, conveyor).andThen(ramsete).andThen(() -> drivetrain.tankDrive(0, 0));
-    }  else {
+      return new AutoShoot(shooter, conveyor);//.andThen(ramsete).andThen(() -> drivetrain.tankDrive(0, 0));
+    } else if(autoChooser.getSelected().equals("back")){
+      Command ramsete = generateRamseteCommand(Trajectories.driveBackToZero);
+      return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+    } else if(autoChooser.getSelected().equals("6trench")){
+      //Command firstShoot = new AutoShoot(shooter, conveyor);
+      Command ramsete = generateRamseteCommand(Trajectories.driveLeft);
+      //Command intakeBalls = new SpinIntake(intake);
+      //Command sortConveyor = new AutoIntake(conveyor).alongWith(intakeBalls);
+      //Command stopIntake = new IntakeUp(intake);
+      //Command unjam = new UnJam(conveyor);
+      Command ramseteReverse = generateRamseteCommand(Trajectories.driveBackToZero);
+      return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+      //return firstShoot.andThen(ramsete.alongWith(sortConveyor)).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(unjam).andThen(stopIntake);
+    } else {
       // drive off the line
-      Command ramsete = generateRamseteCommand(Trajectories.driveOff);
-      Command ramseteReverse = generateRamseteCommand(Trajectories.driveBack);
-      Command intakeBalls = new SpinIntake(intake);
-      Command sortConveyor = new SortConveyor(conveyor).alongWith(intakeBalls);
-      Command stopIntake = new IntakeUp(intake);
-      Command unjam = new UnJam(conveyor);
-      Command shoot = new AutoShoot(shooter, conveyor);
-      return ramsete.alongWith(sortConveyor).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(unjam);
+      Command ramsete = generateRamseteCommand(Trajectories.driveL);
+      Command ramseteReverse = generateRamseteCommand(Trajectories.driveBackToZero);
+      return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
     }  
   }
 
