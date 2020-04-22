@@ -144,14 +144,14 @@ public final class Constants {
             .addConstraint(autoVoltageConstraint);
 
   public static final TrajectoryConfig reverseConfig = 
-            new TrajectoryConfig(kMaxSpeedMetersPerSecond/6, 
-                                 kMaxAccelerationMetersPerSecondSquared/6)
+            new TrajectoryConfig(kMaxSpeedMetersPerSecond/2, 
+                                 kMaxAccelerationMetersPerSecondSquared/3)
                 .setKinematics(kDriveKinematics)
                 .addConstraint(autoVoltageConstraint)
                 .setReversed(true);
             
   public static final TrajectoryConfig slowConfig = 
-        new TrajectoryConfig(kMaxSpeedMetersPerSecond/3, 
+        new TrajectoryConfig(kMaxSpeedMetersPerSecond/2, 
                              kMaxAccelerationMetersPerSecondSquared/3)
                             .setKinematics(kDriveKinematics)
                             .addConstraint(autoVoltageConstraint);
@@ -161,14 +161,12 @@ public final class Constants {
 
 
 // Shooter Constants
-public static final double gravity               = 9.81;   // Gravity in inches per second per second (Positive as negative cancel out later)
+public static final double gravity               = 9.81;   // Gravity in meters per second per second (Positive as negative cancel out later)
 public static final double outerPortHeightDelta  = 1.88;   // Delta between outer port and center of shooter
 public static final double launchAngle           = 40;     // Degrees of launch angle (from horizontal)
-public static final double shooterRadius            = 0.051;      // Shooter wheel radius in inches
+public static final double shooterRadius         = 0.051;  // Shooter wheel radius in meters
 public static final double gearRatioShooter      = 4;      // Gear Ratio
-public static final double cameraAngle           = 25;     // Limelight Camera Angle
-public static final double leftShooterXDistance  = 1;      // Shooter limelight x distance for left shooter side
-public static final double rightShooterXDistance = -1;     // // Shooter limelight x distance for right shooter side 
+public static final double cameraAngle           = 25;     // Limelight Camera Angle 
 
 
 

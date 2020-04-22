@@ -297,7 +297,7 @@ public class Conveyor extends SubsystemBase {
            // System.out.println("set time");
         }
        // SmartDashboard.putBoolean("Ready?", ready);
-        if(time.get() >= stopTime + 2 && !ready) {
+        if(time.get() >= stopTime + 1.5 && !ready) {
             i = 0;
             ready = true;
             //System.out.println("ready!");
@@ -306,7 +306,7 @@ public class Conveyor extends SubsystemBase {
 
         if(ready){
     
-            if(time.get() > stopTime + 4) {
+            if(time.get() > stopTime + 3) {
                 i = 0;
                 conveyorFeed(0);
                 isFinished = true;

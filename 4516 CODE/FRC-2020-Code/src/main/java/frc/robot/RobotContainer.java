@@ -174,20 +174,20 @@ public class RobotContainer {
       Command ramsete = generateRamseteCommand(Trajectories.driveBackToZero);
       return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
     } else if(autoChooser.getSelected().equals("6trench")){
-      //Command firstShoot = new AutoShoot(shooter, conveyor);
+      Command firstShoot = new AutoShoot(shooter, conveyor);
       Command ramsete = generateRamseteCommand(Trajectories.driveLeft);
-      //Command intakeBalls = new SpinIntake(intake);
-      //Command sortConveyor = new AutoIntake(conveyor).alongWith(intakeBalls);
-      //Command stopIntake = new IntakeUp(intake);
-      //Command unjam = new UnJam(conveyor);
+      Command intakeBalls = new SpinIntake(intake);
+      Command sortConveyor = new AutoIntake(conveyor).alongWith(intakeBalls);
+      Command stopIntake = new IntakeUp(intake);
+      Command unjam = new UnJam(conveyor);
       Command ramseteReverse = generateRamseteCommand(Trajectories.driveBackToZero);
-      return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
-      //return firstShoot.andThen(ramsete.alongWith(sortConveyor)).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(unjam).andThen(stopIntake);
+      //return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+      return firstShoot.andThen(ramsete.alongWith(sortConveyor)).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(unjam).andThen(stopIntake).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
     } else {
       // drive off the line
-      Command ramsete = generateRamseteCommand(Trajectories.driveL);
-      Command ramseteReverse = generateRamseteCommand(Trajectories.driveBackToZero);
-      return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain).andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
+      Command ramsete = generateRamseteCommand(Trajectories.driveOff);
+      //Command ramseteReverse = generateRamseteCommand(Trajectories.driveBackToZero);
+      return ramsete.andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);//.andThen(ramseteReverse).andThen(() -> drivetrain.tankDrive(0, 0), drivetrain);
     }  
   }
 
