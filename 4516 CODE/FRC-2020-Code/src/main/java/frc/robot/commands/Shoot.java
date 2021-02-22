@@ -33,7 +33,7 @@ public class Shoot extends CommandBase {
     distance = Robot.m_robotContainer.limelight.getDistance();
     SmartDashboard.putNumber("Distance", distance);
     //shooter.shooterRPM(distance);
-    shooter.shooterRPM(distance);
+    shooter.setSpeed(22000);
 
   }
 
